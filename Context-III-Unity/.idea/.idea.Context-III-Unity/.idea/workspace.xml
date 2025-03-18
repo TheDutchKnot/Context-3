@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5dd3574f-a424-4417-aa58-ee2cd7f14383" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/PlayerController/OculusController/OculusTouchForQuestAndRiftS_Material.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/PlayerController/OculusController/OculusTouchForQuestAndRiftS_Material.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/HexaBlue.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/HexaBlue.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/HexaOrange.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/HexaOrange.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/HexaRed.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/HexaRed.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/HexaTorqouise.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/HexaTorqouise.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/HexaYellow.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/HexaYellow.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/Web.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/HexabodyVR/SampleScene/Materials/Web.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Settings/DefaultVolumeProfile.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Settings/DefaultVolumeProfile.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/DynamicsManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/DynamicsManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2uVPXlDTuuafvH2NK4C1pmSukVG" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5dd3574f-a424-4417-aa58-ee2cd7f14383" name="Changes" comment="" />
+      <created>1742330810750</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742330810750</updated>
+      <workItem from="1742330812354" duration="2000" />
+      <workItem from="1742333876195" duration="2000" />
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>
