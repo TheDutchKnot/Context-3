@@ -570,7 +570,7 @@ MonoBehaviour:
   distanceFromPlayer: 1
   time: 0.3
   yPos: 1.2
-  smoothTime: 0.3
+  smoothTime: 0.25
 --- !u!1 &293295167
 GameObject:
   m_ObjectHideFlags: 0
