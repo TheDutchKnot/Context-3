@@ -16,9 +16,12 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
+    public delegate void SwitchStateInfo(GameState newState);
+    public event SwitchStateInfo StateChange;
+        
     public static GameManager Instance { get; private set; }
     
-    private GameState currentGameState;
+    public GameState currentGameState;
     public GameState CurrentGameState => currentGameState;
     
     public event Action<GameState> OnGameStateChanged;
@@ -37,7 +40,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SetGameState(GameState.ZeroGravity);
+        SetGameState(GameState.Playing);
     }
 
     /// <summary>
@@ -50,7 +53,7 @@ public class GameManager : MonoBehaviour
 
         currentGameState = newGameState;
         OnGameStateChanged?.Invoke(currentGameState);
-        
+        StateChange?.Invoke(newGameState);
         switch (currentGameState)
         {
             case GameState.MainMenu:
