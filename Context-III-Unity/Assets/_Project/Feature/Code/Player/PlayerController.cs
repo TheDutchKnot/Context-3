@@ -22,7 +22,8 @@ public class PlayerController : MonoBehaviour
     private float groundedBufferTime = 1f; // 缓冲时间
     private float lastGroundedTime;
     [Header("Player Controller")] public CharacterController characterController;
-
+    [Header("Ground Checker")]
+    public GroundChecker groundChecker;
     [Header("Player Camera")] // get dir
     public Transform playerCamera;
 
@@ -109,6 +110,7 @@ public class PlayerController : MonoBehaviour
         // save cur state,,for next switch
         _previousState = currentState;
     }
+    
 
     /// <summary>
     /// Update the player's state based on
@@ -118,39 +120,32 @@ public class PlayerController : MonoBehaviour
     private void UpdatePlayerState()
     {
         // If the character controller detects that it is on the ground, the state is grounded
-        if (characterController.isGrounded)
+        if (groundChecker.IsGrounded)
         {
-            lastGroundedTime = Time.time;
             // Debug.Log("on ground!");
             currentState = PlayerActionState.Grounded;
         }
         else
         {
-            if (Time.time - lastGroundedTime < groundedBufferTime)
+            // If either hand is holding a climbing object, the player is considered to be in a climbing state
+            if (IsAnyHandInteracting())
             {
-                currentState = PlayerActionState.Grounded;
+                currentState = PlayerActionState.Climbing;
             }
             else
             {
-                // If either hand is holding a climbing object, the player is considered to be in a climbing state
-                if (IsAnyHandInteracting())
-                {
-                    currentState = PlayerActionState.Climbing;
-                }
-                else
-                {
-                    // switch to flying
-                    currentState = PlayerActionState.Flying;
-                    
-                }
+                // switch to flying
+                currentState = PlayerActionState.Flying;
             }
         }
 
         if (!_previousState.Equals(currentState))
         {
-            Debug.Log("Player switch state: "+_previousState+" -> "+currentState);
+            Debug.Log("Player switch state: " + _previousState + " -> " + currentState);
         }
     }
+    
+    
 
     /// <summary>
     /// Determine whether at least one of the left and right hands is holding the climbing object
@@ -165,6 +160,8 @@ public class PlayerController : MonoBehaviour
         HandelTrigger(other.gameObject.name);
     }
 
+    
+    
     private void HandelTrigger(string triggerName)
     {
         string[] parts = triggerName.Split('_');
@@ -193,12 +190,11 @@ public class PlayerController : MonoBehaviour
                 //Switch cur state
                 if (gameManager.CurrentGameState == oldState)
                 {
-                    gameManager.SetGameState(newState); 
+                    gameManager.SetGameState(newState);
                 }
                 else if (gameManager.CurrentGameState == newState)
                 {
                     gameManager.SetGameState(oldState);
-     
                 }
                 else
                 {
@@ -209,9 +205,11 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.LogWarning($"cant convert string to Game state. String: {oldStateStr}  {newStateStr}");
             }
-            
         }
     }
+    
+    
+    
 
     /// <summary>
     /// Checks if neither the left or right hand is holding an climb object 
