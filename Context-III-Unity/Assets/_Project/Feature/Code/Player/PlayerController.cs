@@ -1,11 +1,6 @@
-using System;
 using UnityEngine;
-using System.Collections;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
-using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 public class PlayerController : MonoBehaviour
@@ -19,8 +14,6 @@ public class PlayerController : MonoBehaviour
     }
 
     public GameManager gameManager;
-    private float groundedBufferTime = 1f; // 缓冲时间
-    private float lastGroundedTime;
     [Header("Player Controller")] public CharacterController characterController;
     [Header("Ground Checker")]
     public GroundChecker groundChecker;
@@ -79,16 +72,26 @@ public class PlayerController : MonoBehaviour
             //1. flying
             if (currentState == PlayerActionState.Flying)
             {
-                velocity = playerCamera.forward * 0.5f;
+                
+                velocity = playerCamera.forward * 0.2f;
+            }
+
+            if (currentState == PlayerActionState.Climbing)
+            {
+                TurnOffZeroGravity();
             }
 
             // 2. climbing
             if (_previousState == PlayerActionState.Climbing && AreHandsFreeOfClimb())
             {
+                if (gameManager.CurrentGameState == GameState.ZeroGravity)
+                {
+                    TurnOnZeroGravity();
+                }
                 if (!zeroGravity.IsClimbingPushActive)
                 {
                     // climbing-push logic
-                    zeroGravity.StartClimbingPush(leftHand, rightHand, transform, playerCamera);
+                    zeroGravity.StartClimbingPush(leftHand, rightHand,  playerCamera);
                 }
             }
 
@@ -104,10 +107,13 @@ public class PlayerController : MonoBehaviour
             velocity = Vector3.zero;
         }
 
-        // use CharacterController move player
-        characterController.Move(velocity * Time.deltaTime);
-
-        // save cur state,,for next switch
+        if (currentState != PlayerActionState.Climbing)
+        {
+            // use CharacterController move player
+            characterController.Move(velocity * Time.deltaTime);
+        }
+        
+        // save cur state,for next switch
         _previousState = currentState;
     }
     
@@ -120,7 +126,7 @@ public class PlayerController : MonoBehaviour
     private void UpdatePlayerState()
     {
         // If the character controller detects that it is on the ground, the state is grounded
-        if (groundChecker.IsGrounded)
+        if (gameManager.CurrentGameState==GameState.Playing)
         {
             // Debug.Log("on ground!");
             currentState = PlayerActionState.Grounded;
@@ -144,7 +150,18 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Player switch state: " + _previousState + " -> " + currentState);
         }
     }
+
+    private void TurnOffZeroGravity()
+    {
+        dynamicMoveProvider.useGravity = true;
+        dynamicMoveProvider.enableFly = false;
+    }
     
+    private void TurnOnZeroGravity()
+    {
+        dynamicMoveProvider.useGravity = false;
+        dynamicMoveProvider.enableFly = true;
+    }
     
 
     /// <summary>
@@ -207,9 +224,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
-    
-    
 
     /// <summary>
     /// Checks if neither the left or right hand is holding an climb object 
