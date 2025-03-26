@@ -15,8 +15,6 @@ public class PlayerController : MonoBehaviour
 
     public GameManager gameManager;
     [Header("Player Controller")] public CharacterController characterController;
-    [Header("Ground Checker")]
-    public GroundChecker groundChecker;
     [Header("Player Camera")] // get dir
     public Transform playerCamera;
 
