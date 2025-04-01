@@ -10,6 +10,13 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+# Ignore everything under Assets except the _Project & XR folder
+Assets/*
+!Assets/_Project/
+!Assets/Plugins/
+!Assets/XR/
+
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
