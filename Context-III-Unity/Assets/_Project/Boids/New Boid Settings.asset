@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 642ff67c1d9e52648a7313ad3bd3ddb4, type: 3}
+  m_Name: New Boid Settings
+  m_EditorClassIdentifier: 
+  <perceptionRadius>k__BackingField: 2.5
+  <avoidanceRadius>k__BackingField: 1
+  <collisionMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 1
+  <hitBackfaces>k__BackingField: 0
+  <hitTriggers>k__BackingField: 0
+  <hitMultiFace>k__BackingField: 0
+  <collisionRadius>k__BackingField: 1
+  <collisionRange>k__BackingField: 1
+  <seperationWeight>k__BackingField: 2.5
+  <alignmentWeight>k__BackingField: 2
+  <cohesionWeight>k__BackingField: 1
+  <collisionWeight>k__BackingField: 12.5
+  <targetWeight>k__BackingField: 1
+  <minSpeed>k__BackingField: 5
+  <maxSpeed>k__BackingField: 8
+  <maxSteer>k__BackingField: 2
