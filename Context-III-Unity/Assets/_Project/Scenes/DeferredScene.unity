@@ -406,8 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d80867e0fe8acfb44b46d2f09a38a12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  mat: {fileID: 2100000, guid: fe02f3b55ccffd9468eca6b828aa1cf5, type: 2}
+  settings: {fileID: 11400000, guid: 2b6d38286112460489f2d8885b93af83, type: 2}
   count: 10
 --- !u!4 &1017798497
 Transform:
