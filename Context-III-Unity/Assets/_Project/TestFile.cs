@@ -12,15 +12,11 @@ public class TestFile : MonoBehaviour, IEarlyUpdate, IPreLateUpdate, IPostLateUp
     [SerializeField]
     int load = 10000;
 
-    IncrementJob job;
-
     JobHandle handle;
 
     void Awake()
     {
         values = new NativeArray<float3>(load, Allocator.Persistent);
-
-        job = new IncrementJob { A = values };
 
         EarlyUpdate.RegisterEarlyUpdate(this);
         PreLateUpdate.RegisterPreLateUpdate(this);
@@ -37,8 +33,14 @@ public class TestFile : MonoBehaviour, IEarlyUpdate, IPreLateUpdate, IPostLateUp
 
     public void OnEarlyUpdate()
     {
-        handle = job.Schedule(load, 1);
-        handle = job.Schedule(load, 1, handle);
+        var jobA = new IncrementJob { A = values };
+        
+        handle = jobA.Schedule(load, 1, handle);
+
+        var jobB = new IncrementJob { A = values };
+
+        handle = jobB.Schedule(load, 1, handle);
+
         JobHandle.ScheduleBatchedJobs();
     }
 
@@ -68,12 +70,12 @@ public class TestFile : MonoBehaviour, IEarlyUpdate, IPreLateUpdate, IPostLateUp
 
     void OnDestroy()
     {
-        if (values.IsCreated)
-            values.Dispose();
-
         EarlyUpdate.DeregisterEarlyUpdate(this);
         PreLateUpdate.DeregisterPreLateUpdate(this);
         PostLateUpdate.DeregisterPostLateUpdate(this);
+
+        if (values.IsCreated)
+            values.Dispose();
     }
 }
 
@@ -84,51 +86,5 @@ public struct IncrementJob : IJobParallelFor
     public void Execute(int index)
     {
         A[index] = A[index]++;
-    }
-}
-
-public enum JobHandleStatus
-{
-    Running,
-    AwaitingCompletion,
-    Completed
-}
-
-public struct JobHandleExtended
-{
-    JobHandle handle;
-    public JobHandleStatus status;
-
-    public JobHandleExtended(JobHandle handle) : this()
-    {
-        this.handle = handle;
-        //by default status is Running
-    }
-
-    public JobHandleStatus Status
-    {
-        get
-        {
-            if (status == JobHandleStatus.Running && handle.IsCompleted)
-                status = JobHandleStatus.AwaitingCompletion;
-
-            return status;
-        }
-    }
-
-    public void Complete()
-    {
-        handle.Complete();
-        status = JobHandleStatus.Completed;
-    }
-
-    public static implicit operator JobHandle(JobHandleExtended extended)
-    {
-        return extended.handle;
-    }
-
-    public static implicit operator JobHandleExtended(JobHandle handle)
-    {
-        return new JobHandleExtended(handle);
     }
 }

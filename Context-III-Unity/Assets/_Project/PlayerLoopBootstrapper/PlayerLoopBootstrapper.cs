@@ -1,15 +1,18 @@
 ﻿using UnityEngine.LowLevel;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using System.Collections.Generic;
 using System;
+#endif
 
 namespace Tdk.PlayerLoopBootstrapper
 {
     public static class PlayerLoopBootstrapper
     {
 #if UNITY_EDITOR
-        static PlayerLoopSystem systemToRemove;
-        static Action manualDomainReload;
+        static readonly List<(PlayerLoopSystem, Action)> systemsToDomainReload = new();
 #endif
 
         public static void Initialize<T>(in PlayerLoopSystem systemToInsert, int index
@@ -28,6 +31,8 @@ namespace Tdk.PlayerLoopBootstrapper
             PlayerLoop.SetPlayerLoop(currentPlayerLoop);
 
 #if UNITY_EDITOR
+            systemsToDomainReload.Add((systemToInsert, onManualDomainReload));
+
             EditorApplication.playModeStateChanged -= OnPlayModeState;
             EditorApplication.playModeStateChanged += OnPlayModeState;
 
@@ -36,14 +41,12 @@ namespace Tdk.PlayerLoopBootstrapper
                 if (state == PlayModeStateChange.ExitingPlayMode)
                 {
                     PlayerLoopSystem currentPlayerLoop = PlayerLoop.GetCurrentPlayerLoop();
-                    PlayerLoopUtils.RemoveSystem<T>(ref currentPlayerLoop, in systemToRemove);
+                    PlayerLoopUtils.RemoveSystem<T>(ref currentPlayerLoop, systemsToDomainReload[0].Item1);
                     PlayerLoop.SetPlayerLoop(currentPlayerLoop);
-                    manualDomainReload?.Invoke();
+                    systemsToDomainReload[0].Item2?.Invoke();
+                    systemsToDomainReload.RemoveAt(0);
                 }
             }
-
-            manualDomainReload = onManualDomainReload;
-            systemToRemove = systemToInsert;
 #endif
         }
     }

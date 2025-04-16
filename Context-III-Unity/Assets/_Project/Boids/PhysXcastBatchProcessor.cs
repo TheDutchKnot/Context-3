@@ -1,116 +1,78 @@
 using Unity.Collections;
 using Unity.Mathematics;
-using Unity.Burst;
 using UnityEngine;
 using Unity.Jobs;
-using System;
 
-public class PhysXcastBatchProcessor : MonoBehaviour
+namespace Tdk.PhysXcastBatchProcessor
 {
     public interface IPhysXcast
     {
         public float3 Origin { get; }
-        public float3 Vector { get; }
+        public float3 Direction { get; }
     }
 
-    const int maxCastsPerJob = 10000;
-    const int maxHitsPerCast = 1;
-    const int loopBatchCount = 1;
-
-    static NativeArray<SpherecastCommand> sphereCommands;
-    static NativeArray<RaycastCommand> rayCommands;
-    static NativeArray<RaycastHit> hitResults;
-
-    public static void PerformSpherecasts<T>(NativeArray<T> casts, QueryParameters castParams, float radius, float maxDistance, Action<NativeArray<RaycastHit>, JobHandle> callback) where T : struct, IPhysXcast
+    public static class PhysXcastBatchProcessor
     {
-        int castCount = Mathf.Min(casts.Length, maxCastsPerJob);
-        int totalHits = castCount * maxHitsPerCast;
+        const int innerLoopBatchCount = 1;
 
-        using (sphereCommands = new NativeArray<SpherecastCommand>(castCount, Allocator.TempJob))
+        public static JobHandle PerformRaycasts<T>(
+            NativeArray<RaycastCommand> rayCommands,
+            NativeArray<RaycastHit> hitResults,
+            NativeArray<T> data,
+            int layerMask,
+            bool hitBackfaces = false,
+            bool hitTriggers = false,
+            bool hitMultiFace = false,
+            float maxDistance = 1,
+            JobHandle deps = default
+            )
+            where T : struct, IPhysXcast
         {
-            var setupSphereCommandJob = new SetupSpherecastCommandsJob<T>
+            var castParams = CreateQueryParameters(layerMask, hitBackfaces, hitTriggers, hitMultiFace);
+
+            for (int i = 0; i < data.Length; i++)
             {
-                castCommands = sphereCommands,
-                maxDistance = maxDistance,
-                castParams = castParams,
-                radius = radius,
-                casts = casts
-            };
-
-            var setupCommandJobHandle = setupSphereCommandJob.Schedule(castCount, loopBatchCount);
-
-            using (hitResults = new NativeArray<RaycastHit>(totalHits, Allocator.TempJob))
-            {
-                var spherecastJobHandle = SpherecastCommand.ScheduleBatch(sphereCommands, hitResults, loopBatchCount, setupCommandJobHandle);
-
-                callback?.Invoke(hitResults, spherecastJobHandle);
+                rayCommands[i] = new RaycastCommand(data[i].Origin, data[i].Direction, castParams, maxDistance);
             }
+
+            return RaycastCommand.ScheduleBatch(rayCommands, hitResults, innerLoopBatchCount, deps);
         }
-    }
 
-    struct SetupSpherecastCommandsJob<T> : IJobParallelFor where T : struct, IPhysXcast
-    {
-        [WriteOnly] public NativeArray<SpherecastCommand> castCommands;
-        [ReadOnly] public QueryParameters castParams;
-        [ReadOnly] public NativeArray<T> casts;
-        [ReadOnly] public float maxDistance;
-        [ReadOnly] public float radius;
-
-        public void Execute(int i)
+        public static JobHandle PerformSpherecasts<T>(
+            NativeArray<SpherecastCommand> sphereCommands,
+            NativeArray<RaycastHit> hitResults,
+            NativeArray<T> data,
+            int layerMask,
+            bool hitBackfaces = false,
+            bool hitTriggers = false,
+            bool hitMultiFace = false,
+            float maxDistance = 1,
+            float maxRadius = 1,
+            JobHandle deps = default
+            )
+            where T : struct, IPhysXcast
         {
-            castCommands[i] = new SpherecastCommand(casts[i].Origin, radius, casts[i].Vector, castParams, maxDistance);
-        }
-    }
+            var castParams = CreateQueryParameters(layerMask, hitBackfaces, hitTriggers, hitMultiFace);
 
-    public static void PerformRaycasts<T>(NativeArray<T> casts, QueryParameters castParams, float maxDistance, Action<NativeArray<RaycastHit>, JobHandle> callback) where T : struct, IPhysXcast
-    {
-        int castCount = Mathf.Min(casts.Length, maxCastsPerJob);
-        int totalHits = castCount * maxHitsPerCast;
-
-        using (rayCommands = new NativeArray<RaycastCommand>(castCount, Allocator.TempJob))
-        {
-            var setupRayCommandJob = new SetupRaycastCommandsJob<T>
+            for (int i = 0; i < data.Length; i++)
             {
-                castCommands = rayCommands,
-                maxDistance = maxDistance,
-                castParams = castParams,
-                casts = casts
-            };
-
-            var setupRayCommandJobHandle = setupRayCommandJob.Schedule(castCount, loopBatchCount);
-
-            using (hitResults = new NativeArray<RaycastHit>(totalHits, Allocator.TempJob))
-            {
-                var raycastJobHandle = RaycastCommand.ScheduleBatch(rayCommands, hitResults, loopBatchCount, setupRayCommandJobHandle);
-
-                callback?.Invoke(hitResults, raycastJobHandle);
+                sphereCommands[i] = new SpherecastCommand(data[i].Origin, maxRadius, data[i].Direction, castParams, maxDistance);
             }
+
+            return SpherecastCommand.ScheduleBatch(sphereCommands, hitResults, innerLoopBatchCount, deps);
         }
-    }
-
-    struct SetupRaycastCommandsJob<T> : IJobParallelFor where T : struct, IPhysXcast
-    {
-        [WriteOnly] public NativeArray<RaycastCommand> castCommands;
-        [ReadOnly] public QueryParameters castParams;
-        [ReadOnly] public NativeArray<T> casts;
-        [ReadOnly] public float maxDistance;
-
-        public void Execute(int i)
+        
+        public static QueryParameters CreateQueryParameters(int layermask, bool hitBackfaces, bool hitTriggers, bool hitMultiFace)
         {
-            castCommands[i] = new RaycastCommand(casts[i].Origin, casts[i].Vector, castParams, maxDistance);
+            QueryTriggerInteraction queryTriggerInteraction = hitTriggers ? QueryTriggerInteraction.Collide : QueryTriggerInteraction.Ignore;
+
+            return new QueryParameters
+            {
+                hitTriggers = queryTriggerInteraction,
+                hitMultipleFaces = hitMultiFace,
+                hitBackfaces = hitBackfaces,
+                layerMask = layermask
+            };
         }
-    }
-
-    public static QueryParameters CreateQueryParameters(int layermask, bool hitBackfaces, bool hitTriggers, bool hitMultiFace)
-    {
-        QueryTriggerInteraction queryTriggerInteraction = hitTriggers ? QueryTriggerInteraction.Collide : QueryTriggerInteraction.Ignore;
-
-        return new QueryParameters
-        {
-            hitTriggers = queryTriggerInteraction,
-            hitMultipleFaces = hitMultiFace,
-            hitBackfaces = hitBackfaces,
-            layerMask = layermask
-        };
     }
 }

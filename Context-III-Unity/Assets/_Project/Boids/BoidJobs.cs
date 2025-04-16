@@ -1,17 +1,18 @@
 using System.Runtime.CompilerServices;
+using Tdk.PhysXcastBatchProcessor;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
-public struct Boid : PhysXcastBatchProcessor.IPhysXcast
+public struct Boid : IPhysXcast
 {
-    public float3 Position;
-    public float3 Rotation;
+    public float3 position;
+    public float3 direction;
 
-    public float3 Origin => Position;
-    public float3 Vector => Rotation;
+    float3 IPhysXcast.Origin => position;
+    float3 IPhysXcast.Direction => direction;
 }
 
 public static class Float3Ext
@@ -32,7 +33,7 @@ public static class Float3Ext
         float num = SqrMagnitude(vector);
         if (num > maxLength * maxLength)
         {
-            float num2 = (float)math.sqrt(num);
+            float num2 = math.sqrt(num);
             float num3 = vector.x / num2;
             float num4 = vector.y / num2;
             float num5 = vector.z / num2;
@@ -43,33 +44,17 @@ public static class Float3Ext
     }
 }
 
-[BurstCompile(FloatPrecision = FloatPrecision.Low)]
-public struct ImplicitHitNormalJob : IJobParallelFor
-{
-    [ReadOnly]
-    public NativeArray<RaycastHit> hits;
-
-    [WriteOnly]
-    public NativeArray<float3> normals;
-
-    public void Execute(int i)
-    {
-        normals[i] = hits[i].normal;
-    }
-}
-
-[BurstCompile(FloatPrecision = FloatPrecision.Medium, FloatMode = FloatMode.Fast)]
+[BurstCompile]
 public struct SteerBoids : IJobParallelFor
 {
-    public NativeArray<float3> velocities;
-    [ReadOnly]
-    public NativeArray<Boid> boids;
-
-    [ReadOnly]
-    public NativeArray<float3> hitNormals;
+    [ReadOnly] public NativeArray<RaycastHit> hits;
+    [ReadOnly] public NativeArray<Boid> boids;
+    public NativeArray<float3> boidVelocities;
 
     [ReadOnly] public float perceptionRadius;
     [ReadOnly] public float avoidanceRadius;
+
+    [ReadOnly] public float3 targetPosition;
 
     [ReadOnly] public float seperationWeight;
     [ReadOnly] public float alignmentWeight;
@@ -84,66 +69,61 @@ public struct SteerBoids : IJobParallelFor
 
     [ReadOnly] public float deltaTime;
 
-    [ReadOnly] public float3 target;
-
     public void Execute(int indexA)
     {
-        var flockAvoidance = float3.zero;
-        var flockHeading = float3.zero;
-        var flockCentre = float3.zero;
+        float3 seperation = float3.zero;
+        float3 alignment = float3.zero;
+        float3 cohesion = float3.zero;
         int numFlockmates = 0;
 
-        float3 boidAPosition = boids[indexA].Position;
+        var boidAPosition = boids[indexA].position;
 
         for (int indexB = 0; indexB < boids.Length; indexB++)
         {
             if (indexA != indexB)
             {
                 Boid boidB = boids[indexB];
-                var offset = boidB.Position - boidAPosition;
+                var offset = boidB.position - boidAPosition;
                 var sqrDst = Float3Ext.SqrMagnitude(offset);
 
                 if (sqrDst < math.square(perceptionRadius))
                 {
                     numFlockmates += 1;
-                    flockHeading += boidB.Rotation;
-                    flockCentre += boidB.Position;
+                    alignment += boidB.direction;
+                    cohesion += boidB.position;
 
                     if (sqrDst < math.square(avoidanceRadius))
                     {
-                        flockAvoidance -= offset / sqrDst;
+                        seperation -= offset / sqrDst;
                     }
                 }
             }
         }
 
-        var acceleration = float3.zero;
-        var velocity = velocities[indexA];
+        var velocity = boidVelocities[indexA];
+        
+        var acceleration = 
+            SteerTowards(targetPosition - boidAPosition, velocity) * targetWeight;
 
-        float3 offsetToTarget = target - boidAPosition;
-        acceleration += SteerTowards(offsetToTarget, velocity) * targetWeight;
+        acceleration += SteerTowards(hits[indexA].normal, velocity) * collisionWeight;
 
         if (numFlockmates != 0)
         {
-            float3 centreFlockMates = flockCentre / numFlockmates;
+            cohesion /= numFlockmates;
+            cohesion -= boidAPosition;
 
-            float3 offsetFlockMatesCentre = centreFlockMates - boidAPosition;
-
-            acceleration += SteerTowards(offsetFlockMatesCentre, velocity) * cohesionWeight;
-            acceleration += SteerTowards(flockAvoidance, velocity) * seperationWeight;
-            acceleration += SteerTowards(flockHeading, velocity) * alignmentWeight;
-        }
-
-        if (!hitNormals[indexA].Equals(float3.zero))
-        {
-            acceleration += SteerTowards(hitNormals[indexA], velocity) * collisionWeight;
+            acceleration +=
+                SteerTowards(seperation, velocity) * seperationWeight +
+                SteerTowards(alignment, velocity) * alignmentWeight +
+                SteerTowards(cohesion, velocity) * cohesionWeight;
         }
 
         velocity += acceleration * deltaTime;
         var speed = math.length(velocity);
         var dir = velocity / speed;
+
         speed = math.clamp(speed, minSpeed, maxSpeed);
-        velocities[indexA] = dir * speed;
+        boidVelocities[indexA] = dir * speed;
     }
 
     readonly float3 SteerTowards(float3 vector, float3 velocity)
@@ -164,6 +144,6 @@ public struct SyncBoids : IJobParallelFor
 
     public void Execute(int i)
     {
-        Boids[i] = new Boid { Position = Boids[i].Position + (Vel[i] * deltaTime), Rotation = Vel[i] };
+        Boids[i] = new Boid { position = Boids[i].position + (Vel[i] * deltaTime), direction = Vel[i] };
     }
 }

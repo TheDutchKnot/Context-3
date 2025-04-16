@@ -1,124 +1,98 @@
 using System;
+using Tdk.PhysXcastBatchProcessor;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class BoidManager : MonoBehaviour
+namespace tdk.Boids
 {
-    [SerializeField] BoidSettings settings;
-    [SerializeField] Transform target;
-
-    [SerializeField] int capacity = 500;
-    [SerializeField] int amount = 4;
-
-    Action<NativeArray<RaycastHit>, JobHandle> callback;
-    QueryParameters queryParams;
-
-    NativeArray<float3> velocities, hitNormals;
-    NativeArray<Boid> boids;
-
-    void Awake()
+    public class BoidManager : MonoBehaviour
     {
-        velocities = new NativeArray<float3>(capacity, Allocator.Persistent);
-        hitNormals = new NativeArray<float3>(capacity, Allocator.Persistent);
-        boids = new NativeArray<Boid>(capacity, Allocator.Persistent);
+        [SerializeField] BoidSettings settings;
+        [SerializeField] int capacity = 500;
+        [SerializeField] Transform target;
 
-        queryParams = PhysXcastBatchProcessor.CreateQueryParameters(
-            settings.collisionMask.value,
-            settings.hitBackfaces,
-            settings.hitTriggers,
-            settings.hitMultiFace
-            );
+        NativeArray<Boid> boids;
+        NativeArray<float3> vel;
 
-        callback = OnBoidCollisionCasts;
+        NativeArray<SpherecastCommand> commands;
+        NativeArray<RaycastHit> hitResults;
 
-        for (int i = 0; i < capacity; i++)
+        void Awake()
         {
-            boids[i] = new Boid
+            boids = new NativeArray<Boid>(capacity, Allocator.Persistent);
+            vel = new NativeArray<float3>(capacity, Allocator.Persistent);
+
+            for (int i = 0; i < capacity; i++)
             {
-                Position = transform.position + UnityEngine.Random.insideUnitSphere * 4,
-                Rotation = transform.forward
-            };
+                boids[i] = new Boid
+                {
+                    position = transform.position + UnityEngine.Random.insideUnitSphere * 4,
+                    direction = transform.forward
+                };
+            }
         }
-    }
 
-    void FixedUpdate()
-    {
-        PhysXcastBatchProcessor.PerformSpherecasts(boids, queryParams, settings.collisionRadius, settings.collisionRange, callback);
-    }
-
-    void OnBoidCollisionCasts(NativeArray<RaycastHit> hits, JobHandle handle)
-    {
-        var implicitHitNormalJob = new ImplicitHitNormalJob
+        void Update()
         {
-            normals = hitNormals,
-            hits = hits
-        };
-
-        var implicitHitNormalJobHandle = implicitHitNormalJob.Schedule(amount, 1, handle);
-
-        SteerBoids(); void SteerBoids()
-        {
-            if (amount < 1 || amount > capacity) return;
-
-            var steerBoidsJob = new SteerBoids
+            using (commands = new NativeArray<SpherecastCommand>(capacity, Allocator.TempJob))
+            using (hitResults = new NativeArray<RaycastHit>(capacity, Allocator.TempJob))
             {
-                velocities = velocities,
-                hitNormals = hitNormals,
-                boids = boids,
+                var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(commands, hitResults, boids, settings.collisionMask.value);
 
-                perceptionRadius = settings.perceptionRadius,
-                avoidanceRadius = settings.avoidanceRadius,
+                var steerJob = new SteerBoids
+                {
+                    boidVelocities = vel,
+                    boids = boids,
+                    hits = hitResults,
 
-                seperationWeight = settings.seperationWeight,
-                alignmentWeight = settings.alignmentWeight,
-                collisionWeight = settings.collisionWeight,
-                cohesionWeight = settings.cohesionWeight,
-                targetWeight = settings.targetWeight,
+                    perceptionRadius = settings.perceptionRadius,
+                    avoidanceRadius = settings.avoidanceRadius,
 
-                minSpeed = settings.minSpeed,
-                maxSpeed = settings.maxSpeed,
-                maxSteer = settings.maxSteer,
+                    seperationWeight = settings.seperationWeight,
+                    alignmentWeight = settings.alignmentWeight,
+                    cohesionWeight = settings.cohesionWeight,
 
-                deltaTime = Time.deltaTime,
-                target = target.position
-            };
+                    collisionWeight = settings.collisionWeight,
+                    targetWeight = settings.targetWeight,
 
-            var steerBoidsHandle = steerBoidsJob.Schedule(amount, 1, implicitHitNormalJobHandle);
+                    minSpeed = settings.minSpeed,
+                    maxSpeed = settings.maxSpeed,
+                    maxSteer = settings.maxSteer,
 
-            var syncBoidsJob = new SyncBoids
-            {
-                Boids = boids,
-                Vel = velocities,
-                deltaTime = Time.deltaTime
-            };
+                    targetPosition = target.position,
+                    deltaTime = Time.deltaTime
+                };
 
-            var syncBoidsHandle = syncBoidsJob.Schedule(amount, 1, steerBoidsHandle);
+                var steerJobHandle = steerJob.Schedule(capacity, 1, queryJobHandle);
 
-            syncBoidsHandle.Complete();
+                var syncJob = new SyncBoids
+                {
+                    Boids = boids,
+                    Vel = vel,
+                    deltaTime = Time.deltaTime
+                };
+
+                var syncJobHandle = syncJob.Schedule(capacity, 1, steerJobHandle);
+
+                syncJobHandle.Complete();
+            }
         }
-    }
 
-    void OnDrawGizmos()
-    {
-        if (!boids.IsCreated) return;
-        if (amount < 1 || amount > capacity) return;
-        for (int i = 0; i < amount; i++)
+        void OnDrawGizmos()
         {
-            Gizmos.DrawWireCube(boids[i].Position, Vector3.one);
+            if (!boids.IsCreated) return;
+            for (int i = 0; i < capacity; i++)
+            {
+                Gizmos.DrawWireCube(boids[i].position, Vector3.one);
+            }
         }
-    }
 
-    void OnDestroy()
-    {
-        if (boids.IsCreated)
-            boids.Dispose();
-
-        if (velocities.IsCreated)
-            velocities.Dispose();
-        
-        if (hitNormals.IsCreated)
-            hitNormals.Dispose();
+        void OnDestroy()
+        {
+            if (boids.IsCreated) boids.Dispose();
+            if (vel.IsCreated) vel.Dispose();
+        }
     }
 }
