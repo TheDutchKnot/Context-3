@@ -5,7 +5,7 @@ public interface IRenderMeshIndirect
     void RenderMeshIndirect();
 }
 
-public static class IndirectMeshRenderer
+public static class IndirectMeshManager
 {
     static readonly HashSet<IRenderMeshIndirect> instances = new();
 

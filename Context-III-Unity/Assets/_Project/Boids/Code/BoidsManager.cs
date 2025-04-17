@@ -37,7 +37,7 @@ public class BoidsManager : MonoBehaviour
 
     void Update()
     {
-        IndirectMeshRenderer.RenderInstancedIndirect();
+        IndirectMeshManager.RenderInstancedIndirect();
     }
 
     void OnDestroy()

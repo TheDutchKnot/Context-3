@@ -1,17 +1,12 @@
 ﻿using Unity.Collections;
 using UnityEngine;
-using System;
 
-public class IndirectMesh : IRenderMeshIndirect, IDisposable
+public class IndirectMesh : IndirectMeshBase
 {
     readonly IndirectMeshSettings settings;
 
-    GraphicsBuffer drawArgsBuf, dataBuf;
-
-    public IndirectMesh(IndirectMeshSettings settings)
+    public IndirectMesh(IndirectMeshSettings settings) : base()
     {
-        IndirectMeshRenderer.RegisterInstance(this);
-
         this.settings = settings;
     }
 
@@ -33,36 +28,8 @@ public class IndirectMesh : IRenderMeshIndirect, IDisposable
         settings.Material.SetBuffer(settings.BufferId, dataBuf);
     }
 
-    void IRenderMeshIndirect.RenderMeshIndirect()
+    public override void RenderMeshIndirect()
     {
         Graphics.RenderMeshIndirect(settings.RenderParams, settings.Mesh, drawArgsBuf);
-    }
-
-    bool disposed;
-
-    ~IndirectMesh()
-    {
-        Dispose(false);
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposed) return;
-
-        if (disposing)
-        {
-            drawArgsBuf?.Dispose();
-            dataBuf?.Dispose();
-
-            IndirectMeshRenderer.DeregisterInstance(this);
-        }
-
-        disposed = true;
     }
 }
