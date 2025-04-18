@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BoidsManager : MonoBehaviour
 {
-    [SerializeField] IndirectMeshSettings settings;
+    [SerializeField] DynamicIndirectMeshSettings settings;
     [SerializeField] int count;
 
-    IndirectMesh indirectMesh;
+    DynamicIndirectMesh indirectMesh;
 
     NativeArray<float3> positions;
 
