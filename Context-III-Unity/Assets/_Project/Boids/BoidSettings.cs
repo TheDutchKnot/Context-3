@@ -5,10 +5,6 @@ public class BoidSettings : ScriptableObject
 {
     #region Inspector Fields
     [field: SerializeField] public int MaxCapacity { get; private set; } = 1000;
-    [field: SerializeField] public Material Material { get; private set; }
-    [field: SerializeField] public Mesh Mesh { get; private set; }
-    public int ShaderBufferId { get; private set; }
-    public RenderParams Params { get; private set; }
 
     [field: Header("Detection")]
     [field: SerializeField] public float PerceptionRadius { get; private set; } = 2.5f;
@@ -36,14 +32,4 @@ public class BoidSettings : ScriptableObject
     [field: Header("Steering")]
     [field: SerializeField] public float MaxSteer { get; private set; } = 2;
     #endregion
-
-    void OnEnable()
-    {
-        ShaderBufferId = Shader.PropertyToID("_BoidsBuffer");
-
-        Params = new(Material)
-        {
-            worldBounds = new Bounds(Vector3.zero, Vector3.one * 100)
-        };
-    }
 }

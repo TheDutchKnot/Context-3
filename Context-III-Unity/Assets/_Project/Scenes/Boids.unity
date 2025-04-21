@@ -119,72 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &53373754
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 53373755}
-  - component: {fileID: 53373756}
-  - component: {fileID: 53373757}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &53373755
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 53373754}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &53373756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 53373754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c98f927c9e15816459c68d7eec1eee8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!65 &53373757
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 53373754}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 5, y: 5, z: 5}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &359063821
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +343,6 @@ GameObject:
   - component: {fileID: 1990661130}
   - component: {fileID: 1990661133}
   - component: {fileID: 1990661132}
-  - component: {fileID: 1990661134}
   m_Layer: 0
   m_Name: Yuh
   m_TagString: Untagged
@@ -465,28 +398,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361c66da6d8d0f948927921c2acf6966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rendererSettings: {fileID: 11400000, guid: 81d0d58ff0083e244b01f37e3fd7adc1, type: 2}
   settings: {fileID: 11400000, guid: 9b579b54b2c095648aa9ad91e7bd3435, type: 2}
   capacity: 500
   target: {fileID: 1990661130}
---- !u!114 &1990661134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1990661128}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3edcb1312bdeea942a9c57f87b72c6c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1990661130}
-  settings: {fileID: 11400000, guid: 9b579b54b2c095648aa9ad91e7bd3435, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1221029776}
   - {fileID: 359063823}
-  - {fileID: 53373755}
   - {fileID: 1990661130}

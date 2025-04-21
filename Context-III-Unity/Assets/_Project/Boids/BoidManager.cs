@@ -1,6 +1,5 @@
 using Tdk.PhysXcastBatchProcessor;
 using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,11 +8,10 @@ namespace tdk.Boids
 {
     public class BoidManager : MonoBehaviour
     {
+        [SerializeField] DynamicIndirectMeshSettings rendererSettings;
         [SerializeField] BoidSettings settings;
-        [SerializeField] int capacity = 500;
+        [SerializeField] int count = 0;
         [SerializeField] Transform target;
-
-        GraphicsBuffer argsBuf, dataBuf;
 
         NativeArray<Boid> boids;
         NativeArray<float3> vel;
@@ -21,12 +19,14 @@ namespace tdk.Boids
         NativeArray<SpherecastCommand> commands;
         NativeArray<RaycastHit> hitResults;
 
+        DynamicIndirectMesh renderer;
+
         void Awake()
         {
-            boids = new NativeArray<Boid>(capacity, Allocator.Persistent);
-            vel = new NativeArray<float3>(capacity, Allocator.Persistent);
+            boids = new NativeArray<Boid>(settings.MaxCapacity, Allocator.Persistent);
+            vel = new NativeArray<float3>(settings.MaxCapacity, Allocator.Persistent);
 
-            for (int i = 0; i < capacity; i++)
+            for (int i = 0; i < settings.MaxCapacity; i++)
             {
                 boids[i] = new Boid
                 {
@@ -34,12 +34,28 @@ namespace tdk.Boids
                     direction = transform.forward
                 };
             }
+
+            renderer = rendererSettings.Create();
+
+            InvokeRepeating(nameof(Add), 4, 4);
+        }
+
+        public void Add()
+        {
+            boids[count] = new()
+            {
+                position = transform.position,
+                direction = transform.forward
+            };
+            count++;
         }
 
         void Update()
         {
-            using (commands = new NativeArray<SpherecastCommand>(capacity, Allocator.TempJob))
-            using (hitResults = new NativeArray<RaycastHit>(capacity, Allocator.TempJob))
+            if (count == 0) return;
+
+            using (commands = new NativeArray<SpherecastCommand>(count, Allocator.TempJob))
+            using (hitResults = new NativeArray<RaycastHit>(count, Allocator.TempJob))
             {
                 var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(commands, hitResults, boids, settings.CollisionMask.value);
 
@@ -67,7 +83,7 @@ namespace tdk.Boids
                     deltaTime = Time.deltaTime
                 };
 
-                var steerJobHandle = steerJob.Schedule(capacity, 1, queryJobHandle);
+                var steerJobHandle = steerJob.Schedule(count, 1, queryJobHandle);
 
                 var syncJob = new SyncBoids
                 {
@@ -76,70 +92,21 @@ namespace tdk.Boids
                     deltaTime = Time.deltaTime
                 };
 
-                var syncJobHandle = syncJob.Schedule(capacity, 1, steerJobHandle);
+                var syncJobHandle = syncJob.Schedule(count, 1, steerJobHandle);
 
                 syncJobHandle.Complete();
 
-                SetData(boids.GetSubArray(0, capacity));
+                renderer.SetData(boids.GetSubArray(0, count));
 
-                Graphics.RenderMeshIndirect(settings.Params, settings.Mesh, argsBuf);
+                renderer.RenderMeshIndirect();
             }
-        }
-
-        public void SetData<T>(NativeArray<T> data) where T : struct
-        {
-            if (dataBuf == null || dataBuf.count < data.Length)
-            {
-                dataBuf?.Dispose();
-                dataBuf = CreateDataBuffer<T>(data.Length);
-
-                argsBuf?.Dispose();
-                argsBuf = CreateArgsBuffer(settings.Mesh, data.Length);
-            }
-
-            NativeArray<T> bufferData = dataBuf.LockBufferForWrite<T>(0, data.Length);
-            NativeArray<T>.Copy(data, bufferData);
-            dataBuf.UnlockBufferAfterWrite<T>(data.Length);
-
-            settings.Material.SetBuffer(settings.ShaderBufferId, dataBuf);
-        }
-
-        GraphicsBuffer CreateArgsBuffer(Mesh mesh, int instanceCount)
-        {
-            var commandData = new GraphicsBuffer.IndirectDrawIndexedArgs[1];
-            commandData[0] = new GraphicsBuffer.IndirectDrawIndexedArgs
-            {
-                indexCountPerInstance = mesh.GetIndexCount(0),
-                instanceCount = (uint)instanceCount,
-                startIndex = mesh.GetIndexStart(0),
-                baseVertexIndex = mesh.GetBaseVertex(0),
-            };
-
-            var drawArgsBuffer = new GraphicsBuffer(
-                GraphicsBuffer.Target.IndirectArguments,
-                1,
-                GraphicsBuffer.IndirectDrawIndexedArgs.size
-            );
-            drawArgsBuffer.SetData(commandData);
-
-            return drawArgsBuffer;
-        }
-
-        GraphicsBuffer CreateDataBuffer<T>(int dataCount)
-        {
-            return new GraphicsBuffer(
-                GraphicsBuffer.Target.Structured,
-                GraphicsBuffer.UsageFlags.LockBufferForWrite,
-                dataCount, UnsafeUtility.SizeOf(typeof(T)));
         }
 
         void OnDestroy()
         {
             if (boids.IsCreated) boids.Dispose();
             if (vel.IsCreated) vel.Dispose();
-
-            argsBuf?.Dispose();
-            dataBuf?.Dispose();
+            renderer.Dispose();
         }
     }
 }

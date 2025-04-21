@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 642ff67c1d9e52648a7313ad3bd3ddb4, type: 3}
-  m_Name: New Boid Settings
+  m_Name: Boid Settings
   m_EditorClassIdentifier: 
+  <Instancing>k__BackingField: {fileID: 11400000, guid: 81d0d58ff0083e244b01f37e3fd7adc1, type: 2}
   <MaxCapacity>k__BackingField: 1000
-  <Material>k__BackingField: {fileID: 2100000, guid: 107bf68638871d74bb46dfe95229342b, type: 2}
-  <Mesh>k__BackingField: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   <PerceptionRadius>k__BackingField: 2.5
   <AvoidanceRadius>k__BackingField: 1
   <CollisionMask>k__BackingField:

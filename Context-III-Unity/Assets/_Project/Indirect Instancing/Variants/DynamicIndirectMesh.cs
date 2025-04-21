@@ -12,7 +12,7 @@ public class DynamicIndirectMesh : IndirectMesh
 
     public void SetData<T>(NativeArray<T> data) where T : struct
     {
-        if (dataBuf == null || dataBuf.count < data.Length)
+        if (dataBuf == null || dataBuf.count != data.Length)
         {
             dataBuf?.Dispose();
             dataBuf = CreateDataBuffer<T>(data.Length);
