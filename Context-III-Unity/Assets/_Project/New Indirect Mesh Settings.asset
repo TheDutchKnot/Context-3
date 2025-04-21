@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d89b8d99a5a02b54c9499bab8465d765, type: 3}
+  m_Name: New Indirect Mesh Settings
+  m_EditorClassIdentifier: 
+  <Mesh>k__BackingField: {fileID: 4258189429138380292, guid: 51119666dabf5ec499042654c643c697, type: 3}
+  shaderBufferName: _Positions
+  <Material>k__BackingField: {fileID: 2100000, guid: fe02f3b55ccffd9468eca6b828aa1cf5, type: 2}
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 100, y: 100, z: 100}
