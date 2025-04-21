@@ -9,7 +9,8 @@ public enum GameState
 {
     MainMenu,     
     Playing,      
-    ZeroGravity,  
+    ZeroGravity,
+    BossFight,
     Paused        
 }
 
@@ -63,7 +64,11 @@ public class GameManager : MonoBehaviour
             case GameState.Playing:
                 Debug.Log("GameState -> Playing");
                 break;
-
+            
+            case GameState.BossFight:
+                Debug.Log("GameState -> BossFight");
+                break;
+            
             case GameState.ZeroGravity:
                 Debug.Log("GameState -> ZeroGravity");
                 break;

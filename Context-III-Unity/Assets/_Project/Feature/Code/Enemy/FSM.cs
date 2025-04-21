@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum StateType
 {
-    Idle, Patrol, Chase, React, Attack, Hit, Death
+    Idle, Chase, AttackCon, Attack1, Attack2, Attack3, Hit, Death
 }
 
 [Serializable]
@@ -15,15 +16,14 @@ public class Parameter
     public int health;
     public float moveSpeed;
     public float chaseSpeed;
-    public float idleTime;
-    public Transform[] patrolPoints;
-    public Transform[] chasePoints;
-    public Transform target;
-    public LayerMask targetLayer;
-    public Transform attackPoint;
-    public float attackArea;
     public Animator animator;
     public bool getHit;
+    
+    //  
+
+
+
+
 }
 public class FSM : MonoBehaviour
 {
@@ -32,13 +32,36 @@ public class FSM : MonoBehaviour
     private Dictionary<StateType, IState> states = new Dictionary<StateType, IState>();
 
     public Parameter parameter;
+    
+    public NavMeshAgent agent;
+    public Transform player;
+    public LayerMask whatIsGround, whatIsPlayer;
+    
+    //attacking
+    public float timeBetweenAttacks;
+    public bool alreadyAttacked;
+    
+    //states
+    public float sightRange, attackRange;
+    public bool playerInSightRange, playerInAttackRange;
+
+    private void Awake()
+    {
+        player = GameObject.Find("XR Origin (XR Rig)").transform;
+        agent = GetComponent<NavMeshAgent>();
+        parameter.animator.applyRootMotion = false;
+        agent.stoppingDistance = attackRange;
+        
+    }
+
     void Start()
     {
         states.Add(StateType.Idle, new IdleState(this));
-        states.Add(StateType.Patrol, new PatrolState(this));
         states.Add(StateType.Chase, new ChaseState(this));
-        states.Add(StateType.React, new ReactState(this));
-        states.Add(StateType.Attack, new AttackState(this));
+        states.Add(StateType.AttackCon, new AttackConState(this));
+        states.Add(StateType.Attack1, new Attack1State(this));
+        states.Add(StateType.Attack2, new Attack2State(this));
+        states.Add(StateType.Attack3, new Attack3State(this));
         states.Add(StateType.Hit, new HitState(this));
         states.Add(StateType.Death, new DeathState(this));
 
@@ -65,41 +88,18 @@ public class FSM : MonoBehaviour
         currentState.OnEnter();
     }
 
-    public void FlipTo(Transform target)
+    public void ResetAttack()
     {
-        if (target != null)
-        {
-            if (transform.position.x > target.position.x)
-            {
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
-            else if (transform.position.x < target.position.x)
-            {
-                transform.localScale = new Vector3(1, 1, 1);
-            }
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {        
-        if (other.CompareTag("Player"))
-        {
-            parameter.target = other.transform;
-        }
-    }
-
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            parameter.target = null;
-        }
+        alreadyAttacked = false;
     }
     
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(parameter.attackPoint.position, parameter.attackArea);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, sightRange);
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

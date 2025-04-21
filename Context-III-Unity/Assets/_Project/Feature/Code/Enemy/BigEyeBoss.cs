@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class IdleState : IState
@@ -15,26 +16,26 @@ public class IdleState : IState
     }
     public void OnEnter()
     {
-        parameter.animator.Play("Idle");
+        parameter.animator.Play("idle");
     }
 
     public void OnUpdate()
     {
+        manager.playerInSightRange =
+            Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
+        manager.playerInAttackRange =
+            Physics.CheckSphere(manager.transform.position, manager.attackRange, manager.whatIsPlayer);
         timer += Time.deltaTime;
 
         if (parameter.getHit)
         {
             manager.TransitionState(StateType.Hit);
         }
-        if (parameter.target != null &&
-            parameter.target.position.x >= parameter.chasePoints[0].position.x &&
-            parameter.target.position.x <= parameter.chasePoints[1].position.x)
+
+        if (manager.playerInSightRange)
         {
-            manager.TransitionState(StateType.React);
-        }
-        if (timer >= parameter.idleTime)
-        {
-            manager.TransitionState(StateType.Patrol);
+            //boss fight start!!
+            manager.TransitionState(StateType.Chase);
         }
     }
 
@@ -44,55 +45,55 @@ public class IdleState : IState
     }
 }
 
-public class PatrolState : IState
-{
-    private FSM manager;
-    private Parameter parameter;
-
-    private int patrolPosition;
-    public PatrolState(FSM manager)
-    {
-        this.manager = manager;
-        this.parameter = manager.parameter;
-    }
-    public void OnEnter()
-    {
-        parameter.animator.Play("Walk");
-    }
-
-    public void OnUpdate()
-    {
-        manager.FlipTo(parameter.patrolPoints[patrolPosition]);
-
-        manager.transform.position = Vector2.MoveTowards(manager.transform.position,
-            parameter.patrolPoints[patrolPosition].position, parameter.moveSpeed * Time.deltaTime);
-
-        if (parameter.getHit)
-        {
-            manager.TransitionState(StateType.Hit);
-        }
-        if (parameter.target != null &&
-            parameter.target.position.x >= parameter.chasePoints[0].position.x &&
-            parameter.target.position.x <= parameter.chasePoints[1].position.x)
-        {
-            manager.TransitionState(StateType.React);
-        }
-        if (Vector2.Distance(manager.transform.position, parameter.patrolPoints[patrolPosition].position) < .1f)
-        {
-            manager.TransitionState(StateType.Idle);
-        }
-    }
-
-    public void OnExit()
-    {
-        patrolPosition++;
-
-        if (patrolPosition >= parameter.patrolPoints.Length)
-        {
-            patrolPosition = 0;
-        }
-    }
-}
+// public class PatrolState : IState
+// {
+//     private FSM manager;
+//     private Parameter parameter;
+//
+//     private int patrolPosition;
+//     public PatrolState(FSM manager)
+//     {
+//         this.manager = manager;
+//         this.parameter = manager.parameter;
+//     }
+//     public void OnEnter()
+//     {
+//         parameter.animator.Play("Walk");
+//     }
+//
+//     public void OnUpdate()
+//     {
+//         manager.FlipTo(parameter.patrolPoints[patrolPosition]);
+//
+//         manager.transform.position = Vector2.MoveTowards(manager.transform.position,
+//             parameter.patrolPoints[patrolPosition].position, parameter.moveSpeed * Time.deltaTime);
+//
+//         if (parameter.getHit)
+//         {
+//             manager.TransitionState(StateType.Hit);
+//         }
+//         if (parameter.target != null &&
+//             parameter.target.position.x >= parameter.chasePoints[0].position.x &&
+//             parameter.target.position.x <= parameter.chasePoints[1].position.x)
+//         {
+//             manager.TransitionState(StateType.React);
+//         }
+//         if (Vector2.Distance(manager.transform.position, parameter.patrolPoints[patrolPosition].position) < .1f)
+//         {
+//             manager.TransitionState(StateType.Idle);
+//         }
+//     }
+//
+//     public void OnExit()
+//     {
+//         patrolPosition++;
+//
+//         if (patrolPosition >= parameter.patrolPoints.Length)
+//         {
+//             patrolPosition = 0;
+//         }
+//     }
+// }
 
 public class ChaseState : IState
 {
@@ -106,29 +107,46 @@ public class ChaseState : IState
     }
     public void OnEnter()
     {
-        parameter.animator.Play("Walk");
+        Debug.Log("Boos state: chase");
+        parameter.animator.Play("walk");
     }
 
     public void OnUpdate()
     {
-        manager.FlipTo(parameter.target);
-        if (parameter.target)
-            manager.transform.position = Vector2.MoveTowards(manager.transform.position,
-            parameter.target.position, parameter.chaseSpeed * Time.deltaTime);
-
+        // manager.FlipTo(parameter.target);
+        // if (parameter.target)
+        //     manager.transform.position = Vector2.MoveTowards(manager.transform.position,
+        //     parameter.target.position, parameter.chaseSpeed * Time.deltaTime);
+        //
+        manager.playerInSightRange =
+            Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
+        manager.playerInAttackRange =
+            Physics.CheckSphere(manager.transform.position, manager.attackRange, manager.whatIsPlayer);
         if (parameter.getHit)
         {
             manager.TransitionState(StateType.Hit);
         }
-        if (parameter.target == null ||
-            manager.transform.position.x < parameter.chasePoints[0].position.x ||
-            manager.transform.position.x > parameter.chasePoints[1].position.x)
+        // if (parameter.target == null ||
+        //     manager.transform.position.x < parameter.chasePoints[0].position.x ||
+        //     manager.transform.position.x > parameter.chasePoints[1].position.x)
+        // {
+        //     manager.TransitionState(StateType.Idle);
+        // }
+        // if (Physics2D.OverlapCircle(parameter.attackPoint.position, parameter.attackArea, parameter.targetLayer))
+        // {
+        //     // manager.TransitionState(StateType.Attack);
+        // }
+        manager.transform.LookAt(manager.player);
+        manager.agent.SetDestination(manager.player.position);
+        if (!manager.playerInSightRange)
         {
             manager.TransitionState(StateType.Idle);
         }
-        if (Physics2D.OverlapCircle(parameter.attackPoint.position, parameter.attackArea, parameter.targetLayer))
+
+        if (manager.playerInAttackRange)
         {
-            manager.TransitionState(StateType.Attack);
+            manager.TransitionState(StateType.AttackCon);
+            
         }
     }
 
@@ -138,33 +156,72 @@ public class ChaseState : IState
     }
 }
 
-public class ReactState : IState
+// public class ReactState : IState
+// {
+//     private FSM manager;
+//     private Parameter parameter;
+//
+//     private AnimatorStateInfo info;
+//     public ReactState(FSM manager)
+//     {
+//         this.manager = manager;
+//         this.parameter = manager.parameter;
+//     }
+//     public void OnEnter()
+//     {
+//         parameter.animator.Play("React");
+//     }
+//
+//     public void OnUpdate()
+//     {
+//         info = parameter.animator.GetCurrentAnimatorStateInfo(0);
+//
+//         if (parameter.getHit)
+//         {
+//             manager.TransitionState(StateType.Hit);
+//         }
+//         if (info.normalizedTime >= .95f)
+//         {
+//             manager.TransitionState(StateType.Chase);
+//         }
+//     }
+//
+//     public void OnExit()
+//     {
+//
+//     }
+// }
+
+
+
+public class AttackConState : IState
 {
     private FSM manager;
     private Parameter parameter;
 
     private AnimatorStateInfo info;
-    public ReactState(FSM manager)
+    public AttackConState(FSM manager)
     {
         this.manager = manager;
         this.parameter = manager.parameter;
     }
     public void OnEnter()
     {
-        parameter.animator.Play("React");
+        parameter.animator.Play("attack_01");
+        Debug.Log("Boss State: Attack Controller");
     }
 
     public void OnUpdate()
     {
-        info = parameter.animator.GetCurrentAnimatorStateInfo(0);
+        manager.agent.SetDestination(manager.transform.position);
+        manager.transform.LookAt(manager.player);
+        if (!manager.alreadyAttacked)
+        {
+            // attack code...
+            Debug.Log("attack");
 
-        if (parameter.getHit)
-        {
-            manager.TransitionState(StateType.Hit);
-        }
-        if (info.normalizedTime >= .95f)
-        {
-            manager.TransitionState(StateType.Chase);
+            manager.alreadyAttacked = true;
+            manager.Invoke(nameof(manager.ResetAttack), manager.timeBetweenAttacks);
         }
     }
 
@@ -174,13 +231,14 @@ public class ReactState : IState
     }
 }
 
-public class AttackState : IState
+
+public class Attack1State : IState
 {
     private FSM manager;
     private Parameter parameter;
 
     private AnimatorStateInfo info;
-    public AttackState(FSM manager)
+    public Attack1State(FSM manager)
     {
         this.manager = manager;
         this.parameter = manager.parameter;
@@ -210,6 +268,83 @@ public class AttackState : IState
     }
 }
 
+public class Attack2State : IState
+{
+    private FSM manager;
+    private Parameter parameter;
+
+    private AnimatorStateInfo info;
+    public Attack2State(FSM manager)
+    {
+        this.manager = manager;
+        this.parameter = manager.parameter;
+    }
+    public void OnEnter()
+    {
+        parameter.animator.Play("Attack");
+    }
+
+    public void OnUpdate()
+    {
+        info = parameter.animator.GetCurrentAnimatorStateInfo(0);
+
+        if (parameter.getHit)
+        {
+            manager.TransitionState(StateType.Hit);
+        }
+        if (info.normalizedTime >= .95f)
+        {
+            manager.TransitionState(StateType.Chase);
+        }
+    }
+
+    public void OnExit()
+    {
+
+    }
+}
+
+
+
+public class Attack3State : IState
+{
+    private FSM manager;
+    private Parameter parameter;
+
+    private AnimatorStateInfo info;
+    public Attack3State(FSM manager)
+    {
+        this.manager = manager;
+        this.parameter = manager.parameter;
+    }
+    public void OnEnter()
+    {
+        parameter.animator.Play("Attack");
+    }
+
+    public void OnUpdate()
+    {
+        info = parameter.animator.GetCurrentAnimatorStateInfo(0);
+
+        if (parameter.getHit)
+        {
+            manager.TransitionState(StateType.Hit);
+        }
+        if (info.normalizedTime >= .95f)
+        {
+            manager.TransitionState(StateType.Chase);
+        }
+    }
+
+    public void OnExit()
+    {
+
+    }
+}
+
+
+
+
 public class HitState : IState
 {
     private FSM manager;
@@ -235,12 +370,12 @@ public class HitState : IState
         {
             manager.TransitionState(StateType.Death);
         }
-        if (info.normalizedTime >= .95f)
-        {
-            parameter.target = GameObject.FindWithTag("Player").transform;
-
-            manager.TransitionState(StateType.Chase);
-        }
+        // if (info.normalizedTime >= .95f)
+        // {
+        //     parameter.target = GameObject.FindWithTag("Player").transform;
+        //
+        //     manager.TransitionState(StateType.Chase);
+        // }
     }
 
     public void OnExit()
