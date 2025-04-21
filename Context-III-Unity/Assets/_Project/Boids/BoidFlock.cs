@@ -1,3 +1,4 @@
+using System;
 using Tdk.PhysXcastBatchProcessor;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -7,39 +8,56 @@ using UnityEngine;
 
 namespace tdk.Boids
 {
-    public class BoidManager : MonoBehaviour
+    public class BoidFlock : IDisposable
     {
-        [SerializeField] BoidSettings settings;
-        [SerializeField] int capacity = 500;
-        [SerializeField] Transform target;
+        readonly BoidSettings settings;
+        public Transform Target { private get; set; }
 
         GraphicsBuffer argsBuf, dataBuf;
 
-        NativeArray<Boid> boids;
+        public NativeArray<Boid> boids;
         NativeArray<float3> vel;
 
         NativeArray<SpherecastCommand> commands;
         NativeArray<RaycastHit> hitResults;
 
-        void Awake()
-        {
-            boids = new NativeArray<Boid>(capacity, Allocator.Persistent);
-            vel = new NativeArray<float3>(capacity, Allocator.Persistent);
+        public int count = 0;
 
-            for (int i = 0; i < capacity; i++)
-            {
-                boids[i] = new Boid
+        public BoidFlock(BoidSettings settings)
+        {
+            this.settings = settings;
+
+            InitArrays(); void InitArrays(){
+                boids = new NativeArray<Boid>(settings.MaxCapacity, Allocator.Persistent);
+                vel = new NativeArray<float3>(settings.MaxCapacity, Allocator.Persistent);
+
+                for (int i = 0; i < settings.MaxCapacity; i++)
                 {
-                    position = transform.position + UnityEngine.Random.insideUnitSphere * 4,
-                    direction = transform.forward
-                };
+                    boids[i] = new Boid
+                    {
+                        position = Vector3.zero,
+                        direction = Vector3.forward
+                    };
+                }
             }
         }
 
-        void Update()
+        public void Add(Transform origin)
         {
-            using (commands = new NativeArray<SpherecastCommand>(capacity, Allocator.TempJob))
-            using (hitResults = new NativeArray<RaycastHit>(capacity, Allocator.TempJob))
+            boids[count] = new Boid
+            {
+                direction = origin.forward,
+                position = origin.position
+            };
+            count++;
+        }
+
+        public void UpdateBoids()
+        {
+            if (count == 0) return;
+
+            using (commands = new NativeArray<SpherecastCommand>(count, Allocator.TempJob))
+            using (hitResults = new NativeArray<RaycastHit>(count, Allocator.TempJob))
             {
                 var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(commands, hitResults, boids, settings.CollisionMask.value);
 
@@ -63,11 +81,11 @@ namespace tdk.Boids
                     maxSpeed = settings.MaxSpeed,
                     maxSteer = settings.MaxSteer,
 
-                    targetPosition = target.position,
+                    targetPosition = Target.position,
                     deltaTime = Time.deltaTime
                 };
 
-                var steerJobHandle = steerJob.Schedule(capacity, 1, queryJobHandle);
+                var steerJobHandle = steerJob.Schedule(count, 1, queryJobHandle);
 
                 var syncJob = new SyncBoids
                 {
@@ -76,11 +94,11 @@ namespace tdk.Boids
                     deltaTime = Time.deltaTime
                 };
 
-                var syncJobHandle = syncJob.Schedule(capacity, 1, steerJobHandle);
+                var syncJobHandle = syncJob.Schedule(count, 1, steerJobHandle);
 
                 syncJobHandle.Complete();
 
-                SetData(boids.GetSubArray(0, capacity));
+                SetData(boids.GetSubArray(0, count));
 
                 Graphics.RenderMeshIndirect(settings.Params, settings.Mesh, argsBuf);
             }
@@ -133,13 +151,33 @@ namespace tdk.Boids
                 dataCount, UnsafeUtility.SizeOf(typeof(T)));
         }
 
-        void OnDestroy()
-        {
-            if (boids.IsCreated) boids.Dispose();
-            if (vel.IsCreated) vel.Dispose();
+        bool disposed;
 
-            argsBuf?.Dispose();
-            dataBuf?.Dispose();
+        ~BoidFlock()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed) return;
+
+            if (disposing)
+            {
+                if (boids.IsCreated) boids.Dispose();
+                if (vel.IsCreated) vel.Dispose();
+
+                argsBuf?.Dispose();
+                dataBuf?.Dispose();
+            }
+
+            disposed = true;
         }
     }
 }

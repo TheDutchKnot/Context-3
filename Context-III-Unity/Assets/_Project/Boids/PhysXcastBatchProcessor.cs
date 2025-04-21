@@ -54,7 +54,7 @@ namespace Tdk.PhysXcastBatchProcessor
         {
             var castParams = CreateQueryParameters(layerMask, hitBackfaces, hitTriggers, hitMultiFace);
 
-            for (int i = 0; i < data.Length; i++)
+            for (int i = 0; i < sphereCommands.Length; i++)
             {
                 sphereCommands[i] = new SpherecastCommand(data[i].Origin, maxRadius, data[i].Direction, castParams, maxDistance);
             }

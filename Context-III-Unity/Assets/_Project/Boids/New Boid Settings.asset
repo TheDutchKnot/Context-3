@@ -12,21 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642ff67c1d9e52648a7313ad3bd3ddb4, type: 3}
   m_Name: New Boid Settings
   m_EditorClassIdentifier: 
-  <perceptionRadius>k__BackingField: 2.5
-  <avoidanceRadius>k__BackingField: 1
-  <collisionMask>k__BackingField:
+  <MaxCapacity>k__BackingField: 1000
+  <Material>k__BackingField: {fileID: 2100000, guid: 107bf68638871d74bb46dfe95229342b, type: 2}
+  <Mesh>k__BackingField: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  <PerceptionRadius>k__BackingField: 2.5
+  <AvoidanceRadius>k__BackingField: 1
+  <CollisionMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 1
-  <hitBackfaces>k__BackingField: 0
-  <hitTriggers>k__BackingField: 0
-  <hitMultiFace>k__BackingField: 0
-  <collisionRadius>k__BackingField: 1
-  <collisionRange>k__BackingField: 1
-  <seperationWeight>k__BackingField: 2.5
-  <alignmentWeight>k__BackingField: 2
-  <cohesionWeight>k__BackingField: 1
-  <collisionWeight>k__BackingField: 12.5
-  <targetWeight>k__BackingField: 1.7
-  <minSpeed>k__BackingField: 5
-  <maxSpeed>k__BackingField: 8
-  <maxSteer>k__BackingField: 2
+  <HitBackfaces>k__BackingField: 0
+  <HitTriggers>k__BackingField: 0
+  <HitMultiFace>k__BackingField: 0
+  <CollisionRadius>k__BackingField: 1
+  <CollisionRange>k__BackingField: 1
+  <SeperationWeight>k__BackingField: 2.5
+  <AlignmentWeight>k__BackingField: 2
+  <CohesionWeight>k__BackingField: 1
+  <CollisionWeight>k__BackingField: 12.5
+  <TargetWeight>k__BackingField: 1
+  <MinSpeed>k__BackingField: 5
+  <MaxSpeed>k__BackingField: 8
+  <MaxSteer>k__BackingField: 2
