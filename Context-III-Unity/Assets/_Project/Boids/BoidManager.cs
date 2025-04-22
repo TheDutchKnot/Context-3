@@ -8,7 +8,7 @@ namespace tdk.Boids
 {
     public class BoidManager : MonoBehaviour
     {
-        [SerializeField] DynamicIndirectMeshSettings rendererSettings;
+        [SerializeField] AnimatedIndirectMeshSettings rendererSettings;
         [SerializeField] BoidSettings settings;
         [SerializeField] int count = 0;
         [SerializeField] Transform target;
@@ -19,7 +19,7 @@ namespace tdk.Boids
         NativeArray<SpherecastCommand> commands;
         NativeArray<RaycastHit> hitResults;
 
-        DynamicIndirectMesh renderer;
+        AnimatedIndirectMesh renderer;
 
         void Awake()
         {

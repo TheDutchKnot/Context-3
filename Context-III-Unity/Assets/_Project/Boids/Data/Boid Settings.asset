@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642ff67c1d9e52648a7313ad3bd3ddb4, type: 3}
   m_Name: Boid Settings
   m_EditorClassIdentifier: 
-  <Instancing>k__BackingField: {fileID: 11400000, guid: 81d0d58ff0083e244b01f37e3fd7adc1, type: 2}
   <MaxCapacity>k__BackingField: 1000
   <PerceptionRadius>k__BackingField: 2.5
-  <AvoidanceRadius>k__BackingField: 1
+  <AvoidanceRadius>k__BackingField: 2
   <CollisionMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 1
@@ -28,7 +27,7 @@ MonoBehaviour:
   <AlignmentWeight>k__BackingField: 2
   <CohesionWeight>k__BackingField: 1
   <CollisionWeight>k__BackingField: 12.5
-  <TargetWeight>k__BackingField: 1
-  <MinSpeed>k__BackingField: 5
+  <TargetWeight>k__BackingField: 1.5
+  <MinSpeed>k__BackingField: 9
   <MaxSpeed>k__BackingField: 8
-  <MaxSteer>k__BackingField: 2
+  <MaxSteer>k__BackingField: 4

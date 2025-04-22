@@ -43,7 +43,7 @@ public class Boids : IDisposable
     NativeArray<Boid> boids;
     NativeArray<float3> vel;
     Transform target;
-    int amount;
+    int count;
 
     public Boids(BoidSettings settings, DynamicIndirectMesh renderer)
     {
@@ -60,12 +60,12 @@ public class Boids : IDisposable
 
     public void AddBoid(Vector3 position, Vector3 forward)
     {
-        boids[amount] = new()
+        boids[count] = new()
         {
             position = position,
             direction = forward
         };
-        amount++;
+        count++;
     }
 
     NativeArray<SpherecastCommand> commands;
@@ -73,15 +73,15 @@ public class Boids : IDisposable
 
     public void UpdateBoids()
     {
-        if (amount == 0) return;
+        if (count == 0) return;
 
-        using (commands = new NativeArray<SpherecastCommand>(amount, Allocator.TempJob))
-        using (hitResults = new NativeArray<RaycastHit>(amount, Allocator.TempJob))
+        using (commands = new NativeArray<SpherecastCommand>(count, Allocator.TempJob))
+        using (hitResults = new NativeArray<RaycastHit>(count, Allocator.TempJob))
         {
             var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(
                 commands, 
                 hitResults, 
-                boids.GetSubArray(0, amount), 
+                boids.GetSubArray(0, count), 
                 settings.CollisionMask.value
                 );
 
@@ -109,7 +109,7 @@ public class Boids : IDisposable
                 deltaTime = Time.deltaTime
             };
 
-            var steerJobHandle = steerJob.Schedule(amount, 1, queryJobHandle);
+            var steerJobHandle = steerJob.Schedule(count, 1, queryJobHandle);
 
             var syncJob = new SyncBoids
             {
@@ -118,14 +118,20 @@ public class Boids : IDisposable
                 deltaTime = Time.deltaTime
             };
 
-            var syncJobHandle = syncJob.Schedule(amount, 1, steerJobHandle);
+            var syncJobHandle = syncJob.Schedule(count, 1, steerJobHandle);
 
             syncJobHandle.Complete();
 
-            renderer.SetData(boids.GetSubArray(0, amount));
+            renderer.SetData(boids.GetSubArray(0, count));
 
             renderer.RenderMeshIndirect();
         }
+    }
+
+    void Remove(int i)
+    {
+        boids[i] = boids[count];
+        count--;
     }
 
     bool disposed;

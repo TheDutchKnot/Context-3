@@ -1,4 +1,5 @@
 using Unity.Collections;
+using UnityEngine;
 
 public class AnimatedIndirectMesh : IndirectMesh
 {
@@ -11,11 +12,14 @@ public class AnimatedIndirectMesh : IndirectMesh
 
     public void SetData<T>(NativeArray<T> data) where T : struct
     {
-        if (dataBuf == null || dataBuf.count < data.Length)
+        if (dataBuf == null || dataBuf.count != data.Length)
         {
             dataBuf?.Dispose();
             dataBuf = CreateDataBuffer<T>(data.Length);
         }
+
+        argsBuf?.Dispose();
+        argsBuf = CreateArgsBuffer(settings.Mesh, data.Length);
 
         NativeArray<T> bufferData = dataBuf.LockBufferForWrite<T>(0, data.Length);
         NativeArray<T>.Copy(data, bufferData);
@@ -26,6 +30,19 @@ public class AnimatedIndirectMesh : IndirectMesh
 
     public override void RenderMeshIndirect()
     {
-        throw new System.NotImplementedException();
+        if (Time.time >= settings.LastTickTime + (1f / settings.AnimationFps))
+        {
+            settings.Mesh = settings.Meshes[settings.AnimationIndex];
+
+            settings.AnimationIndex++;
+            if (settings.AnimationIndex >= settings.Meshes.Length)
+            {
+                settings.AnimationIndex = 0;
+            }
+            settings.LastTickTime = Time.time;
+        }
+        settings.Tick++;
+
+        Graphics.RenderMeshIndirect(settings.Params, settings.Mesh, argsBuf);
     }
 }
