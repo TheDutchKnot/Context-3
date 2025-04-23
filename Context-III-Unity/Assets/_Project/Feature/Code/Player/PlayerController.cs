@@ -154,8 +154,7 @@ public class PlayerController : MonoBehaviour
     {
         dynamicMoveProvider.useGravity = true;
         dynamicMoveProvider.enableFly = false;
-        dynamicMoveProvider.leftHandMoveInput.inputAction.Enable();
-        
+        dynamicMoveProvider.leftHandMoveInput.inputAction.Disable();
     }
     
     private void TurnOnZeroGravity()

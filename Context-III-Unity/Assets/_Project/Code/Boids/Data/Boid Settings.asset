@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxCapacity>k__BackingField: 1000
   <PerceptionRadius>k__BackingField: 2.5
-  <AvoidanceRadius>k__BackingField: 2
+  <AvoidanceRadius>k__BackingField: 1.5
   <CollisionMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 1
@@ -27,7 +27,7 @@ MonoBehaviour:
   <AlignmentWeight>k__BackingField: 2
   <CohesionWeight>k__BackingField: 1
   <CollisionWeight>k__BackingField: 12.5
-  <TargetWeight>k__BackingField: 1.5
-  <MinSpeed>k__BackingField: 9
+  <TargetWeight>k__BackingField: 1
+  <MinSpeed>k__BackingField: 5
   <MaxSpeed>k__BackingField: 8
   <MaxSteer>k__BackingField: 4
