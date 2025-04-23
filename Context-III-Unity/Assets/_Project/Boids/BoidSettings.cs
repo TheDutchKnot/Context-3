@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "BoidSettings")]
 public class BoidSettings : ScriptableObject
 {
-    #region Inspector Fields
     [field: SerializeField] public int MaxCapacity { get; private set; } = 1000;
 
     [field: Header("Detection")]
@@ -30,6 +29,5 @@ public class BoidSettings : ScriptableObject
     [field: SerializeField] public float MaxSpeed { get; private set; } = 8;
 
     [field: Header("Steering")]
-    [field: SerializeField] public float MaxSteer { get; private set; } = 2;
-    #endregion
+    [field: SerializeField] public float MaxSteer { get; private set; } = 4;
 }

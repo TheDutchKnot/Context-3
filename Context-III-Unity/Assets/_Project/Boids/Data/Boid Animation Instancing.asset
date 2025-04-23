@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shaderBufferName: _BoidsBuffer
   <Material>k__BackingField: {fileID: 2100000, guid: 107bf68638871d74bb46dfe95229342b, type: 2}
-  <AnimationFps>k__BackingField: 175
+  <Playbackrate>k__BackingField: 150
   <Meshes>k__BackingField:
   - {fileID: 4300000, guid: f6f9b539e07aaa147b7bbf8ab505ecca, type: 2}
   - {fileID: 4300000, guid: d0244e5c480e9464ab48bcb91a6c3b91, type: 2}

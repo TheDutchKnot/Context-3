@@ -1,4 +1,5 @@
 using Tdk.PhysXcastBatchProcessor;
+using Tdk.PlayerLoopSystems.Indirect;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -37,7 +38,10 @@ namespace tdk.Boids
 
             renderer = rendererSettings.Create();
 
-            InvokeRepeating(nameof(Add), 4, 4);
+            if (count > settings.MaxCapacity)
+            {
+                InvokeRepeating(nameof(Add), 4, 4);
+            }
         }
 
         public void Add()
@@ -97,8 +101,6 @@ namespace tdk.Boids
                 syncJobHandle.Complete();
 
                 renderer.SetData(boids.GetSubArray(0, count));
-
-                renderer.RenderMeshIndirect();
             }
         }
 
