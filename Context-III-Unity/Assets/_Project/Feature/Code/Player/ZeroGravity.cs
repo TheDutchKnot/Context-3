@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ZeroGravity : MonoBehaviour
 {
+    [SerializeField] float pushForce = 25;
+
     private Vector3 currentVelocity = Vector3.zero;
     public bool IsClimbingPushActive { get; private set; } = false;
 
@@ -75,7 +77,7 @@ public class ZeroGravity : MonoBehaviour
         Vector3 pushDirection = (cameraTransform.position - chosenHandFinalPos).normalized;
 
         // get speed
-        currentVelocity = pushDirection * (chosenDistance*20);
+        currentVelocity = pushDirection * (chosenDistance * pushForce);
 
         // Set a push-off decay duration based on the distance the hand moves
         float pushDuration = chosenDistance * 20f;
