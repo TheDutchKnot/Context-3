@@ -110,7 +110,7 @@ public class FSM : MonoBehaviour
 // Start pulling the player toward the boss
     public void StartGravityField()
     {
-        Debug.Log("重力场开始：玩家被吸向 Boss。");
+        Debug.Log("pull player to Boss");
 
         // 1) Disable the player's own movement script, not the CC
         var playerCtrl = player.GetComponent<PlayerController>();
@@ -128,8 +128,8 @@ public class FSM : MonoBehaviour
     private IEnumerator GravityPullRoutine()
     {
         var cc = player.GetComponent<CharacterController>();
-        float offsetDistance = 1.5f; // how far in front of the boss
-        float stopThreshold = 0.2f; // when to consider “close enough”
+        float offsetDistance = 2f; // how far in front of the boss
+        float stopThreshold = 0.7f; // when to consider “close enough”
         while (true)
         {
             // compute the point in front of the boss

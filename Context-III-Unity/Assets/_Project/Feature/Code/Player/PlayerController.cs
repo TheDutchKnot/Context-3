@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("zeroG")] public ZeroGravity zeroGravity;
 
+    public float zeroGravityFlyForce;
     // cur player state
     public PlayerActionState currentState = PlayerActionState.Grounded;
 
@@ -70,8 +71,7 @@ public class PlayerController : MonoBehaviour
             //1. flying
             if (currentState == PlayerActionState.Flying)
             {
-                
-                velocity = playerCamera.forward * 0.2f;
+                velocity = playerCamera.forward * zeroGravityFlyForce;
             }
 
             if (currentState == PlayerActionState.Climbing)
@@ -103,6 +103,7 @@ public class PlayerController : MonoBehaviour
         {
             //stop moving
             velocity = Vector3.zero;
+            TurnOffZeroGravity();
         }
 
         if (currentState != PlayerActionState.Climbing)
@@ -122,7 +123,7 @@ public class PlayerController : MonoBehaviour
     /// 2. whether their hands are holding the climbing object
     /// </summary>
     private void UpdatePlayerState()
-    {
+    { 
         // If the character controller detects that it is on the ground, the state is grounded
         if (gameManager.CurrentGameState==GameState.Playing)
         {
@@ -153,10 +154,13 @@ public class PlayerController : MonoBehaviour
     {
         dynamicMoveProvider.useGravity = true;
         dynamicMoveProvider.enableFly = false;
+        dynamicMoveProvider.leftHandMoveInput.inputAction.Enable();
+        
     }
     
     private void TurnOnZeroGravity()
     {
+        dynamicMoveProvider.leftHandMoveInput.inputAction.Disable();
         dynamicMoveProvider.useGravity = false;
         dynamicMoveProvider.enableFly = true;
     }
