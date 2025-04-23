@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class ZeroGravity : MonoBehaviour
 {
-    [SerializeField] float pushForce = 25;
-
     private Vector3 currentVelocity = Vector3.zero;
     public bool IsClimbingPushActive { get; private set; } = false;
-
+    public float zeroGravityListenTime;
+    public int zeroGravityPushForce;
+    public float zeroGravityPushTimeDur;
     /// <summary>
     /// Gets the current push-off velocity calculated during zero gravity (after releasing from climbing)
     /// </summary>
@@ -46,7 +46,7 @@ public class ZeroGravity : MonoBehaviour
         Vector3 startRightPos = rightHand.position;
 
         // sample time
-        float sampleTime = 0.1f;
+        float sampleTime = zeroGravityListenTime;
         yield return new WaitForSeconds(sampleTime);
 
         // Record the hand position at the end of sampling
@@ -77,10 +77,10 @@ public class ZeroGravity : MonoBehaviour
         Vector3 pushDirection = (cameraTransform.position - chosenHandFinalPos).normalized;
 
         // get speed
-        currentVelocity = pushDirection * (chosenDistance * pushForce);
+        currentVelocity = pushDirection * (chosenDistance*zeroGravityPushForce);
 
         // Set a push-off decay duration based on the distance the hand moves
-        float pushDuration = chosenDistance * 20f;
+        float pushDuration = chosenDistance * zeroGravityPushTimeDur;
         float elapsed = 0f;
         Vector3 initialVelocity = currentVelocity;
         
