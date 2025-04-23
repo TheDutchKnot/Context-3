@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     [Header("zeroG")] public ZeroGravity zeroGravity;
 
     public float zeroGravityFlyForce;
+
+    private float _flyForce;
     // cur player state
     public PlayerActionState currentState = PlayerActionState.Grounded;
 
@@ -58,6 +60,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         gameManager.StateChange += stateChange;
+        
     }
 
     private void Update()
@@ -68,10 +71,11 @@ public class PlayerController : MonoBehaviour
         // check game state = zero G
         if (gameManager.CurrentGameState == GameState.ZeroGravity && currentState != PlayerActionState.Grounded)
         {
+            _flyForce = zeroGravityFlyForce;
             //1. flying
             if (currentState == PlayerActionState.Flying)
             {
-                velocity = playerCamera.forward * zeroGravityFlyForce;
+                velocity = playerCamera.forward * _flyForce;
             }
 
             if (currentState == PlayerActionState.Climbing)
@@ -127,8 +131,16 @@ public class PlayerController : MonoBehaviour
         // If the character controller detects that it is on the ground, the state is grounded
         if (gameManager.CurrentGameState==GameState.Playing)
         {
-            // Debug.Log("on ground!");
-            currentState = PlayerActionState.Grounded;
+            if (IsAnyHandInteracting())
+            {
+                currentState = PlayerActionState.Climbing;
+            }
+            else
+            {
+                currentState = PlayerActionState.Grounded;
+            }
+            
+            
         }
         else
         {
