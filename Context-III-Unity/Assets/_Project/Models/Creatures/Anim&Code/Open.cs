@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.State;
 
 public class OPen : MonoBehaviour
 {
+    [SerializeField] XRInteractableAffordanceStateProvider bookTrigger;
+
     private Animator mAnimator;
     void Start()
     {
@@ -10,7 +13,7 @@ public class OPen : MonoBehaviour
 
     void Update()
     {
-        if (mAnimator != null && Input.GetKeyDown(KeyCode.W))
+        if (mAnimator != null && bookTrigger.isSelected)
         {
             mAnimator.ResetTrigger("TrOpenBook");
             mAnimator.ResetTrigger("TrOpenPages");
