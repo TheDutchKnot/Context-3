@@ -131,16 +131,7 @@ public class PlayerController : MonoBehaviour
         // If the character controller detects that it is on the ground, the state is grounded
         if (gameManager.CurrentGameState==GameState.Playing)
         {
-            if (IsAnyHandInteracting())
-            {
-                currentState = PlayerActionState.Climbing;
-            }
-            else
-            {
-                currentState = PlayerActionState.Grounded;
-            }
-            
-            
+            currentState = IsAnyHandInteracting() ? PlayerActionState.Climbing : PlayerActionState.Grounded;
         }
         else
         {

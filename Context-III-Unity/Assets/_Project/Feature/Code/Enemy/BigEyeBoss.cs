@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class IdleState : IState
 {
@@ -103,15 +104,6 @@ public class AttackConState : IState
     // Track last used to avoid repeats
     private StateType lastAttack = StateType.Chase;
     
-    // per‑attack cooldown sec
-    private Dictionary<StateType, float> cooldowns = new Dictionary<StateType, float>()
-    {
-        { StateType.Attack1, 0f },
-        { StateType.Attack2, 0f },
-        { StateType.Attack3, 0f },
-    };
-    private float cooldownDuration = 1f; // 3s before the same attack can be reused
-    
     public AttackConState(FSM manager)
     {
         this.manager = manager;
@@ -120,22 +112,18 @@ public class AttackConState : IState
     }
     public void OnEnter()
     {
-        parameter.animator.Play("attack_01");
-        Debug.Log("Boss State: Attack Controller");
-        // Update cooldown timers
-        List<StateType> keys = new List<StateType>(cooldowns.Keys);
-        for (int i = 0; i < keys.Count; i++)
-        {
-            StateType key = keys[i];
-            cooldowns[key] = Mathf.Max(0, cooldowns[key] - Time.deltaTime);
-        }
+        manager.playerInSightRange =
+            Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
+        manager.playerInAttackRange =
+            Physics.CheckSphere(manager.transform.position, manager.attackRange, manager.whatIsPlayer);
+        
         // Determine distances
         float distance = Vector3.Distance(manager.transform.position, manager.player.position);
         // weighted list of possible attacks
         var options = new List<(StateType type, int weight)>();
         
         // Always allow the base eyeball attack if its cooldown is ready
-        if (cooldowns[StateType.Attack1] <= 0)
+        if (!parameter.availableAttack2 || !parameter.availableAttack2)
         {
             int w = 10;
             // when boss low on health, bias more toward the swarm attack
@@ -177,9 +165,10 @@ public class AttackConState : IState
                 }
             }
         }
-        
-        // Apply cooldown and remember
-        cooldowns[chosen] = cooldownDuration;
+        else
+        {
+            Debug.Log("No Options");
+        }
         lastAttack = chosen;
         
         // Transition
@@ -188,11 +177,11 @@ public class AttackConState : IState
 
     public void OnUpdate()
     {
-        manager.playerInSightRange =
-            Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
-        manager.playerInAttackRange =
-            Physics.CheckSphere(manager.transform.position, manager.attackRange, manager.whatIsPlayer);
-        
+        if (parameter.getHit)
+        {
+            manager.TransitionState(StateType.Hit);
+        }
+
     }
 
     public void OnExit()
@@ -201,121 +190,9 @@ public class AttackConState : IState
     }
 }
 
-// public class AttackConState : IState
-// {
-//     private FSM manager;
-//     private Parameter parameter;
-//     private System.Random rand = new System.Random();
-//
-//     // Track last used attack to avoid repeats
-//     private StateType lastAttack = StateType.Chase;
-//
-//     // Cooldowns (in seconds) for each attack
-//     private Dictionary<StateType, float> cooldowns = new Dictionary<StateType, float>()
-//     {
-//         { StateType.Attack1, 0f },
-//         { StateType.Attack2, 0f },
-//         { StateType.Attack3, 0f },
-//     };
-//     private const float cooldownDuration = 2f;
-//
-//     // Retreat‑before‑fallback logic
-//     private bool isRetreating = false;
-//     private Vector3 retreatTarget;
-//     private float savedStoppingDistance;
-//
-//     public AttackConState(FSM manager)
-//     {
-//         this.manager   = manager;
-//         this.parameter = manager.parameter;
-//     }
-//
-//     public void OnEnter()
-//     {
-//         ChooseAndDoAttack();
-//     }
-//
-//     public void OnUpdate()
-//     {
-//         // 1) Tick down all cooldowns each frame
-//         foreach (var key in cooldowns.Keys.ToList())
-//         {
-//             if (cooldowns[key] > 0f)
-//                 cooldowns[key] = Mathf.Max(0f, cooldowns[key] - Time.deltaTime);
-//         }
-//
-//         // 2) If retreating, wait until we've reached retreatTarget, then fallback to Attack1
-//         // if (isRetreating)
-//         // {
-//         //     if (!manager.agent.pathPending 
-//         //         && manager.agent.remainingDistance <= 0.1f)
-//         //     {
-//         //         manager.agent.stoppingDistance = savedStoppingDistance;
-//         //         isRetreating = false;
-//         //         DoAttack(StateType.Attack1);
-//         //     }
-//         // }
-//     }
-//
-//     public void OnExit()
-//     {
-//         // no cleanup needed here
-//     }
-//
-//     private void ChooseAndDoAttack()
-//     {
-//         float distance = Vector3.Distance(
-//             manager.transform.position,
-//             manager.player.position
-//         );
-//
-//         // Build weighted options
-//         var options = new List<(StateType type, int weight)>();
-//
-//         // Attack1: eyeball swarm
-//         // if (cooldowns[StateType.Attack1] <= 0f)
-//             options.Add((StateType.Attack1, 50 + (parameter.health < 3 ? 30 : 0)));
-//
-//         // Attack2: gravity field
-//         // if (parameter.availableAttack2 && cooldowns[StateType.Attack2] <= 0f)
-//             options.Add((StateType.Attack2, distance > manager.attackRange * 1.2f ? 60 : 10));
-//
-//         // Attack3: tentacle
-//         // if (parameter.availableAttack3 && cooldowns[StateType.Attack3] <= 0f)
-//             options.Add((StateType.Attack3,
-//                 (distance <= manager.meleeAttackRange) ? 60 : 10));
-//
-//         // Avoid repeating the last attack
-//         options.RemoveAll(o => o.type == lastAttack);
-//
-//         // Pick by weight, or fallback to Attack1
-//         StateType chosen = StateType.Attack3;
-//         if (options.Count > 0)
-//         {
-//             int total = options.Sum(o => o.weight);
-//             int roll  = rand.Next(0, total), sum = 0;
-//             foreach (var (type, weight) in options)
-//             {
-//                 sum += weight;
-//                 if (roll < sum)
-//                 {
-//                     chosen = type;
-//                     break;
-//                 }
-//             }
-//         }
-//
-//         DoAttack(chosen);
-//     }
-//
-//     private void DoAttack(StateType attack)
-//     {
-//         cooldowns[attack] = cooldownDuration;
-//         lastAttack        = attack;
-//         manager.TransitionState(attack);
-//     }
-//     
-// }
+
+
+
 
 
 
@@ -324,118 +201,149 @@ public class Attack1State : IState
     private FSM manager;
     private Parameter parameter;
 
-    private AnimatorStateInfo info;
     private float timer;
-    
-    // ——— Retreat fields ———
     private bool isRetreating = false;
     private Vector3 retreatTarget;
+    private Vector3 enterPosition;
     private float savedStoppingDistance;
-    
+
+    // 固定后撤距离：6 米
+    private const float retreatDistance = 6f;
+    // 到达判定容差
+    private const float arriveTolerance = 0.01f;
+    // 攻击持续时长
+    private const float attackDuration = 3f;
+
     public Attack1State(FSM manager)
     {
         this.manager = manager;
         this.parameter = manager.parameter;
     }
+
     public void OnEnter()
     {
+        Debug.Log("[Attack1State] OnEnter 开始后撤");
+        enterPosition = manager.transform.position;
         timer = 0f;
         StartRetreat();
-     
-        
     }
-    
+
     private void StartRetreat()
     {
-        // 1) Save and zero out stoppingDistance
+        // 1) 保存原 stoppingDistance，设置为 0 精确到点
         savedStoppingDistance = manager.agent.stoppingDistance;
-        manager.agent.stoppingDistance = 2f;
+        manager.agent.stoppingDistance = 0f;
 
-        // 2) Compute target and begin retreat
-        Vector3 toBoss = (manager.transform.position - manager.player.position).normalized;
-        retreatTarget = manager.player.position + toBoss * manager.attackRange;
+        // 2) 计算玩家→Boss 水平方向（XYZ 忽略 Y）
+        Vector3 dir = manager.transform.position - manager.player.position;
+        dir.y = 0f;
+        dir.Normalize();
 
+        // 3) 以 Boss 当前点为起点，沿此方向退 retreatDistance 米
+        Vector3 rawTarget = manager.transform.position + dir * retreatDistance;
+        Debug.Log($"[Attack1State] RawTarget = {rawTarget}");
+
+        // 4) 采样 NavMesh 保证可导航
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(rawTarget, out hit, 1f, NavMesh.AllAreas))
+        {
+            retreatTarget = hit.position;
+        }
+        else
+        {
+            Debug.LogWarning("[Attack1State] retreatTarget 不在 NavMesh，上跳过后撤直接攻击");
+            isRetreating = false;
+            PlayAttack();
+            return;
+        }
+
+        // 5) 发起后撤
         isRetreating = true;
         manager.agent.SetDestination(retreatTarget);
         parameter.animator.Play("walk");
-        Debug.Log("Retreating before fallback Attack1, target at attackRange from player");
-        
+        Debug.Log($"[Attack1State] StartRetreat: 从 {enterPosition:F2} → {retreatTarget:F2}");
     }
 
     public void OnUpdate()
-    {    
-        manager.playerInSightRange =
-            Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
-        manager.playerInAttackRange =
-            Physics.CheckSphere(manager.transform.position, manager.attackRange, manager.whatIsPlayer);
-             if (isRetreating)
-             {
-                 if (!manager.agent.pathPending
-                     && manager.agent.remainingDistance <= manager.agent.stoppingDistance + 0.1f)
-                 {
-                     // 3) Restore stoppingDistance
-                     manager.agent.stoppingDistance = savedStoppingDistance;
-                     manager.agent.isStopped = true;
-                     manager.agent.ResetPath();
-                     isRetreating = false;
-                     parameter.animator.Play("attack22");
-                     Debug.Log("Boss State: Attack_1");
-                     manager.SpawnEyeballSwarm();
-                 }
-             }
-             else
-             {
-                 float turnSpeed = manager.agent.angularSpeed;  
-                 manager.SmoothLookAt(manager.transform, manager.player.position, turnSpeed);
-                 info = parameter.animator.GetCurrentAnimatorStateInfo(0);
-                 
-                         if (parameter.getHit)
-                         {
-                             manager.TransitionState(StateType.Hit);
-                         }
-                         
-                         timer += Time.deltaTime;
-                         Debug.Log("Attack 1: "+timer);
-                         // if (info.normalizedTime >= .95f)
-                         if(timer >= 3f)
-                         {
-                             // process AAttack2 cd (if >= 2 time -> ready!)
-                             if (!parameter.availableAttack2)
-                             {
-                                 parameter.attack1HealForAttack2++;
-                                 Debug.Log("update cd Attack2: " + parameter.attack1HealForAttack2);
-                                 if (parameter.attack1HealForAttack2 >= 1)
-                                 {
-                                     parameter.availableAttack2 = true;
-                                     parameter.attack1HealForAttack2 = 0;
-                                     Debug.Log("Attack2 available!");
-                                 }
-                             }
-                             // process Attack3 cd
-                             if (!parameter.availableAttack3)
-                             {
-                                 parameter.attack1HealForAttack3++;
-                                 Debug.Log("update cd Attack3: " + parameter.attack1HealForAttack3);
-                                 if (parameter.attack1HealForAttack3 >= 1)
-                                 {
-                                     parameter.availableAttack3 = true;
-                                     parameter.attack1HealForAttack3 = 0;
-                                     Debug.Log("Attack3 available!");
-                                 }
-                             }
-                             manager.TransitionState(StateType.Chase);
-                         }
-             }
-        
-        
+    {
+        // —— 后撤阶段 ——
+        if (isRetreating)
+        {
+            if (!manager.agent.pathPending
+                && manager.agent.remainingDistance <= arriveTolerance)
+            {
+                float actual = Vector3.Distance(enterPosition, manager.transform.position);
+                Debug.Log($"[Attack1State] 实际后撤距离 = {actual:F2} 米");
+
+                // 停止移动并恢复 stoppingDistance
+                manager.agent.isStopped = true;
+                manager.agent.ResetPath();
+                manager.agent.stoppingDistance = savedStoppingDistance;
+
+                isRetreating = false;
+                PlayAttack();
+            }
+        }
+        else
+        {
+            // —— 攻击进行中 —— //
+            // 1) 平滑看向玩家
+            manager.SmoothLookAt(manager.transform, manager.player.position, manager.agent.angularSpeed);
+
+            // 2) 被击中打断
+            if (parameter.getHit)
+            {
+                manager.TransitionState(StateType.Hit);
+                return;
+            }
+
+            // 3) 计时结束后收尾
+            timer += Time.deltaTime;
+            if (timer >= attackDuration)
+            {
+                // 恢复 Attack2/3 冷却
+                if (!parameter.availableAttack2)
+                {
+                    parameter.attack1HealForAttack2++;
+                    if (parameter.attack1HealForAttack2 >= 1)
+                    {
+                        parameter.availableAttack2 = true;
+                        parameter.attack1HealForAttack2 = 0;
+                    }
+                }
+                if (!parameter.availableAttack3)
+                {
+                    parameter.attack1HealForAttack3++;
+                    if (parameter.attack1HealForAttack3 >= 1)
+                    {
+                        parameter.availableAttack3 = true;
+                        parameter.attack1HealForAttack3 = 0;
+                    }
+                }
+
+                // 结束后切换到 Chase
+                manager.TransitionState(StateType.Chase);
+            }
+        }
     }
 
     public void OnExit()
     {
+        // reset stoppingDistance
         manager.agent.stoppingDistance = savedStoppingDistance;
     }
 
+    private void PlayAttack()
+    {
+        parameter.animator.Play("attack22");
+        manager.SpawnEyeballSwarm();
+        Debug.Log("[Attack1State] PlayAttack -> attack22 & SpawnEyeballSwarm");
+    }
 }
+
+
+
+
 
 public class Attack2State : IState
 {
@@ -489,7 +397,7 @@ public class Attack2State : IState
             manager.StopGravityField();
             manager.TransitionState(StateType.Hit);
         }
-        if (gravityTimer >= 4f)
+        if (gravityTimer >= 3f)
         {
             manager.StopGravityField();
             manager.TransitionState(StateType.Chase);
@@ -521,7 +429,6 @@ public class Attack3State : IState
     public void OnEnter()
     {
         timer = 0f;
-        parameter.animator.Play("attack_01");
         if (!parameter.availableAttack3)
         {
             Debug.Log("Attack3 unavailable, skip!");
@@ -556,8 +463,7 @@ public class Attack3State : IState
     {
         // 如果你在 Parameter 里跟踪可用性，就在这里做：parameter.availableAttack3 = false;
         parameter.availableAttack3 = false;
-
-        
+        parameter.animator.Play("attack_01");
         manager.StartTentacleFlail();
     }
 
@@ -583,7 +489,7 @@ public class Attack3State : IState
                 manager.player.position
             );
 
-            if (dist <= manager.meleeAttackRange + 2f)
+            if (dist <= manager.meleeAttackRange + 1f)
             {
                 
                 manager.agent.isStopped = true;
@@ -620,7 +526,7 @@ public class Attack3State : IState
         // double check stop attack
         manager.StopTentacleFlail();
         // reset
-        manager.agent.stoppingDistance = manager.attackRange;
+        manager.agent.stoppingDistance = 1;
     }
 
 
@@ -644,6 +550,19 @@ public class HitState : IState
     {
         parameter.animator.Play("Hit");
         parameter.health--;
+        
+        switch (parameter.lastHitPart)
+        {
+            case HitPart.Eye:
+                parameter.availableAttack2 = false;
+                Debug.Log("[HitState] Eye，Attack2 X");
+                break;
+            case HitPart.Tentacle:
+                parameter.availableAttack3 = false;
+                Debug.Log("[HitState] Tentacle, Attack3 X ");
+                break;
+        }
+        
     }
 
     public void OnUpdate()

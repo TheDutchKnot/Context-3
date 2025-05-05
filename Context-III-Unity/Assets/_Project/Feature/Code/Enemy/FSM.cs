@@ -18,6 +18,13 @@ public enum StateType
     Death
 }
 
+public enum HitPart
+{
+    None,
+    Eye,
+    Tentacle
+}
+
 [Serializable]
 public class Parameter
 {
@@ -32,6 +39,9 @@ public class Parameter
     public bool availableAttack3 = true; // Attack3 是否可用（使用后将置为 false）
     public int attack1HealForAttack2 = 0; // 累计 Attack1 次数，用于恢复 Attack2
     public int attack1HealForAttack3 = 0; // 累计 Attack1 次数，用于恢复 Attack3
+    
+    // record hit part
+    public HitPart lastHitPart = HitPart.None;
 }
 
 public class FSM : MonoBehaviour
@@ -230,7 +240,7 @@ public class FSM : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
         
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, meleeAttackRange);
     }
 }
