@@ -63,7 +63,7 @@ Shader "Unlit/IndirectBoids"
                     _BoidsBuffer[instanceID].direction,
                     float3(0, 1, 0)
                 );
-                
+
                 Interpolators o;
 
                 o.vertex = UnityObjectToClipPos(mul(boid, v.vertex));
