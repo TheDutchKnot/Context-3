@@ -21,14 +21,19 @@ public class ZerogMonster : MonoBehaviour
     
     private void Update()
     {
-        if (Physics.CheckSphere(transform.position, attackRange, whatIsPlayer) && health>0)
+        if (Physics.CheckSphere(transform.position, attackRange, whatIsPlayer))
         {
-            StartGravityField();
+            if (health>0)
+            {
+                StartGravityField();
+            }
+            else
+            {
+                StopGravityField();
+            }
         }
-        else
-        {
-            StopGravityField();
-        }
+
+        // for test
         if (Input.GetKeyDown(KeyCode.J))
         {
             health--;
