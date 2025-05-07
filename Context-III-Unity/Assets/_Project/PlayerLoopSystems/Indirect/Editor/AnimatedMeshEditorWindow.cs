@@ -20,6 +20,12 @@ public class AnimatedMeshEditorWindow : EditorWindow
     private bool Optimize = false;
     private bool DryRun = false;
 
+    float ScaleX = 1f;
+    float ScaleY = 1f;
+    float ScaleZ = 1f;
+
+    bool RecalculateNormals;
+
     private const string BASE_PATH = "Assets/Animated Models/";
 
     private void OnGUI()
@@ -37,6 +43,14 @@ public class AnimatedMeshEditorWindow : EditorWindow
         AnimationFPS = EditorGUILayout.IntSlider("Animation FPS", AnimationFPS, 1, 100);
         Optimize = EditorGUILayout.Toggle("Optimize", Optimize);
         DryRun = EditorGUILayout.Toggle("Dry Run", DryRun);
+
+        EditorGUILayout.Space(10);
+
+        ScaleX = EditorGUILayout.FloatField("ScaleX", ScaleX);
+        ScaleY = EditorGUILayout.FloatField("ScaleY", ScaleY);
+        ScaleZ = EditorGUILayout.FloatField("ScaleZ", ScaleZ);
+
+        RecalculateNormals = EditorGUILayout.Toggle("RecalculateNormals", RecalculateNormals);
 
         GUI.enabled = newAnimatedModel != null && animator.runtimeAnimatorController != null;
         if (GUILayout.Button("Generate ScriptableObjects"))
@@ -110,6 +124,32 @@ public class AnimatedMeshEditorWindow : EditorWindow
                         mesh.Optimize(); // maybe saves
                     }
 
+                    if (ScaleX != 1 && ScaleY != 1 && ScaleZ != 1)
+                    {
+                        Vector3[] baseVertices = mesh.vertices;
+
+                        var scaledVerts = new Vector3[baseVertices.Length];
+
+                        for (int i = 0; i < scaledVerts.Length; i++)
+                        {
+                            var vertex = baseVertices[i];
+
+                            scaledVerts[i] = new Vector3(
+                                vertex.x * ScaleX,
+                                vertex.y * ScaleY,
+                                vertex.z * ScaleZ
+                                );
+                        }
+
+                        mesh.vertices = scaledVerts;
+
+                        if (RecalculateNormals)
+                        {
+                            mesh.RecalculateNormals();
+                            mesh.RecalculateBounds();
+                        }
+                    }
+
                     if (!DryRun)
                     {
                         if (!AssetDatabase.IsValidFolder(parentFolder + clip.name))
@@ -122,6 +162,8 @@ public class AnimatedMeshEditorWindow : EditorWindow
                     meshes.Add(mesh);
                 }
             }
+
+
             Debug.Log($"Setting {clip.name} to have {meshes.Count} meshes");
             animation.Meshes = meshes;
             scriptableObject.Animations.Add(animation);
