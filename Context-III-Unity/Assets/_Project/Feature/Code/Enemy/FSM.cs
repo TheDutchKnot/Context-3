@@ -34,7 +34,7 @@ public class Parameter
     public Animator animator;
     public bool getHit;
 
-    // 攻击恢复和可用性变量
+    // attack recovery
     public bool availableAttack2 = true; // Attack2 是否可用（使用后将置为 false）
     public bool availableAttack3 = true; // Attack3 是否可用（使用后将置为 false）
     public int attack1HealForAttack2 = 0; // 累计 Attack1 次数，用于恢复 Attack2
@@ -63,8 +63,6 @@ public class FSM : MonoBehaviour
     public float sightRange, attackRange, meleeAttackRange;
     public bool playerInSightRange, playerInAttackRange;
 
-    //Attack
-
     //attack 2
     public ParticleSystem gravityEffect;
     private Coroutine gravityCoroutine;
@@ -84,7 +82,7 @@ public class FSM : MonoBehaviour
         states.Add(StateType.Chase, new ChaseState(this));
         states.Add(StateType.AttackCon, new AttackConState(this));
         states.Add(StateType.Attack1, new Attack1State(this));
-        states.Add(StateType.Attack2, new Attack2State(this));
+        states.Add(StateType.Attack2, new Attack2State(this)); 
         states.Add(StateType.Attack3, new Attack3State(this));
         states.Add(StateType.Hit, new HitState(this));
         states.Add(StateType.Death, new DeathState(this));
@@ -97,11 +95,6 @@ public class FSM : MonoBehaviour
     void Update()
     {
         currentState.OnUpdate();
-
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            parameter.getHit = true;
-        }
     }
 
     public void TransitionState(StateType type)
@@ -127,7 +120,7 @@ public class FSM : MonoBehaviour
         if (playerCtrl != null)
             playerCtrl.enabled = false;
 
-        // 2) Play your gravity‐field VFX (particle system on FSM)
+        // 2) Play gravity‐field VFX...
         if (gravityEffect != null)
             gravityEffect.Play();
 
@@ -158,7 +151,7 @@ public class FSM : MonoBehaviour
                 Vector3 horizontalDir = new Vector3(dir.x, 0, dir.z).normalized;
                 Vector3 move = horizontalDir * speed * Time.deltaTime;
 
-                // if you also want a slight vertical lift/hover, add:
+                // if ned a slight vertical lift/hover:
                 // float verticalPull = Mathf.Clamp(dir.y, -1f, 1f) * (pullStrength * 0.2f) * Time.deltaTime;
                 // move.y = verticalPull;
 
@@ -177,7 +170,7 @@ public class FSM : MonoBehaviour
 // Stop pulling and restore control
     public void StopGravityField()
     {
-        Debug.Log("重力场停止。");
+        Debug.Log("[Boss Info]: Stop G attack");
 
         // 1) Stop the pull coroutine
         if (gravityCoroutine != null)
@@ -221,15 +214,14 @@ public class FSM : MonoBehaviour
     
     public void StartTentacleFlail()
     {
-        Debug.Log("触手挥舞开始，玩家需小心躲避或切断触手！");
-        // TODO: 启用碰撞盒,
+        Debug.Log("[Boss Info] Tentacle waving...");
+        // TODO: enable tentacle collider
     }
     
-    // 关闭触手挥舞效果
     public void StopTentacleFlail()
     {
-        Debug.Log("触手挥舞停止。");
-        // TODO: 关闭碰撞检测，清理特效
+        Debug.Log("[Boss Info] Tentacle attack stop");
+        // TODO: disable tentacle collider
     }
 
     private void OnDrawGizmos()

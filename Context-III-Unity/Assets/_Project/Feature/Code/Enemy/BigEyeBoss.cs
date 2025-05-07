@@ -207,11 +207,11 @@ public class Attack1State : IState
     private Vector3 enterPosition;
     private float savedStoppingDistance;
 
-    // 固定后撤距离：6 米
+    // Fixed retreat distance
     private const float retreatDistance = 6f;
-    // 到达判定容差
+    // Arrival tolerance
     private const float arriveTolerance = 0.01f;
-    // 攻击持续时长
+    // Attack duration
     private const float attackDuration = 3f;
 
     public Attack1State(FSM manager)
@@ -222,7 +222,7 @@ public class Attack1State : IState
 
     public void OnEnter()
     {
-        Debug.Log("[Attack1State] OnEnter 开始后撤");
+        Debug.Log("[Boss Info] Attack1: Enter Start retreating");
         enterPosition = manager.transform.position;
         timer = 0f;
         StartRetreat();
@@ -230,20 +230,20 @@ public class Attack1State : IState
 
     private void StartRetreat()
     {
-        // 1) 保存原 stoppingDistance，设置为 0 精确到点
+        // 1) Save the original stoppingDistance and set it to 0 to be accurate to the point
         savedStoppingDistance = manager.agent.stoppingDistance;
         manager.agent.stoppingDistance = 0f;
 
-        // 2) 计算玩家→Boss 水平方向（XYZ 忽略 Y）
+        // 2) Calculate the horizontal direction of player→boss (XYZ ignore Y)
         Vector3 dir = manager.transform.position - manager.player.position;
         dir.y = 0f;
         dir.Normalize();
 
-        // 3) 以 Boss 当前点为起点，沿此方向退 retreatDistance 米
+        // 3) Take the boss's current point as the starting point and retreat in this direction by retreatDistance
         Vector3 rawTarget = manager.transform.position + dir * retreatDistance;
         Debug.Log($"[Attack1State] RawTarget = {rawTarget}");
 
-        // 4) 采样 NavMesh 保证可导航
+        // 4) Sampling NavMesh to ensure navigation
         NavMeshHit hit;
         if (NavMesh.SamplePosition(rawTarget, out hit, 1f, NavMesh.AllAreas))
         {
@@ -251,7 +251,7 @@ public class Attack1State : IState
         }
         else
         {
-            Debug.LogWarning("[Attack1State] retreatTarget 不在 NavMesh，上跳过后撤直接攻击");
+            Debug.LogWarning("[Boss Info] retreatTarget not on NavMesh");
             isRetreating = false;
             PlayAttack();
             return;
