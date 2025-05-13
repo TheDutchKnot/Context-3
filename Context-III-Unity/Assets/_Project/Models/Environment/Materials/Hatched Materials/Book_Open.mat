@@ -3,11 +3,11 @@
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Walls_Floors_Hatched
+  m_Name: Book_Open
   m_Shader: {fileID: 4800000, guid: 7633a2fd8a3bed44791c9e952ff86e5d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -33,12 +33,12 @@ Material:
     IGNOREPROJECTOR: False
     RenderType: Opaque
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _GoochDarkColor _GoochDarkMap
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _AlbedoMap:
-        m_Texture: {fileID: 2800000, guid: 28ae6a2a26a8a0a4ba5f73d9df24db66, type: 3}
+        m_Texture: {fileID: 2800000, guid: 70bf67524a5487f4b865cbc7458976f6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -114,7 +114,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 28ae6a2a26a8a0a4ba5f73d9df24db66, type: 3}
+        m_Texture: {fileID: 2800000, guid: 70bf67524a5487f4b865cbc7458976f6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -192,8 +192,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
-    - _AdditionalLightsFalloff: 0.37
-    - _AdditionalLightsThreshold: 0.71
+    - _AdditionalLightsFalloff: 0.39
+    - _AdditionalLightsThreshold: 0.54
     - _AdvancedTab: 1
     - _AlbedoMapIntensity: 1
     - _AlembicMotionVectors: 0
@@ -220,7 +220,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DetailUVSet: 0
     - _Diffuse: 0
-    - _DiffuseSmoothness: 0.21
+    - _DiffuseSmoothness: 0.31
     - _DiffuseThresholdOffset: 0.25
     - _Dissolve: 0
     - _DissolveAmount: 0.5
@@ -247,8 +247,8 @@ Material:
     - _IridescenceThresholdOffset: 0.25
     - _Light: 2
     - _LightBands: 4
-    - _LightBandsScale: 0.59
-    - _LightThreshold: 0.42
+    - _LightBandsScale: 0.39
+    - _LightThreshold: 0.53
     - _LightTransmission: 0
     - _LightTransmissionDistortion: 0.25
     - _LightTransmissionIntensity: 1
@@ -266,7 +266,7 @@ Material:
     - _OutlineFadeMax: 2
     - _OutlineFadeMin: 0.25
     - _OutlineNoise: -1
-    - _OutlineSize: 20
+    - _OutlineSize: 5
     - _OutlineTab: 1
     - _OverwriteBlend: 0
     - _Parallax: 0.02
@@ -285,7 +285,7 @@ Material:
     - _Specular: 1
     - _SpecularHighlights: 1
     - _SpecularIntensity: 10
-    - _SpecularSmoothness: 0
+    - _SpecularSmoothness: 0.12
     - _SpecularThresholdOffset: 0.25
     - _SrcBlend: 1
     - _Stencil: 1
@@ -314,7 +314,7 @@ Material:
     - _DissolveBorderColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GoochBrightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GoochDarkColor: {r: 0.20754719, g: 0.11790891, b: 0.007179281, a: 1}
+    - _GoochDarkColor: {r: 0.32704395, g: 0.20413525, b: 0.054507293, a: 1}
     - _IridescenceColor: {r: 1, g: 1, b: 1, a: 0.5}
     - _LightTransmissionColor: {r: 1, g: 0.65, b: 0, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
