@@ -51,7 +51,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: d330a9044c548aa4e904e7cde19bd774, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 34bc9cb143789214cb5f1718358fdb9e, type: 2}
+      objectReference: {fileID: 2100000, guid: 37bd34b9386646b48a4808e2fe0876e7, type: 2}
     - target: {fileID: 919132149155446097, guid: d330a9044c548aa4e904e7cde19bd774, type: 3}
       propertyPath: m_Name
       value: BookCase_Lamp

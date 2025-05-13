@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2f3cf4a19beb4334998795b4beeee802, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f3cf4a19beb4334998795b4beeee802, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f3cf4a19beb4334998795b4beeee802, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f3cf4a19beb4334998795b4beeee802, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.622233
       objectReference: {fileID: 0}
@@ -48,10 +60,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2f3cf4a19beb4334998795b4beeee802, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 2f3cf4a19beb4334998795b4beeee802, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 4704649dec7210043a17e47a1716411c, type: 2}
+      objectReference: {fileID: 2100000, guid: d40aa088fc9d2c644875b369519915a0, type: 2}
     - target: {fileID: 919132149155446097, guid: 2f3cf4a19beb4334998795b4beeee802, type: 3}
       propertyPath: m_Name
       value: candelight_lowpoly
