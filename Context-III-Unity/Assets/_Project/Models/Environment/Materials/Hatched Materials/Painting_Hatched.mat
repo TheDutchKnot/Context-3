@@ -3,7 +3,7 @@
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -58,6 +58,7 @@ Material:
     - _LightBands: 5
     - _LightBandsScale: 0.47
     - _LightThreshold: 0.19
+    - _Metallic: 0
     - _OutlineSize: 40
     - _Smoothness: 0
     - _VertexAnimationIntensity: 0.004
