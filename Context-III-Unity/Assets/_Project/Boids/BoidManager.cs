@@ -24,7 +24,7 @@ namespace tdk.Boids
 
         AnimatedIndirectMesh renderer;
 
-        void Awake()
+        void OnEnable()
         {
             boids = new NativeArray<Boid>(settings.MaxCapacity, Allocator.Persistent);
             vel = new NativeArray<float3>(settings.MaxCapacity, Allocator.Persistent);
@@ -33,27 +33,33 @@ namespace tdk.Boids
             {
                 boids[i] = new Boid
                 {
-                    position = transform.position + UnityEngine.Random.insideUnitSphere * 4,
-                    direction = transform.forward
+                    position = transform.position + UnityEngine.Random.insideUnitSphere * 0.001f,
+                    direction = transform.up
                 };
             }
 
             renderer = rendererSettings.Create();
 
-            if (count > settings.MaxCapacity)
-            {
-                InvokeRepeating(nameof(Add), 4, 4);
-            }
+            InvokeRepeating(nameof(AddAmount), 1, 1);
         }
 
         public void Add()
         {
             boids[count] = new()
             {
-                position = transform.position,
-                direction = transform.forward
+                position = transform.position + UnityEngine.Random.insideUnitSphere * 0.001f,
+                direction = transform.up
             };
             count++;
+        }
+
+        const int BurstAmount = 5;
+        public void AddAmount()
+        {
+            for (int i = 0; i < BurstAmount; i++)
+            {
+                Add();
+            }
         }
 
         void Update()
@@ -108,7 +114,7 @@ namespace tdk.Boids
             }
         }
 
-        void OnDestroy()
+        void OnDisable()
         {
             if (boids.IsCreated) boids.Dispose();
             if (vel.IsCreated) vel.Dispose();
