@@ -14,6 +14,8 @@ namespace tdk.Boids
         [SerializeField] int count = 0;
         [SerializeField] Transform target;
 
+        [SerializeField] Transform camTarget;
+
         NativeArray<Boid> boids;
         NativeArray<float3> vel;
 
@@ -101,6 +103,8 @@ namespace tdk.Boids
                 syncJobHandle.Complete();
 
                 renderer.SetData(boids.GetSubArray(0, count));
+                
+                camTarget.transform.SetLocalPositionAndRotation(boids[0].position, Quaternion.Euler(boids[0].direction));
             }
         }
 
