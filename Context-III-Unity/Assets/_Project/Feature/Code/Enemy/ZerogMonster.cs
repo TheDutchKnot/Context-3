@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class ZerogMonster : MonoBehaviour
 {
-    
-    public int health;
     // public Animator animator;
     public Transform player;
     public LayerMask whatIsGround, whatIsPlayer;
     public bool playerInSightRange;
     public float  attackRange;
     private Coroutine gravityCoroutine;
-    public float pullStrength = 5f;
+    public float pullStrength;
     public ParticleSystem gravityEffect;
     public Animator animator;
     private bool _isEyeOpen;
@@ -21,13 +19,13 @@ public class ZerogMonster : MonoBehaviour
     private AnimatorStateInfo info;
     
     [Header("Vision")]
-    [Tooltip("玩家宽度的一半，用于射线粗细")]
+    [Tooltip("Ray thickness")]
     public float sphereCastRadius = 0.5f;
 
-    [Tooltip("用来判断哪些是障碍物，比如 Ground/Environment")]
+    [Tooltip("obs layer")]
     public LayerMask obstacleMask;
 
-// 视线垂直偏移（Boss 眼睛到地面的高度）
+    // monster eye height
     public float eyeHeight = 1.5f;
     
     private void Awake()
@@ -78,7 +76,7 @@ public class ZerogMonster : MonoBehaviour
                 _isEyeOpen = true;
             }
             
-            if (info.normalizedTime >= .25f)
+            if (info.normalizedTime >= .35f)
             {
                 // 1) Disable the player's own movement script, not the CC
                 SetMovement(false);
@@ -91,16 +89,13 @@ public class ZerogMonster : MonoBehaviour
                 gravityCoroutine = StartCoroutine(GravityPullRoutine());
             }
         }
-        
-
-        
     }
 
     private IEnumerator GravityPullRoutine()
     {
         var cc = player.GetComponent<CharacterController>();
-        float offsetDistance = 1.5f; // how far in front of the boss
-        float stopThreshold = 0.5f; // when to consider “close enough”
+        float offsetDistance = 1.1f; // how far in front of the boss
+        float stopThreshold = 0.3f; // when to consider “close enough”
         while (true)
         {
             // compute the point in front of the boss
@@ -159,36 +154,34 @@ public class ZerogMonster : MonoBehaviour
     
     public void SetMovement(bool _switch)
     {
-        // 1. 找到 Locomotion System（确保名字和层级一致）
+        // get Locomotion System
         var locoSys = player.Find("Locomotion");
         if (locoSys == null)
         {
             Debug.LogWarning("cannot find Locomotion System");
             return;
         }
-
-        // 2. 在它下面找 Move 子物体
+        
         var moveGO = locoSys.Find("Move");
         if (moveGO == null)
         {
             Debug.LogWarning("cant find Move");
             return;
         }
-
-        // 3. 直接停用整个对象
+        
         moveGO.gameObject.SetActive(_switch);
     }
     
     private bool HasLineOfSight()
     {
-        // 1) 起点：Boss 眼睛/胸口
+        // 1) start at monster eye
         Vector3 origin = transform.position + Vector3.up * eyeHeight;
-        // 2) 目标：玩家摄像机/中心（这里假设 player 指向 XR Origin 的根）
+        // target: player transforme
         Vector3 target  = player.position + Vector3.up * eyeHeight;
         Vector3 dir     = (target - origin).normalized;
         float   dist    = Vector3.Distance(origin, target); 
         Debug.DrawLine(origin, origin + dir * dist, Color.red);
-        // 3) 发射一个带半径的球体射线
+        // create ray
         if (Physics.SphereCast(origin,
                 sphereCastRadius,
                 dir,
@@ -196,21 +189,17 @@ public class ZerogMonster : MonoBehaviour
                 dist,
                 obstacleMask))
         {
-            // 如果最先碰到的不是玩家，就说明被挡住了
+            // collider -> obs, not player
             if (!hit.collider.transform.IsChildOf(player))
                 return false;
         }
-        
-        
-
-        // 没碰到任何障碍或碰到的正好是玩家，视线畅通
+        // no obs
         return true;
     }
     
     
     private void OnTriggerEnter(Collider other)
     {
-     
         if (!other.CompareTag("PlayerAttack")) return;
         StopGravityField();
         _isDie = true;
@@ -219,7 +208,7 @@ public class ZerogMonster : MonoBehaviour
     
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.yellow;
         
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
