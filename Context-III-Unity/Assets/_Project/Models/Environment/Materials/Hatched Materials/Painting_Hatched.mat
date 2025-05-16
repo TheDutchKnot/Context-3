@@ -237,7 +237,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _GoochRampIntensity: 0.5
-    - _HatchingMapScale: 2
+    - _HatchingMapScale: 5
     - _Hue: 0
     - _IndirectFade: 1
     - _Initialized: 1
