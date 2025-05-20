@@ -19,15 +19,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   <HitBackfaces>k__BackingField: 0
-  <HitTriggers>k__BackingField: 0
-  <HitMultiFace>k__BackingField: 0
+  <HitTriggers>k__BackingField: 1
+  <HitMultiFace>k__BackingField: 1
   <CollisionRadius>k__BackingField: 0.05
   <CollisionRange>k__BackingField: 0.05
   <SeperationWeight>k__BackingField: 2.5
   <AlignmentWeight>k__BackingField: 2
   <CohesionWeight>k__BackingField: 1
   <CollisionWeight>k__BackingField: 7.5
-  <TargetWeight>k__BackingField: 1.5
+  <TargetWeight>k__BackingField: 2.06
   <MinSpeed>k__BackingField: 4
   <MaxSpeed>k__BackingField: 4
   <MaxSteer>k__BackingField: 2
