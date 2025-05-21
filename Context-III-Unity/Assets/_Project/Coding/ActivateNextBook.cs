@@ -7,13 +7,17 @@ public class ActivateNextBook : XRInteractableAffordanceStateProvider
 {
     [SerializeField] GameObject currentLight;
     [SerializeField] GameObject nextLight;
-    
+
+    bool wasSelected;
+
     // Update is called once per frame
     void Update()
     {
-        if(isHovered)
+        if(isSelected && !wasSelected)
         {
+            wasSelected = true;
 
+            ActivateNextLight();
         }
 
       //when player picks up  the light thats on, ActivateNextLight
