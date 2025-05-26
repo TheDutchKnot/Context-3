@@ -11,6 +11,7 @@ public class BoidSettings : ScriptableObject
 
     [field: Space(10)]
     [field: SerializeField] public LayerMask CollisionMask { get; private set; } = 0;
+    [field: SerializeField] public LayerMask DeathLayer { get; private set; } = 0;
     [field: SerializeField] public bool HitBackfaces { get; private set; } = false;
     [field: SerializeField] public bool HitTriggers { get; private set; } = false;
     [field: SerializeField] public bool HitMultiFace { get; private set; } = false;

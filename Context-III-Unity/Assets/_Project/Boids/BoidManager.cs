@@ -3,6 +3,7 @@ using Tdk.PlayerLoopSystems.Indirect;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 
 namespace tdk.Boids
@@ -11,64 +12,46 @@ namespace tdk.Boids
     {
         [SerializeField] AnimatedIndirectMeshSettings rendererSettings;
         [SerializeField] BoidSettings settings;
-        [SerializeField] int count = 0;
         [SerializeField] Transform target;
 
-        [SerializeField] Transform camTarget;
-
-        NativeArray<Boid> boids;
+        NativeList<Boid> boids;
         NativeArray<float3> vel;
 
         NativeArray<SpherecastCommand> commands;
         NativeArray<RaycastHit> hitResults;
+        NativeArray<Matrix4x4> boidTRS;
 
         AnimatedIndirectMesh renderer;
 
         void Awake()
         {
-            boids = new NativeArray<Boid>(settings.MaxCapacity, Allocator.Persistent);
             vel = new NativeArray<float3>(settings.MaxCapacity, Allocator.Persistent);
-
-            for (int i = 0; i < settings.MaxCapacity; i++)
-            {
-                boids[i] = new Boid
-                {
-                    position = transform.position + UnityEngine.Random.insideUnitSphere * 4,
-                    direction = transform.forward
-                };
-            }
+            boids = new NativeList<Boid>(settings.MaxCapacity, Allocator.Persistent);
 
             renderer = rendererSettings.Create();
-
-            if (count > settings.MaxCapacity)
-            {
-                InvokeRepeating(nameof(Add), 4, 4);
-            }
         }
 
-        public void Add()
+        public void Add(Transform origin)
         {
-            boids[count] = new()
+            boids.AddNoResize(new Boid
             {
-                position = transform.position,
-                direction = transform.forward
-            };
-            count++;
+                position = origin.position + UnityEngine.Random.insideUnitSphere * 0.001f,
+                direction = origin.forward
+            });
         }
 
         void Update()
         {
-            if (count == 0) return;
-
-            using (commands = new NativeArray<SpherecastCommand>(count, Allocator.TempJob))
-            using (hitResults = new NativeArray<RaycastHit>(count, Allocator.TempJob))
+            using (commands = new NativeArray<SpherecastCommand>(boids.Length, Allocator.TempJob))
+            using (hitResults = new NativeArray<RaycastHit>(boids.Length, Allocator.TempJob))
+            using (boidTRS = new NativeArray<Matrix4x4>(boids.Length, Allocator.TempJob))
             {
-                var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(commands, hitResults, boids, settings.CollisionMask.value);
+                var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(commands, hitResults, boids.AsArray(), settings.CollisionMask.value);
 
                 var steerJob = new SteerBoids
                 {
                     boidVelocities = vel,
-                    boids = boids,
+                    boids = boids.AsArray(),
                     hits = hitResults,
 
                     perceptionRadius = settings.PerceptionRadius,
@@ -89,22 +72,40 @@ namespace tdk.Boids
                     deltaTime = Time.deltaTime
                 };
 
-                var steerJobHandle = steerJob.Schedule(count, 1, queryJobHandle);
+                var steerJobHandle = steerJob.Schedule(boids.Length, 1, queryJobHandle);
 
                 var syncJob = new SyncBoids
                 {
-                    Boids = boids,
+                    Boids = boids.AsArray(),
                     Vel = vel,
-                    deltaTime = Time.deltaTime
+                    deltaTime = Time.deltaTime,
+                    scale = rendererSettings.Scale,
+                    TRS = boidTRS
                 };
 
-                var syncJobHandle = syncJob.Schedule(count, 1, steerJobHandle);
+                var syncJobHandle = syncJob.Schedule(boids.Length, 1, steerJobHandle);
 
                 syncJobHandle.Complete();
 
-                renderer.SetData(boids.GetSubArray(0, count));
-                
-                camTarget.transform.SetLocalPositionAndRotation(boids[0].position, Quaternion.Euler(boids[0].direction));
+                for (int i = 0; i < boids.Length; i++)
+                {
+                    if (hitResults[i].collider != null)
+                    {
+                        try
+                        {
+                            if (settings.DeathLayer.Contains(hitResults[i].transform.gameObject.layer))
+                            {
+                                boids.RemoveAtSwapBack(i);
+                            }
+                        }
+                        catch(System.Exception e)
+                        {
+                            Debug.Log(e);
+                        }
+                    }
+                }
+
+                renderer.SetData(boidTRS);
             }
         }
 

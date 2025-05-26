@@ -140,10 +140,29 @@ public struct SyncBoids : IJobParallelFor
     [ReadOnly]
     public NativeArray<float3> Vel;
 
+    public NativeArray<Matrix4x4> TRS;
+
     [ReadOnly] public float deltaTime;
+    [ReadOnly] public Vector3 scale;
 
     public void Execute(int i)
     {
         Boids[i] = new Boid { position = Boids[i].position + (Vel[i] * deltaTime), direction = Vel[i] };
+
+        TRS[i] = create_matrix(Boids[i].position, Boids[i].direction, new float3(0, 1, 0));
+        //TRS[i] = Matrix4x4.TRS(Boids[i].position, quaternion.EulerXYZ(Boids[i].direction), scale);
+    }
+
+    float4x4 create_matrix(float3 pos, float3 dir, float3 up)
+    {
+        float3 zaxis = math.normalize(dir);
+        float3 xaxis = math.normalize(math.cross(up, zaxis));
+        float3 yaxis = math.cross(zaxis, xaxis);
+        return new float4x4(
+            xaxis.x, yaxis.x, zaxis.x, pos.x,
+            xaxis.y, yaxis.y, zaxis.y, pos.y,
+            xaxis.z, yaxis.z, zaxis.z, pos.z,
+            0, 0, 0, 1
+        );
     }
 }

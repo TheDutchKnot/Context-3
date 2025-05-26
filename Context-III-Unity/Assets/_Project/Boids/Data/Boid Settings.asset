@@ -27,7 +27,7 @@ MonoBehaviour:
   <AlignmentWeight>k__BackingField: 2
   <CohesionWeight>k__BackingField: 1
   <CollisionWeight>k__BackingField: 12.5
-  <TargetWeight>k__BackingField: 1.5
+  <TargetWeight>k__BackingField: 3
   <MinSpeed>k__BackingField: 9
   <MaxSpeed>k__BackingField: 8
   <MaxSteer>k__BackingField: 4

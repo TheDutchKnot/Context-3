@@ -9,6 +9,8 @@ namespace Tdk.PlayerLoopSystems.Indirect
         readonly AnimatedIndirectMeshSettings settings;
         readonly FrequencyTimer timer;
 
+        NativeArray<Matrix4x4> boidTRS;
+
         int animIndex;
         int dataLen;
 
@@ -41,6 +43,28 @@ namespace Tdk.PlayerLoopSystems.Indirect
             settings.Material.SetBuffer(settings.ShaderBufferId, dataBuf);
         }
 
+        public void SetData(NativeArray<Matrix4x4> data)
+        {
+            if (boidTRS == null || boidTRS.Length != data.Length)
+            {
+                if (data.Length == 0)
+                {
+                    dataLen = 0;
+                    return;
+                }
+
+                if (!boidTRS.IsCreated)
+                    boidTRS.Dispose();
+
+                boidTRS = new NativeArray<Matrix4x4>(data.Length, Allocator.Persistent);
+                dataLen = data.Length;
+            }
+
+            if (!boidTRS.IsCreated) return;
+
+            data.CopyTo(boidTRS);
+        }
+
         void TickAnimation()
         {
             animIndex++;
@@ -55,12 +79,17 @@ namespace Tdk.PlayerLoopSystems.Indirect
 
         public override void RenderMeshIndirect()
         {
-            Graphics.RenderMeshIndirect(settings.Params, settings.Meshes[animIndex], argsBuf);
+            if (dataLen == 0) return;
+            //Graphics.RenderMeshIndirect(settings.Params, settings.Meshes[animIndex], argsBuf);
+            Graphics.RenderMeshInstanced(settings.Params, settings.Meshes[animIndex], 0, boidTRS);
         }
 
         public override void Dispose()
         {
             if (disposed) return;
+
+            if (boidTRS.IsCreated)
+                boidTRS.Dispose();
 
             timer.Dispose();
 
