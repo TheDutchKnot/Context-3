@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     void stateChange(GameState newState)
     {
-        if (newState.Equals(GameState.ZeroGravity))
+        if (newState.Equals(GameState.ZERO_GRAVITY))
         {
             dynamicMoveProvider.useGravity = false;
             dynamicMoveProvider.enableFly = true;
@@ -69,7 +70,7 @@ public class PlayerController : MonoBehaviour
         UpdatePlayerState();
 
         // check game state = zero G
-        if (gameManager.CurrentGameState == GameState.ZeroGravity && currentState != PlayerActionState.Grounded)
+        if (gameManager.CurrentGameState == GameState.ZERO_GRAVITY && currentState != PlayerActionState.Grounded)
         {
             _flyForce = zeroGravityFlyForce;
             //1. flying
@@ -86,7 +87,7 @@ public class PlayerController : MonoBehaviour
             // 2. climbing
             if (_previousState == PlayerActionState.Climbing && AreHandsFreeOfClimb())
             {
-                if (gameManager.CurrentGameState == GameState.ZeroGravity)
+                if (gameManager.CurrentGameState == GameState.ZERO_GRAVITY)
                 {
                     TurnOnZeroGravity();
                 }
@@ -129,7 +130,7 @@ public class PlayerController : MonoBehaviour
     private void UpdatePlayerState()
     { 
         // If the character controller detects that it is on the ground, the state is grounded
-        if (gameManager.CurrentGameState==GameState.Playing)
+        if (gameManager.CurrentGameState==GameState.PLAYING)
         {
             currentState = IsAnyHandInteracting() ? PlayerActionState.Climbing : PlayerActionState.Grounded;
         }
@@ -179,17 +180,28 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        HandelTrigger(other.gameObject.name);
+        // HandelTrigger(other.gameObject.name);
+        string[] parts = other.gameObject.name.Split('-');
+        string prefix = parts[0];
+        string triggerInfo = parts[1];
+        if (prefix.Equals("GameState") && System.Enum.TryParse<GameState>(triggerInfo, out GameState newState))
+        {
+            gameManager.SetGameState(newState);
+        }
     }
 
-    
-    
+    private void OnTriggerExit(Collider other)
+    {
+        gameManager.SetGameState(GameState.PLAYING);
+    }
+
+
     private void HandelTrigger(string triggerName)
     {
         string[] parts = triggerName.Split('_');
         if (parts.Length < 2)
         {
-            Debug.LogWarning($"Trigger wrong trigger name: {triggerName}");
+            Debug.Log($"Trigger wrong trigger name: {triggerName}");
             return;
         }
 
@@ -201,7 +213,7 @@ public class PlayerController : MonoBehaviour
             string[] states = triggerInfo.Split('-');
             if (states.Length < 2)
             {
-                Debug.LogWarning($"GameState wrong trigger name: {triggerName}");
+                Debug.Log($"GameState wrong trigger name: {triggerName}");
                 return;
             }
             string oldStateStr = states[0]; // "Playing"
@@ -220,7 +232,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"No Match State!!! cur state:{gameManager.CurrentGameState}");
+                    Debug.LogWarning($"No Match State!!! cur state:{gameManager.CurrentGameState}");
                 }
             }
             else

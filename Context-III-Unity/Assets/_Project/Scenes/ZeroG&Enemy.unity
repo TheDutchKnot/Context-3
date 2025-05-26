@@ -3409,7 +3409,7 @@ GameObject:
   - component: {fileID: 1651131132}
   - component: {fileID: 1651131133}
   m_Layer: 0
-  m_Name: GameState_Playing-BossFight
+  m_Name: GameState-BOSS_FIGHT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4046,7 +4046,7 @@ GameObject:
   - component: {fileID: 2051306705}
   - component: {fileID: 2051306704}
   m_Layer: 0
-  m_Name: GameState_Playing-ZeroGravity
+  m_Name: GameState-ZERO_GRAVITY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4071,8 +4071,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.9561381, y: 0.951147, z: 0.14600778}
-  m_Center: {x: 0.3290081, y: 0.025938185, z: 0.10675824}
+  m_Size: {x: 9.981105, y: 0.951147, z: 9.830119}
+  m_Center: {x: 0.08130503, y: 0.025938185, z: 4.893683}
 --- !u!4 &2051306705
 Transform:
   m_ObjectHideFlags: 0
@@ -4082,7 +4082,7 @@ Transform:
   m_GameObject: {fileID: 2051306703}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.575, y: 12.3090725, z: -9.378401}
+  m_LocalPosition: {x: -0.575, y: 12.3090725, z: -9.17}
   m_LocalScale: {x: 1, y: 3.19, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

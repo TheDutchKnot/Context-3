@@ -7,11 +7,11 @@ using System;
 /// </summary>
 public enum GameState
 {
-    MainMenu,     
-    Playing,      
-    ZeroGravity,
-    BossFight,
-    Paused        
+    ANIMATION,     
+    PLAYING,      
+    ZERO_GRAVITY,
+    BOSS_FIGHT,
+    GAMEOVER      
 }
 
 
@@ -41,7 +41,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SetGameState(GameState.Playing);
+        // TODO need change to ANIMATION later
+        SetGameState(GameState.PLAYING);
     }
 
     /// <summary>
@@ -57,24 +58,24 @@ public class GameManager : MonoBehaviour
         StateChange?.Invoke(newGameState);
         switch (currentGameState)
         {
-            case GameState.MainMenu:
-                Debug.Log("GameState -> MainMenu");
+            case GameState.ANIMATION:
+                Debug.Log("GameState -> Animation");
                 break;
 
-            case GameState.Playing:
+            case GameState.PLAYING:
                 Debug.Log("GameState -> Playing");
                 break;
             
-            case GameState.BossFight:
+            case GameState.BOSS_FIGHT:
                 Debug.Log("GameState -> BossFight");
                 break;
             
-            case GameState.ZeroGravity:
+            case GameState.ZERO_GRAVITY:
                 Debug.Log("GameState -> ZeroGravity");
                 break;
 
-            case GameState.Paused:
-                Debug.Log("GameState -> Paused");
+            case GameState.GAMEOVER:
+                Debug.Log("GameState -> Game over");
                 break;
         }
     }
