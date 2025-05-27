@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
@@ -179,11 +180,24 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        HandelTrigger(other.gameObject.name);
+        // HandelTrigger(other.gameObject.name);
+        
+        string[] parts = other.gameObject.name.Split('-');
+        string prefix = parts[0];
+        string triggerInfo = parts[1];
+        if (prefix.Equals("GameState") && System.Enum.TryParse<GameState>(triggerInfo, out GameState newState))
+        {
+            gameManager.SetGameState(newState);
+        }
+        
     }
 
-    
-    
+    private void OnTriggerExit(Collider other)
+    {
+        gameManager.SetGameState(GameState.Playing);
+    }
+
+
     private void HandelTrigger(string triggerName)
     {
         string[] parts = triggerName.Split('_');

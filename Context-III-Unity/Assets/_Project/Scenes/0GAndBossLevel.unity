@@ -10102,7 +10102,7 @@ GameObject:
   - component: {fileID: 184539580}
   - component: {fileID: 184539579}
   m_Layer: 0
-  m_Name: GameState_Playing-ZeroGravity
+  m_Name: GameState-ZeroGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10955,10 +10955,74 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 889601898}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 227230125}
+    - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 227230124}
     - targetCorrespondingSourceObject: {fileID: 1767192433, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 344259849}
   m_SourcePrefab: {fileID: 100100000, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+--- !u!1 &227230120 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 227230119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &227230121 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1670256625, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 227230119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &227230122 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 202364688, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 227230119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!143 &227230123 stripped
+CharacterController:
+  m_CorrespondingSourceObject: {fileID: 6232745470614056090, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 227230119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &227230124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227230120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a39e1e1aeb24343ae6b18507605bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 853957078}
+  characterController: {fileID: 227230123}
+  playerCamera: {fileID: 344259845}
+  leftHand: {fileID: 227230122}
+  rightHand: {fileID: 227230121}
+  leftInteractor: {fileID: 2442306273320644280, guid: 3df3e1220f2164f448701a6de8084f92, type: 3}
+  rightInteractor: {fileID: 4808866746549998793, guid: b200f6587d118224eba8467281481800, type: 3}
+  zeroGravity: {fileID: 227230125}
+  zeroGravityFlyForce: 0.5
+  currentState: 0
+  dynamicMoveProvider: {fileID: 1582860052}
+--- !u!114 &227230125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227230120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49ab4d651deae954d93b955b9b453613, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zeroGravityListenTime: 0.1
+  zeroGravityPushForce: 20
+  zeroGravityPushTimeDur: 20
 --- !u!1 &227684593
 GameObject:
   m_ObjectHideFlags: 0
@@ -26724,7 +26788,7 @@ GameObject:
   - component: {fileID: 557780547}
   - component: {fileID: 557780546}
   m_Layer: 0
-  m_Name: GameState_Playing-ZeroGravity
+  m_Name: GameState-ZeroGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34390,6 +34454,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4976824324784077464, guid: 8537fc0fcc6fa5b45901f77fa876228c, type: 3}
   m_PrefabInstance: {fileID: 850946263}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &853957077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 853957079}
+  - component: {fileID: 853957078}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &853957078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853957077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 840452dcb24b0164eb1c9f50c7e6dbe6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentGameState: 0
+--- !u!4 &853957079
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853957077}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -37.862457, y: -23.49319, z: -75.368164}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &856474105
 Mesh:
   m_ObjectHideFlags: 0
@@ -37084,7 +37193,7 @@ GameObject:
   - component: {fileID: 927525813}
   - component: {fileID: 927525812}
   m_Layer: 0
-  m_Name: GameState_Playing-ZeroGravity
+  m_Name: GameState-ZeroGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44499,7 +44608,7 @@ GameObject:
   - component: {fileID: 1125040254}
   - component: {fileID: 1125040253}
   m_Layer: 0
-  m_Name: GameState_Playing-ZeroGravity
+  m_Name: GameState-ZeroGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64028,7 +64137,7 @@ GameObject:
   - component: {fileID: 1534617458}
   - component: {fileID: 1534617457}
   m_Layer: 0
-  m_Name: GameState_Playing-ZeroGravity
+  m_Name: GameState-ZeroGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78666,7 +78775,7 @@ GameObject:
   - component: {fileID: 1859956248}
   - component: {fileID: 1859956247}
   m_Layer: 0
-  m_Name: GameState_Playing-ZeroGravity
+  m_Name: GameState-ZeroGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90379,3 +90488,4 @@ SceneRoots:
   - {fileID: 440275079}
   - {fileID: 1992901027}
   - {fileID: 702775791}
+  - {fileID: 853957079}
