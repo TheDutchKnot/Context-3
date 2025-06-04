@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Glow Books
+  m_Name: Rug_Hatched 1
   m_Shader: {fileID: 4800000, guid: 7633a2fd8a3bed44791c9e952ff86e5d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -15,6 +15,7 @@ Material:
   - _MK_ALBEDO_MAP
   - _MK_ARTISTIC_HATCHING
   - _MK_LIGHT_BANDED
+  - _MK_NORMAL_MAP
   - _MK_OUTLINE_HULL_CLIP
   - _MK_OUTLINE_NOISE
   - _MK_RECEIVE_SHADOWS
@@ -33,12 +34,12 @@ Material:
     IGNOREPROJECTOR: False
     RenderType: Opaque
   disabledShaderPasses: []
-  m_LockedProperties: _GoochDarkColor _GoochDarkMap
+  m_LockedProperties: _AlphaClipping
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _AlbedoMap:
-        m_Texture: {fileID: 2800000, guid: ece7d9ab544c29c4892c9dc84977a102, type: 3}
+        m_Texture: {fileID: 2800000, guid: c28f7cc02a642a94e9be0e0d685ec3a2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -114,7 +115,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ece7d9ab544c29c4892c9dc84977a102, type: 3}
+        m_Texture: {fileID: 2800000, guid: c28f7cc02a642a94e9be0e0d685ec3a2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -130,7 +131,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: c22191d2fc529614faedf8334f6575ea, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -192,8 +193,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
-    - _AdditionalLightsFalloff: 0.39
-    - _AdditionalLightsThreshold: 0.54
+    - _AdditionalLightsFalloff: 0.53
+    - _AdditionalLightsThreshold: 0.32
     - _AdvancedTab: 1
     - _AlbedoMapIntensity: 1
     - _AlembicMotionVectors: 0
@@ -201,7 +202,7 @@ Material:
     - _AlphaCutoff: 0.486
     - _Anisotropy: 0
     - _Artistic: 2
-    - _ArtisticFrequency: 1
+    - _ArtisticFrequency: 1.5
     - _ArtisticProjection: 0
     - _ArtisticShadowFilter: 0
     - _Blend: 0
@@ -220,7 +221,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DetailUVSet: 0
     - _Diffuse: 0
-    - _DiffuseSmoothness: 0.31
+    - _DiffuseSmoothness: 0.21
     - _DiffuseThresholdOffset: 0.25
     - _Dissolve: 0
     - _DissolveAmount: 0.5
@@ -236,7 +237,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _GoochRampIntensity: 0.5
-    - _HatchingMapScale: 6
+    - _HatchingMapScale: 3
     - _Hue: 0
     - _IndirectFade: 1
     - _Initialized: 1
@@ -247,8 +248,8 @@ Material:
     - _IridescenceThresholdOffset: 0.25
     - _Light: 2
     - _LightBands: 4
-    - _LightBandsScale: 0.39
-    - _LightThreshold: 0.53
+    - _LightBandsScale: 1
+    - _LightThreshold: 0.636
     - _LightTransmission: 0
     - _LightTransmissionDistortion: 0.25
     - _LightTransmissionIntensity: 1
@@ -266,7 +267,7 @@ Material:
     - _OutlineFadeMax: 2
     - _OutlineFadeMin: 0.25
     - _OutlineNoise: -1
-    - _OutlineSize: 8
+    - _OutlineSize: 15
     - _OutlineTab: 1
     - _OverwriteBlend: 0
     - _Parallax: 0.02
@@ -280,12 +281,12 @@ Material:
     - _Roughness: 0.5
     - _Saturation: 1
     - _SketchMapScale: 1
-    - _Smoothness: 0.14
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _Specular: 1
     - _SpecularHighlights: 1
     - _SpecularIntensity: 10
-    - _SpecularSmoothness: 0.12
+    - _SpecularSmoothness: 0
     - _SpecularThresholdOffset: 0.25
     - _SrcBlend: 1
     - _Stencil: 1
@@ -301,25 +302,25 @@ Material:
     - _ThresholdMapScale: 1
     - _UVSec: 0
     - _VertexAnimation: 0
-    - _VertexAnimationIntensity: 0.01
+    - _VertexAnimationIntensity: 0.004
     - _VertexAnimationStutter: 0
     - _Workflow: 0
     - _WrappedLighting: 0
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _AlbedoColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _AlbedoColor: {r: 1, g: 0.8443396, b: 0.8443396, a: 1}
+    - _Color: {r: 1, g: 0.8443396, b: 0.8443396, a: 1}
     - _DetailColor: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveBorderColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.46998245, g: 0.30622226, b: 0.29410848, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GoochBrightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GoochDarkColor: {r: 0.32704395, g: 0.20413525, b: 0.054507293, a: 1}
+    - _GoochDarkColor: {r: 0.19496846, g: 0.14641242, b: 0.083995834, a: 1}
     - _IridescenceColor: {r: 1, g: 1, b: 1, a: 0.5}
     - _LightTransmissionColor: {r: 1, g: 0.65, b: 0, a: 1}
-    - _OutlineColor: {r: 1, g: 0.7907676, b: 0.2783019, a: 1}
+    - _OutlineColor: {r: 0.06289297, g: 0.029073166, b: 0.0065266225, a: 1}
     - _RimBrightColor: {r: 1, g: 0.89023864, b: 0.68867916, a: 1}
-    - _RimColor: {r: 1, g: 0.6936472, b: 0, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimDarkColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 0.20312497, g: 0.20312497, b: 0.20312497, a: 1}
     - _VertexAnimationFrequency: {r: 2.5, g: 2.5, b: 2.5, a: 1}
