@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="747d8d7a-8729-4e2a-aab6-49ba31288411" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/IntersectionResult.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/IntersectionResult.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/Intersector.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/Intersector.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/Line.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/Line.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/Plane.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/Plane.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/TextureRegion.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/TextureRegion.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/Triangle.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/Triangle.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/Triangulator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Framework/Triangulator.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/SlicedHull.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/SlicedHull.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Slicer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/Slicer.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/SlicerExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/EzySlice/SlicerExtensions.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scenes/VR-Slicing.unity" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scenes/VR-Slicing.unity.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/Flesh.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/Flesh.mat.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/FleshTexture.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/FleshTexture.PNG.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/FleshTexture_2.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/FleshTexture_2.PNG.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/Knife.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/Knife.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/MockMaterial.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/MockMaterial.mat.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/SlicerObject.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/SlicerObject.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/VelocityEstimator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Slicing/VelocityEstimator.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/XR/Settings/OpenXR Package Settings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/XR/Settings/OpenXR Package Settings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Plugins/MK.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/MK.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Plugins/MK/MKToon.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/MK/MKToon.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Plugins/MK/MKToon/Examples.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Plugins/MK/MKToon/Examples.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2xztbyOZ7fvMVTlBpO3PFTYMhP7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Merging EnemySystem",
+    "kotlin-language-version-configured": "true",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="747d8d7a-8729-4e2a-aab6-49ba31288411" name="Changes" comment="" />
+      <created>1748952805099</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1748952805099</updated>
+      <workItem from="1748952806720" duration="22000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
