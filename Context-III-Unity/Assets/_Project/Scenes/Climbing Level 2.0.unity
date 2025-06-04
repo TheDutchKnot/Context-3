@@ -740,6 +740,7 @@ MonoBehaviour:
     m_Variable: {fileID: 0}
   highlitedMaterial: {fileID: 2100000, guid: 69edbb67d0e8c2d47b005b69195dd55e, type: 2}
   normalMaterial: {fileID: 2100000, guid: 1e6b916b2f7285c41946a4213665502f, type: 2}
+  boids: {fileID: 164649228}
   currentLight: {fileID: 5608422}
   nextLight: {fileID: 1939712294043777504}
   nextBook: {fileID: 1939712294043777505}
@@ -12889,6 +12890,75 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 592819852475493393, guid: 1b6a6638b3a789349893b7849340f706, type: 3}
   m_PrefabInstance: {fileID: 164595829}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &164649226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 164649229}
+  - component: {fileID: 164649228}
+  - component: {fileID: 164649227}
+  m_Layer: 0
+  m_Name: BoidSwarm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &164649227
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164649226}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 5, z: 5}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &164649228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164649226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 361c66da6d8d0f948927921c2acf6966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rendererSettings: {fileID: 11400000, guid: ff461dde95dad2543aa78965cfaeb97a, type: 2}
+  settings: {fileID: 11400000, guid: 9b579b54b2c095648aa9ad91e7bd3435, type: 2}
+  target: {fileID: 164649229}
+--- !u!4 &164649229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164649226}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &165914240
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16994,6 +17064,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1990818933}
     m_Modifications:
+    - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      propertyPath: boids
+      value: 
+      objectReference: {fileID: 164649228}
     - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: nextBook
       value: 
@@ -63305,6 +63379,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1990818933}
     m_Modifications:
+    - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      propertyPath: boids
+      value: 
+      objectReference: {fileID: 164649228}
     - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: nextBook
       value: 
@@ -140784,6 +140862,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1990818933}
     m_Modifications:
     - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      propertyPath: boids
+      value: 
+      objectReference: {fileID: 164649228}
+    - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: nextBook
       value: 
       objectReference: {fileID: 5608424}
@@ -180483,6 +180565,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 164649229}
   - {fileID: 944990226}
   - {fileID: 582474505}
   - {fileID: 2081973882}

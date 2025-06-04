@@ -1,3 +1,4 @@
+using tdk.Boids;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.State;
 
@@ -7,6 +8,8 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
     [Header("Things to fill in")]
     [SerializeField] Material highlitedMaterial;
     [SerializeField] Material normalMaterial;
+
+    [SerializeField] BoidManager boids;
 
     [SerializeField] GameObject currentLight;
     [SerializeField] GameObject nextLight;
@@ -31,6 +34,8 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
             wasSelected = true;
 
             rend.material = normalMaterial;
+
+            boids.Add(transform);
 
             nextBook.SwitchTexture();
 
