@@ -41,7 +41,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 2002
   stringTagMap:
     IGNOREPROJECTOR: False
     RenderType: Opaque
@@ -277,7 +277,7 @@ Material:
     - _Light: 1
     - _LightBands: 4
     - _LightBandsScale: 0.5
-    - _LightThreshold: 0.5
+    - _LightThreshold: 0.523
     - _LightTransmission: 0
     - _LightTransmissionDistortion: 0.25
     - _LightTransmissionIntensity: 1
@@ -301,7 +301,7 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RenderFace: 2
-    - _RenderPriority: 0
+    - _RenderPriority: -2
     - _Rim: 0
     - _RimSize: 1
     - _RimSmoothness: 0.5
