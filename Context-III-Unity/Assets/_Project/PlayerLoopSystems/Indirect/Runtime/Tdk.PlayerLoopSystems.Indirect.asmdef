@@ -1,0 +1,17 @@
+{
+    "name": "Tdk.PlayerLoopSystems.Indirect",
+    "rootNamespace": "Tdk.PlayerLoopSystems.Indirect",
+    "references": [
+        "GUID:bcb7c34d7dc59af4c84d79ee58f53a81",
+        "GUID:8f874526c6aaa21489778ce2941cccdc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

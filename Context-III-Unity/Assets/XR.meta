@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Context-III-Unity/Assets/XR.meta
 guid: 9cbbb594362030b4b9de1242c9b3ee60
+========
+guid: 28e04144e65b16c4293464476481fda0
+>>>>>>>> Deferred-Rendering:Context-III-Unity/Assets/XR/Resources.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

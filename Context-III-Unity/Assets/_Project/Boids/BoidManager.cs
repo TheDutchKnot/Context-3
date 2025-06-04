@@ -1,0 +1,119 @@
+using Tdk.PhysXcastBatchProcessor;
+using Tdk.PlayerLoopSystems.Indirect;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
+using Unity.XR.CoreUtils;
+using UnityEngine;
+
+namespace tdk.Boids
+{
+    public class BoidManager : MonoBehaviour
+    {
+        [SerializeField] AnimatedIndirectMeshSettings rendererSettings;
+        [SerializeField] BoidSettings settings;
+        [SerializeField] Transform target;
+
+        NativeList<Boid> boids;
+        NativeArray<float3> vel;
+
+        NativeArray<SpherecastCommand> commands;
+        NativeArray<RaycastHit> hitResults;
+        NativeArray<Matrix4x4> boidTRS;
+
+        AnimatedIndirectMesh renderer;
+
+        void Awake()
+        {
+            vel = new NativeArray<float3>(settings.MaxCapacity, Allocator.Persistent);
+            boids = new NativeList<Boid>(settings.MaxCapacity, Allocator.Persistent);
+
+            renderer = rendererSettings.Create();
+        }
+
+        public void Add(Transform origin)
+        {
+            boids.AddNoResize(new Boid
+            {
+                position = origin.position + UnityEngine.Random.insideUnitSphere * 0.001f,
+                direction = origin.forward
+            });
+        }
+
+        void Update()
+        {
+            using (commands = new NativeArray<SpherecastCommand>(boids.Length, Allocator.TempJob))
+            using (hitResults = new NativeArray<RaycastHit>(boids.Length, Allocator.TempJob))
+            using (boidTRS = new NativeArray<Matrix4x4>(boids.Length, Allocator.TempJob))
+            {
+                var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(commands, hitResults, boids.AsArray(), settings.CollisionMask.value);
+
+                var steerJob = new SteerBoids
+                {
+                    boidVelocities = vel,
+                    boids = boids.AsArray(),
+                    hits = hitResults,
+
+                    perceptionRadius = settings.PerceptionRadius,
+                    avoidanceRadius = settings.AvoidanceRadius,
+
+                    seperationWeight = settings.SeperationWeight,
+                    alignmentWeight = settings.AlignmentWeight,
+                    cohesionWeight = settings.CohesionWeight,
+
+                    collisionWeight = settings.CollisionWeight,
+                    targetWeight = settings.TargetWeight,
+
+                    minSpeed = settings.MinSpeed,
+                    maxSpeed = settings.MaxSpeed,
+                    maxSteer = settings.MaxSteer,
+
+                    targetPosition = target.position,
+                    deltaTime = Time.deltaTime
+                };
+
+                var steerJobHandle = steerJob.Schedule(boids.Length, 1, queryJobHandle);
+
+                var syncJob = new SyncBoids
+                {
+                    Boids = boids.AsArray(),
+                    Vel = vel,
+                    deltaTime = Time.deltaTime,
+                    scale = rendererSettings.Scale,
+                    TRS = boidTRS
+                };
+
+                var syncJobHandle = syncJob.Schedule(boids.Length, 1, steerJobHandle);
+
+                syncJobHandle.Complete();
+
+                for (int i = 0; i < boids.Length; i++)
+                {
+                    if (hitResults[i].collider != null)
+                    {
+                        try
+                        {
+                            if (settings.DeathLayer.Contains(hitResults[i].transform.gameObject.layer))
+                            {
+                                boids.RemoveAtSwapBack(i);
+                            }
+                        }
+                        catch(System.Exception e)
+                        {
+                            Debug.Log(e);
+                        }
+                    }
+                }
+
+                renderer.SetData(boidTRS);
+            }
+        }
+
+        void OnDestroy()
+        {
+            if (boids.IsCreated) boids.Dispose();
+            if (vel.IsCreated) vel.Dispose();
+            renderer.Dispose();
+        }
+    }
+}
