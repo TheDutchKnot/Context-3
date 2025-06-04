@@ -1,5 +1,11 @@
 using UnityEngine;
 using EzySlice;
+using System;
+
+public interface ISlicedCallBack
+{
+    public Action OnSlice { get; set; }
+}
 
 public class SlicerObject : MonoBehaviour
 {
@@ -22,6 +28,11 @@ public class SlicerObject : MonoBehaviour
     {
         if (Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, cuttableMask))
         {
+            if (hit.transform.TryGetComponent(out ISlicedCallBack c))
+            {
+                c.OnSlice?.Invoke();
+            }
+
             Slice(hit.transform.gameObject);
         }
     }

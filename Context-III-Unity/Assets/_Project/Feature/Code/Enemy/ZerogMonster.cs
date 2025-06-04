@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class ZerogMonster : MonoBehaviour
+public class ZerogMonster : MonoBehaviour, ISlicedCallBack
 {
     // public Animator animator;
     public Transform player;
@@ -27,11 +27,15 @@ public class ZerogMonster : MonoBehaviour
 
     // monster eye height
     public float eyeHeight = 1.5f;
-    
+
+    public Action OnSlice { get; set; }
+
     private void Awake()
     {
         animator.applyRootMotion = false;
         player = GameObject.Find("XR Origin (XR Rig)").transform;
+
+        OnSlice += OnDeath;
     }
 
     private void Start()
@@ -53,14 +57,12 @@ public class ZerogMonster : MonoBehaviour
                 StartGravityField();
             }
         }
-        
-        // for test
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            StopGravityField();
-            _isDie = true;
-        }
-        
+    }
+
+    void OnDeath()
+    {
+        StopGravityField();
+        _isDie = true;
     }
     
     // Start pulling the player toward the boss
@@ -212,5 +214,10 @@ public class ZerogMonster : MonoBehaviour
         
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
-    
+
+    private void OnDestroy()
+    {
+        OnSlice -= OnDeath;
+    }
+
 }
