@@ -1538,7 +1538,7 @@ GameObject:
   - component: {fileID: 410755714}
   - component: {fileID: 410755716}
   - component: {fileID: 410755715}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TentacleAttackCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4076,6 +4076,7 @@ MonoBehaviour:
   playerCamera: {fileID: 480861156}
   leftHand: {fileID: 333649450}
   rightHand: {fileID: 710237421}
+  knockbackForce: 8
   leftInteractor: {fileID: 746270247}
   rightInteractor: {fileID: 194697120}
   zeroGravity: {fileID: 1586537409}
