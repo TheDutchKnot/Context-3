@@ -16,7 +16,7 @@ public class IdleState : IState
     }
     public void OnEnter()
     {
-        parameter.animator.Play("idle");
+        parameter.animator.Play("IdleClosedEMLoop_74");
     }
 
     public void OnUpdate()
@@ -58,7 +58,7 @@ public class ChaseState : IState
     public void OnEnter()
     {
         Debug.Log("Boos state: chase");
-        parameter.animator.Play("walk");
+        parameter.animator.Play("IdleOpenEMLoop_74");
     }
 
     public void OnUpdate()
@@ -112,6 +112,7 @@ public class AttackConState : IState
     }
     public void OnEnter()
     {
+        parameter.animator.Play("IdleOpenEMLoop_74");
         manager.playerInSightRange =
             Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
         manager.playerInAttackRange =
@@ -343,24 +344,36 @@ public class Attack1State : IState
 
 
 
-
-
 public class Attack2State : IState
 {
     private FSM manager;
     private Parameter parameter;
     private AnimatorStateInfo info;
-    private float gravityTimer;
-    
+    private bool pullTrigger;
+    private float timer;
+    private bool isRetreating = false;
+    private Vector3 retreatTarget;
+    private Vector3 enterPosition;
+    private float savedStoppingDistance;
+    private bool A2Anim;
+
+    // Fixed retreat distance
+    private const float retreatDistance = 6f;
+    // Arrival tolerance
+    private const float arriveTolerance = 0.01f;
+    // Attack duration
+    private const float attackDuration = 3f;
+
     public Attack2State(FSM manager)
     {
         this.manager = manager;
         this.parameter = manager.parameter;
     }
+
     public void OnEnter()
     {
-      
-        gravityTimer = 0f;
+        pullTrigger = true;
+        A2Anim = true;
         if (!parameter.availableAttack2)
         {
             Debug.Log("Attack2 unavailable, skip!");
@@ -371,46 +384,205 @@ public class Attack2State : IState
         // mark Attack2 as used
         parameter.availableAttack2 = false;
         
-        // play Attack2 anim
-        parameter.animator.Play("Attack2");
-        Debug.Log("Boss state: Attack2 - Gravity attack");
+        Debug.Log("[Boss Info] Attack2: Enter Start retreating");
+        enterPosition = manager.transform.position;
+        timer = 0f;
+        StartRetreat();
         
-        // pull player to boss
-        manager.StartGravityField();
+        // play Attack2 anim
+        // parameter.animator.Play("Atk_ZeroG_74");
+        // Debug.Log("Boss state: Attack2 - Gravity attack");
+    }
+
+    private void StartRetreat()
+    {
+        // 1) Save the original stoppingDistance and set it to 0 to be accurate to the point
+        savedStoppingDistance = manager.agent.stoppingDistance;
+        manager.agent.stoppingDistance = 0f;
+
+        // 2) Calculate the horizontal direction of player→boss (XYZ ignore Y)
+        Vector3 dir = manager.transform.position - manager.player.position;
+        dir.y = 0f;
+        dir.Normalize();
+
+        // 3) Take the boss's current point as the starting point and retreat in this direction by retreatDistance
+        Vector3 rawTarget = manager.transform.position + dir * retreatDistance;
+        Debug.Log($"[Attack1State] RawTarget = {rawTarget}");
+
+        // 4) Sampling NavMesh to ensure navigation
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(rawTarget, out hit, 1f, NavMesh.AllAreas))
+        {
+            retreatTarget = hit.position;
+        }
+        else
+        {
+            Debug.LogWarning("[Boss Info] retreatTarget not on NavMesh");
+            isRetreating = false;
+            return;
+        }
+
+        // 5) 发起后撤
+        isRetreating = true;
+        manager.agent.SetDestination(retreatTarget);
+        parameter.animator.Play("IdleOpenEMLoop_74");
+        Debug.Log($"[Attack1State] StartRetreat: 从 {enterPosition:F2} → {retreatTarget:F2}");
     }
 
     public void OnUpdate()
     {
-        manager.playerInSightRange =
-            Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
-        manager.playerInAttackRange =
-            Physics.CheckSphere(manager.transform.position, manager.attackRange, manager.whatIsPlayer);
-        //look at player
-        float turnSpeed = manager.agent.angularSpeed;  
-        manager.SmoothLookAt(manager.transform, manager.player.position, turnSpeed);
-        
-        info = parameter.animator.GetCurrentAnimatorStateInfo(0);
-        gravityTimer += Time.deltaTime;
-        Debug.Log("Attack 2: "+gravityTimer);
-        if (parameter.getHit)
+        // —— 后撤阶段 ——
+        if (isRetreating)
         {
-            manager.StopGravityField();
-            manager.TransitionState(StateType.Hit);
+            if (!manager.agent.pathPending
+                && manager.agent.remainingDistance <= arriveTolerance)
+            {
+                float actual = Vector3.Distance(enterPosition, manager.transform.position);
+                Debug.Log($"[Attack1State] 实际后撤距离 = {actual:F2} 米");
+
+                // 停止移动并恢复 stoppingDistance
+                manager.agent.isStopped = true;
+                manager.agent.ResetPath();
+                manager.agent.stoppingDistance = savedStoppingDistance;
+
+                isRetreating = false;
+                if (A2Anim)
+                {
+                    parameter.animator.Play("Atk_ZeroG_74");
+                    Debug.Log("Boss state: Attack2 - Gravity attack");
+                    A2Anim = false;
+                }
+            }
         }
-        if (gravityTimer >= 3f)
+        else
         {
-            manager.StopGravityField();
-            manager.TransitionState(StateType.Chase);
+            manager.playerInSightRange =
+                Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
+            manager.playerInAttackRange =
+                Physics.CheckSphere(manager.transform.position, manager.attackRange, manager.whatIsPlayer);
+            //look at player
+            float turnSpeed = manager.agent.angularSpeed;  
+            manager.SmoothLookAt(manager.transform, manager.player.position, turnSpeed);
+            
+          
+            
+        
+            info = parameter.animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorClipInfo[] msg = parameter.animator.GetCurrentAnimatorClipInfo(0);
+            if (msg != null && msg.Length > 0)
+            {
+                // 3. 取出第一个剪辑并获取它的名字
+                AnimationClip currentClip = msg[0].clip;
+                string clipName = currentClip != null ? currentClip.name : "Unknown Clip";
+
+                // 4. 打印到控制台
+                Debug.Log("当前动画剪辑名称: " + clipName);
+            }
+        
+            if (info.normalizedTime >= .45f && pullTrigger)
+            {
+                pullTrigger = false;
+                // pull player to boss
+                manager.StartGravityField();
+            }
+        
+            if (parameter.getHit)
+            {
+                manager.StopGravityField();
+                manager.TransitionState(StateType.Hit);
+            }
+            if (info.normalizedTime >= .95f)
+            {
+                manager.StopGravityField();
+                manager.TransitionState(StateType.Chase);
+            }
+            
         }
     }
 
     public void OnExit()
     {
-
+        // reset stoppingDistance
+        manager.agent.stoppingDistance = savedStoppingDistance;
     }
     
-
 }
+
+
+
+//
+//
+// public class Attack2State : IState
+// {
+//     private FSM manager;
+//     private Parameter parameter;
+//     private AnimatorStateInfo info;
+//     private bool pullTrigger;
+//     
+//     public Attack2State(FSM manager)
+//     {
+//         this.manager = manager;
+//         this.parameter = manager.parameter;
+//     }
+//     public void OnEnter()
+//     {
+//         pullTrigger = true;
+//         if (!parameter.availableAttack2)
+//         {
+//             Debug.Log("Attack2 unavailable, skip!");
+//             manager.TransitionState(StateType.Chase);
+//             return;
+//         }
+//         
+//         // mark Attack2 as used
+//         parameter.availableAttack2 = false;
+//         
+//         // play Attack2 anim
+//         parameter.animator.Play("Atk_ZeroG_74");
+//         Debug.Log("Boss state: Attack2 - Gravity attack");
+//         
+//         
+//         
+//     }
+//
+//     public void OnUpdate()
+//     {
+//         manager.playerInSightRange =
+//             Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
+//         manager.playerInAttackRange =
+//             Physics.CheckSphere(manager.transform.position, manager.attackRange, manager.whatIsPlayer);
+//         //look at player
+//         float turnSpeed = manager.agent.angularSpeed;  
+//         manager.SmoothLookAt(manager.transform, manager.player.position, turnSpeed);
+//         
+//         info = parameter.animator.GetCurrentAnimatorStateInfo(0);
+//         
+//         if (info.normalizedTime >= .35f && pullTrigger)
+//         {
+//             pullTrigger = false;
+//             // pull player to boss
+//             manager.StartGravityField();
+//         }
+//         
+//         if (parameter.getHit)
+//         {
+//             manager.StopGravityField();
+//             manager.TransitionState(StateType.Hit);
+//         }
+//         if (info.normalizedTime >= .95f)
+//         {
+//             manager.StopGravityField();
+//             manager.TransitionState(StateType.Chase);
+//         }
+//     }
+//
+//     public void OnExit()
+//     {
+//
+//     }
+//     
+//
+// }
 
 
 
@@ -450,7 +622,7 @@ public class Attack3State : IState
             manager.agent.stoppingDistance = manager.meleeAttackRange;
             manager.agent.SetDestination(manager.player.position);
 
-            parameter.animator.Play("walk");
+            
             Debug.Log($"[Attack3] too far, walk toward player ({distance:0.00}m), target distance {manager.meleeAttackRange}m");
             return;
         }
@@ -463,12 +635,13 @@ public class Attack3State : IState
     {
         // 如果你在 Parameter 里跟踪可用性，就在这里做：parameter.availableAttack3 = false;
         parameter.availableAttack3 = false;
-        parameter.animator.Play("attack_01");
-        manager.StartTentacleFlail();
+        
+        // manager.StartTentacleFlail();
     }
 
     public void OnUpdate()
     {
+        info = parameter.animator.GetCurrentAnimatorStateInfo(0);
         manager.playerInSightRange =
             Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
         manager.playerInAttackRange =
@@ -477,8 +650,6 @@ public class Attack3State : IState
         //look at player
         float turnSpeed = manager.agent.angularSpeed;  
         manager.SmoothLookAt(manager.transform, manager.player.position, turnSpeed);
-        
-        timer += Time.deltaTime;
 
         // If still approaching, wait until the path ends
         if (isApproaching)
@@ -489,16 +660,29 @@ public class Attack3State : IState
                 manager.player.position
             );
 
-            if (dist <= manager.meleeAttackRange + 1f)
+            if (dist <= manager.meleeAttackRange + 3f)
             {
-                
                 manager.agent.isStopped = true;
                 manager.agent.ResetPath();
                 Debug.Log("[Attack3] start attack3");
+                parameter.animator.Play("Atk_Tentacle_85");
                 BeginTentacleFlail();
                 isApproaching = false;
             }
             return;
+        }
+        else
+        { 
+            info = parameter.animator.GetCurrentAnimatorStateInfo(0);
+            manager.parameter.tentacleCollider.GetComponent<BoxCollider>().enabled = true;
+            if (info.normalizedTime >= .45f) {
+                manager.parameter.tentacleCollider.GetComponent<CapsuleCollider>().enabled = true;
+            }
+
+            if (info.normalizedTime >= .95f) {
+                manager.StopTentacleFlail(); 
+                manager.TransitionState(StateType.Chase); 
+            }  
         }
 
         if (parameter.getHit)
@@ -506,19 +690,8 @@ public class Attack3State : IState
             manager.StopTentacleFlail();
             manager.TransitionState(StateType.Hit);
         }
-        info = parameter.animator.GetCurrentAnimatorStateInfo(0);
-        
-        // if (info.normalizedTime >= .95f)
-        // {
-        //     manager.StopTentacleFlail();
-        //     manager.TransitionState(StateType.Chase);
-        // }
-        Debug.Log("Attack 3: "+timer);
-        if (timer>=4f)
-        {
-            manager.StopTentacleFlail();
-            manager.TransitionState(StateType.Chase);
-        }
+
+
     }
 
     public void OnExit()
@@ -526,6 +699,8 @@ public class Attack3State : IState
         // double check stop attack
         manager.StopTentacleFlail();
         // reset
+        manager.parameter.tentacleCollider.GetComponent<BoxCollider>().enabled = false;
+        manager.parameter.tentacleCollider.GetComponent<CapsuleCollider>().enabled = false;
         manager.agent.stoppingDistance = 1;
     }
 

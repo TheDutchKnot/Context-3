@@ -34,6 +34,8 @@ public class Parameter
     public Animator animator;
     public bool getHit;
 
+    public GameObject tentacleCollider;
+
     // attack recovery
     public bool availableAttack2 = true; // Attack2 是否可用（使用后将置为 false）
     public bool availableAttack3 = true; // Attack3 是否可用（使用后将置为 false）
@@ -116,9 +118,7 @@ public class FSM : MonoBehaviour
         Debug.Log("pull player to Boss");
 
         // 1) Disable the player's own movement script, not the CC
-        var playerCtrl = player.GetComponent<PlayerController>();
-        if (playerCtrl != null)
-            playerCtrl.enabled = false;
+        SetMovement(false);
 
         // 2) Play gravity‐field VFX...
         if (gravityEffect != null)
@@ -180,13 +180,31 @@ public class FSM : MonoBehaviour
         }
 
         // 2) Re‑enable the player's movement script
-        var playerCtrl = player.GetComponent<PlayerController>();
-        if (playerCtrl != null)
-            playerCtrl.enabled = true;
+        SetMovement(true);
 
         // 3) Stop the gravity‐field VFX
         if (gravityEffect != null)
             gravityEffect.Stop();
+    }
+    
+    public void SetMovement(bool _switch)
+    {
+        // get Locomotion System
+        var locoSys = player.Find("Locomotion");
+        if (locoSys == null)
+        {
+            Debug.LogWarning("cannot find Locomotion System");
+            return;
+        }
+        
+        var moveGO = locoSys.Find("Move");
+        if (moveGO == null)
+        {
+            Debug.LogWarning("cant find Move");
+            return;
+        }
+        
+        moveGO.gameObject.SetActive(_switch);
     }
 
     public void SmoothLookAt(Transform self, Vector3 targetPos, float maxDegreesPerSecond)
@@ -212,11 +230,11 @@ public class FSM : MonoBehaviour
         
     }
     
-    public void StartTentacleFlail()
-    {
-        Debug.Log("[Boss Info] Tentacle waving...");
-        // TODO: enable tentacle collider
-    }
+    // public void StartTentacleFlail()
+    // {
+    //     Debug.Log("[Boss Info] Tentacle waving...");
+    //     // TODO: enable tentacle collider
+    // }
     
     public void StopTentacleFlail()
     {
