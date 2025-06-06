@@ -119,8 +119,8 @@ public class ZerogMonster : MonoBehaviour, ISlicedCallBack
                 Vector3 move = horizontalDir * speed * Time.deltaTime;
 
                 // a slight vertical lift/hover:
-                // float verticalPull = Mathf.Clamp(dir.y, -1f, 1f) * (pullStrength * 0.2f) * Time.deltaTime;
-                // move.y = verticalPull;
+                float verticalPull = Mathf.Clamp(dir.y, -1f, 1f) * (pullStrength * 0.2f) * Time.deltaTime;
+                move.y = verticalPull;
                 
                 cc.Move(move);
             }
