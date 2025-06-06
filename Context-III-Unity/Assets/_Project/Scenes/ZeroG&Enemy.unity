@@ -2446,6 +2446,7 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 4
+  reactAnim: 0
   timeBetweenAttacks: 2
   alreadyAttacked: 0
   sightRange: 10
@@ -4076,7 +4077,8 @@ MonoBehaviour:
   playerCamera: {fileID: 480861156}
   leftHand: {fileID: 333649450}
   rightHand: {fileID: 710237421}
-  knockbackForce: 8
+  knockbackSpeed: 9
+  knockbackDuration: 0.3
   leftInteractor: {fileID: 746270247}
   rightInteractor: {fileID: 194697120}
   zeroGravity: {fileID: 1586537409}

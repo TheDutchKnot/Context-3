@@ -57,6 +57,7 @@ public class FSM : MonoBehaviour
     public Transform player;
     public LayerMask whatIsGround, whatIsPlayer;
 
+    public bool reactAnim;
     //attacking
     public float timeBetweenAttacks;
     public bool alreadyAttacked;
@@ -76,6 +77,7 @@ public class FSM : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         parameter.animator.applyRootMotion = false;
         agent.stoppingDistance = attackRange;
+        reactAnim = true;
     }
 
     void Start()

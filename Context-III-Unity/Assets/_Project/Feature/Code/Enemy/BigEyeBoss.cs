@@ -49,7 +49,7 @@ public class ChaseState : IState
 {
     private FSM manager;
     private Parameter parameter;
-
+    private AnimatorStateInfo info;
     public ChaseState(FSM manager)
     {
         this.manager = manager;
@@ -58,11 +58,34 @@ public class ChaseState : IState
     public void OnEnter()
     {
         Debug.Log("Boos state: chase");
-        parameter.animator.Play("IdleOpenEMLoop_74");
+        if (manager.reactAnim)
+        {
+            Debug.Log("回到伸舌头");
+            parameter.animator.Play("Inb_TentacleOutSingle_74");
+        }
+        else
+        {
+          parameter.animator.Play("IdleOpenEMLoop_74");  
+        }
+        
     }
 
     public void OnUpdate()
     {
+        info = parameter.animator.GetCurrentAnimatorStateInfo(0);
+        if (manager.reactAnim)
+        {
+            if (info.normalizedTime >= .95f)
+            {
+                parameter.animator.Play("IdleOpenEMLoop_74");
+                manager.reactAnim = false;
+            }
+            
+        }
+        else
+        {
+            manager.agent.SetDestination(manager.player.position);
+        }
         manager.playerInSightRange =
             Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
         manager.playerInAttackRange =
@@ -73,7 +96,7 @@ public class ChaseState : IState
         }
         float turnSpeed = manager.agent.angularSpeed;  
         manager.SmoothLookAt(manager.transform, manager.player.position, turnSpeed);
-        manager.agent.SetDestination(manager.player.position);
+        
         // if (!manager.playerInSightRange)
         // {
         //     manager.TransitionState(StateType.Idle);
@@ -112,7 +135,7 @@ public class AttackConState : IState
     }
     public void OnEnter()
     {
-        parameter.animator.Play("IdleOpenEMLoop_74");
+        // parameter.animator.Play("IdleOpenEMLoop_74");
         manager.playerInSightRange =
             Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
         manager.playerInAttackRange =
@@ -469,17 +492,18 @@ public class Attack2State : IState
         
             info = parameter.animator.GetCurrentAnimatorStateInfo(0);
             AnimatorClipInfo[] msg = parameter.animator.GetCurrentAnimatorClipInfo(0);
+            string curClipName = "";
             if (msg != null && msg.Length > 0)
             {
                 // 3. 取出第一个剪辑并获取它的名字
                 AnimationClip currentClip = msg[0].clip;
-                string clipName = currentClip != null ? currentClip.name : "Unknown Clip";
+                curClipName = currentClip != null ? currentClip.name : "Unknown Clip";
 
                 // 4. 打印到控制台
-                Debug.Log("当前动画剪辑名称: " + clipName);
+                Debug.Log("当前动画剪辑名称: " + curClipName);
             }
         
-            if (info.normalizedTime >= .45f && pullTrigger)
+            if (curClipName.Equals("Atk_ZeroG_74") && info.normalizedTime >= .45f && pullTrigger)
             {
                 pullTrigger = false;
                 // pull player to boss
@@ -494,6 +518,7 @@ public class Attack2State : IState
             if (info.normalizedTime >= .95f)
             {
                 manager.StopGravityField();
+                
                 manager.TransitionState(StateType.Chase);
             }
             
@@ -502,6 +527,7 @@ public class Attack2State : IState
 
     public void OnExit()
     {
+        manager.reactAnim = true;
         // reset stoppingDistance
         manager.agent.stoppingDistance = savedStoppingDistance;
     }
