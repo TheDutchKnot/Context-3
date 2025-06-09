@@ -37,10 +37,10 @@ public class Parameter
     public GameObject tentacleCollider;
 
     // attack recovery
-    public bool availableAttack2 = true; // Attack2 是否可用（使用后将置为 false）
-    public bool availableAttack3 = true; // Attack3 是否可用（使用后将置为 false）
-    public int attack1HealForAttack2 = 0; // 累计 Attack1 次数，用于恢复 Attack2
-    public int attack1HealForAttack3 = 0; // 累计 Attack1 次数，用于恢复 Attack3
+    public bool availableAttack2 = true;
+    public bool availableAttack3 = true; 
+    public int attack1HealForAttack2 = 0; 
+    public int attack1HealForAttack3 = 0; 
     
     // record hit part
     public HitPart lastHitPart = HitPart.None;

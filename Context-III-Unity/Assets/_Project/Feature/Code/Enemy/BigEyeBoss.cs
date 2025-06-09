@@ -280,8 +280,7 @@ public class Attack1State : IState
             PlayAttack();
             return;
         }
-
-        // 5) 发起后撤
+        
         isRetreating = true;
         manager.agent.SetDestination(retreatTarget);
         parameter.animator.Play("walk");
@@ -290,7 +289,7 @@ public class Attack1State : IState
 
     public void OnUpdate()
     {
-        // —— 后撤阶段 ——
+        // —— Retreat ——
         if (isRetreating)
         {
             if (!manager.agent.pathPending
@@ -310,22 +309,22 @@ public class Attack1State : IState
         }
         else
         {
-            // —— 攻击进行中 —— //
-            // 1) 平滑看向玩家
+            // —— Attacking —— //
+            // 1) look at player
             manager.SmoothLookAt(manager.transform, manager.player.position, manager.agent.angularSpeed);
 
-            // 2) 被击中打断
+            // 2) get hit
             if (parameter.getHit)
             {
                 manager.TransitionState(StateType.Hit);
                 return;
             }
 
-            // 3) 计时结束后收尾
+            // 3) timer
             timer += Time.deltaTime;
             if (timer >= attackDuration)
             {
-                // 恢复 Attack2/3 冷却
+                // refresh Attack2/3 cd
                 if (!parameter.availableAttack2)
                 {
                     parameter.attack1HealForAttack2++;
@@ -345,7 +344,7 @@ public class Attack1State : IState
                     }
                 }
 
-                // 结束后切换到 Chase
+                // switch back to Chase
                 manager.TransitionState(StateType.Chase);
             }
         }
@@ -359,7 +358,7 @@ public class Attack1State : IState
 
     private void PlayAttack()
     {
-        parameter.animator.Play("attack22");
+        parameter.animator.Play("IdleClosedEMLoop_74");
         manager.SpawnEyeballSwarm();
         Debug.Log("[Attack1State] PlayAttack -> attack22 & SpawnEyeballSwarm");
     }
@@ -445,7 +444,7 @@ public class Attack2State : IState
             return;
         }
 
-        // 5) 发起后撤
+        // 5) Retreat
         isRetreating = true;
         manager.agent.SetDestination(retreatTarget);
         parameter.animator.Play("IdleOpenEMLoop_74");
@@ -454,16 +453,16 @@ public class Attack2State : IState
 
     public void OnUpdate()
     {
-        // —— 后撤阶段 ——
+        // —— Retreat ——
         if (isRetreating)
         {
             if (!manager.agent.pathPending
                 && manager.agent.remainingDistance <= arriveTolerance)
             {
                 float actual = Vector3.Distance(enterPosition, manager.transform.position);
-                Debug.Log($"[Attack1State] 实际后撤距离 = {actual:F2} 米");
+                Debug.Log($"[Attack1State] Retreat = {actual:F2} m");
 
-                // 停止移动并恢复 stoppingDistance
+                // stop moving & stoppingDistance
                 manager.agent.isStopped = true;
                 manager.agent.ResetPath();
                 manager.agent.stoppingDistance = savedStoppingDistance;
@@ -495,12 +494,11 @@ public class Attack2State : IState
             string curClipName = "";
             if (msg != null && msg.Length > 0)
             {
-                // 3. 取出第一个剪辑并获取它的名字
+                // 3.get first anim name
                 AnimationClip currentClip = msg[0].clip;
                 curClipName = currentClip != null ? currentClip.name : "Unknown Clip";
-
-                // 4. 打印到控制台
-                Debug.Log("当前动画剪辑名称: " + curClipName);
+                
+                // Debug.Log("cur anim name: " + curClipName);
             }
         
             if (curClipName.Equals("Atk_ZeroG_74") && info.normalizedTime >= .45f && pullTrigger)
@@ -544,7 +542,6 @@ public class Attack3State : IState
     private Parameter parameter;
     private AnimatorStateInfo info;
      private bool isApproaching = false;
-     private float timer;
     public Attack3State(FSM manager)
     {
         this.manager = manager;
@@ -552,7 +549,6 @@ public class Attack3State : IState
     }
     public void OnEnter()
     {
-        timer = 0f;
         if (!parameter.availableAttack3)
         {
             Debug.Log("Attack3 unavailable, skip!");
@@ -585,7 +581,6 @@ public class Attack3State : IState
     }
     private void BeginTentacleFlail()
     {
-        // 如果你在 Parameter 里跟踪可用性，就在这里做：parameter.availableAttack3 = false;
         parameter.availableAttack3 = false;
         
         // manager.StartTentacleFlail();

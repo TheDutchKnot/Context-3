@@ -39,6 +39,7 @@ public class SlicerObject : MonoBehaviour
 
     void Slice(GameObject obj)
     {
+        Debug.Log("Slice："+obj.name);
         var velocity = velEst.GetVelocityEstimate();
 
         var planeNormal = Vector3.Cross(
