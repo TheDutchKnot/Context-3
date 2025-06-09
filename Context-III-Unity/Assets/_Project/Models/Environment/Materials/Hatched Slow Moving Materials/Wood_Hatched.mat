@@ -14,6 +14,7 @@ Material:
   m_ValidKeywords:
   - _MK_ALBEDO_MAP
   - _MK_ARTISTIC_HATCHING
+  - _MK_COLOR_GRADING_ALBEDO
   - _MK_LIGHT_BANDED
   - _MK_NORMAL_MAP
   - _MK_OUTLINE_HULL_CLIP
@@ -211,10 +212,10 @@ Material:
     - _BlendDstAlpha: 0
     - _BlendSrc: 1
     - _BlendSrcAlpha: 1
-    - _Brightness: 1
+    - _Brightness: 2.36
     - _BumpScale: 1
-    - _ColorGrading: 0
-    - _Contrast: 1
+    - _ColorGrading: 1
+    - _Contrast: 1.03
     - _Cutoff: 0.486
     - _DetailBlend: 0
     - _DetailMix: 0.5

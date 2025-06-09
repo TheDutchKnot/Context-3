@@ -3,7 +3,7 @@
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -202,7 +202,7 @@ Material:
     - _AlphaCutoff: 0.486
     - _Anisotropy: 0
     - _Artistic: 2
-    - _ArtisticFrequency: 1
+    - _ArtisticFrequency: 5.9
     - _ArtisticProjection: 0
     - _ArtisticShadowFilter: 0
     - _Blend: 0
@@ -237,7 +237,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _GoochRampIntensity: 0.5
-    - _HatchingMapScale: 5
+    - _HatchingMapScale: 2
     - _Hue: 0
     - _IndirectFade: 1
     - _Initialized: 1
