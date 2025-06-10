@@ -428,7 +428,7 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
-  m_FarAttachMode: 0
+  m_FarAttachMode: 1
 --- !u!114 &3301850145792677747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,12 +480,8 @@ MonoBehaviour:
     m_Variable: {fileID: 0}
   highlitedMaterial: {fileID: 2100000, guid: 69edbb67d0e8c2d47b005b69195dd55e, type: 2}
   normalMaterial: {fileID: 2100000, guid: 1e6b916b2f7285c41946a4213665502f, type: 2}
+  boids: {fileID: 0}
   currentLight: {fileID: 5108539160821705057}
   nextLight: {fileID: 0}
   nextBook: {fileID: 0}
-  rend: {fileID: 7465877357091833915}
---- !u!137 &7465877357091833915 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -3072002640909217581, guid: 39601e8b726d42443980b17917714b17, type: 3}
-  m_PrefabInstance: {fileID: 3657505886380497128}
-  m_PrefabAsset: {fileID: 0}
+  dialogueBox: {fileID: 0}

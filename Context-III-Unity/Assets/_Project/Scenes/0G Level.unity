@@ -14497,6 +14497,18 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 993913935}
+    - target: {fileID: 8877177980677234388, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_FarAttachMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8877177980677234388, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_EnableFarCasting
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8877177980677234388, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_EnableNearCasting
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -100333,37 +100345,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -106.983
       objectReference: {fileID: 0}
-    - target: {fileID: 2515908363029996895, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 2515908363029996895, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.4106
-      objectReference: {fileID: 0}
-    - target: {fileID: 2515908363029996895, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.0234
-      objectReference: {fileID: 0}
     - target: {fileID: 5380075277106259470, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
       propertyPath: m_Name
       value: Knife
-      objectReference: {fileID: 0}
-    - target: {fileID: 5914202783478708858, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
-      propertyPath: m_Size.y
-      value: 0.3724558
-      objectReference: {fileID: 0}
-    - target: {fileID: 5914202783478708858, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
-      propertyPath: m_Center.x
-      value: -0.0015718079
-      objectReference: {fileID: 0}
-    - target: {fileID: 5914202783478708858, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
-      propertyPath: m_Center.y
-      value: -0.13956037
-      objectReference: {fileID: 0}
-    - target: {fileID: 5914202783478708858, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
-      propertyPath: m_Center.z
-      value: 0.0044539934
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
