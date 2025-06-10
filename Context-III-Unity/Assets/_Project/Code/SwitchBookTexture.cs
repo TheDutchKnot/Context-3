@@ -18,22 +18,29 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
     [SerializeField] GameObject dialogueBox;
 
+    Animator anim;
+
     MeshRenderer rend;
 
     bool wasSelected;
 
-    void Awake()
+    new void Awake()
     {
         rend = GetComponent<MeshRenderer>();
+        anim = GetComponent<Animator>();
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (isSelected && !wasSelected)
         {
             wasSelected = true;
 
             rend.material = normalMaterial;
+
+            OpenBookAnimation();
 
             boids.Add(transform);
 
@@ -41,6 +48,30 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
             ActivateNextLight();
         }
+    }
+
+    public void OpenBookAnimation()
+    {
+        if (wasSelected) return;
+
+        //wasSelected = true;
+
+        //rend.material = normalMaterial;
+
+        //boids.Add(transform);
+
+        //nextBook.SwitchTexture();
+
+        //ActivateNextLight();
+
+        anim.SetTrigger("TrOpenBook");
+        anim.SetTrigger("TrOpenPages");
+    }
+
+    public void CloseBookAnimation()
+    {
+        anim.SetTrigger("TrCloseBook");
+        anim.SetTrigger("TrClosePages");
     }
 
     public void SwitchTexture()

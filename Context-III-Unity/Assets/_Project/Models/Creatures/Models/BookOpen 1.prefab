@@ -143,15 +143,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 39601e8b726d42443980b17917714b17, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.26
+      value: 0.052
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 39601e8b726d42443980b17917714b17, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.92
+      value: 0.921
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 39601e8b726d42443980b17917714b17, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.796
+      value: -3.167
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 39601e8b726d42443980b17917714b17, type: 3}
       propertyPath: m_LocalRotation.w
@@ -201,9 +201,6 @@ PrefabInstance:
       addedObject: {fileID: 5648210149827893573}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 39601e8b726d42443980b17917714b17, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4932880773860726024}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 39601e8b726d42443980b17917714b17, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3678706369152573922}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 39601e8b726d42443980b17917714b17, type: 3}
       insertIndex: -1
@@ -247,18 +244,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4932880773860726024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4468551493079868857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfbad22c82137c84e98081e04d2cdc50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &3678706369152573922
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -278,8 +263,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.37720612, y: 0.08023611, z: 0.5169783}
-  m_Center: {x: -0.0011838953, y: -0.01613628, z: 0.0010032515}
+  m_Size: {x: 0.37720612, y: 0.056229703, z: 0.5169783}
+  m_Center: {x: -0.0011838953, y: -0.01660291, z: 0.0010032515}
 --- !u!54 &8657311905138243711
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -354,10 +339,34 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3301850145792677747}
+        m_TargetAssemblyTypeName: SwitchBookTexture, Assembly-CSharp
+        m_MethodName: OpenBookAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3301850145792677747}
+        m_TargetAssemblyTypeName: SwitchBookTexture, Assembly-CSharp
+        m_MethodName: OpenBookAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
