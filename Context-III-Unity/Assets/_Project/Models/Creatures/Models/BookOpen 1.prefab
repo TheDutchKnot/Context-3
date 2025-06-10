@@ -357,7 +357,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3301850145792677747}
         m_TargetAssemblyTypeName: SwitchBookTexture, Assembly-CSharp
-        m_MethodName: OpenBookAnimation
+        m_MethodName: CloseBookAnimation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -58,7 +58,7 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
         //rend.material = normalMaterial;
 
-        //boids.Add(transform);
+        boids.Add(transform);
 
         //nextBook.SwitchTexture();
 

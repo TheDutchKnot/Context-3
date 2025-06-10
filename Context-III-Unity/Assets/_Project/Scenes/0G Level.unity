@@ -40248,6 +40248,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: FinalBook
       objectReference: {fileID: 0}
+    - target: {fileID: 4897835117620473012, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4897835117620473012, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5108539160821705057, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -79971,30 +79979,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Book 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4897835117620473012, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
-      propertyPath: m_FarAttachMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4897835117620473012, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4897835117620473012, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 676408293}
-    - target: {fileID: 4897835117620473012, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CloseBookAnimation
-      objectReference: {fileID: 0}
-    - target: {fileID: 4897835117620473012, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SwitchBookTexture, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 4897835117620473012, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 8323644938626728392, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: m_Shadows.m_Type
       value: 0
@@ -80009,17 +79993,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3839506994354552579, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
   m_PrefabInstance: {fileID: 676408289}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &676408293 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
-  m_PrefabInstance: {fileID: 676408289}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 945794dc5462f87439b9fd9cef0de4f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &676478842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -231155,7 +231128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rendererSettings: {fileID: 11400000, guid: ff461dde95dad2543aa78965cfaeb97a, type: 2}
   settings: {fileID: 11400000, guid: 9b579b54b2c095648aa9ad91e7bd3435, type: 2}
-  target: {fileID: 1979099927}
+  target: {fileID: 826782834}
 --- !u!4 &1979099927
 Transform:
   m_ObjectHideFlags: 0

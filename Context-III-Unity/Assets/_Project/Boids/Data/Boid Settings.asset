@@ -13,21 +13,24 @@ MonoBehaviour:
   m_Name: Boid Settings
   m_EditorClassIdentifier: 
   <MaxCapacity>k__BackingField: 1000
-  <PerceptionRadius>k__BackingField: 2.5
-  <AvoidanceRadius>k__BackingField: 2
+  <PerceptionRadius>k__BackingField: 1.5
+  <AvoidanceRadius>k__BackingField: 1
   <CollisionMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 1
+  <DeathLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 0
   <HitBackfaces>k__BackingField: 0
   <HitTriggers>k__BackingField: 0
   <HitMultiFace>k__BackingField: 0
-  <CollisionRadius>k__BackingField: 1
-  <CollisionRange>k__BackingField: 1
+  <CollisionRadius>k__BackingField: 0.2
+  <CollisionRange>k__BackingField: 0.1
   <SeperationWeight>k__BackingField: 2.5
   <AlignmentWeight>k__BackingField: 2
   <CohesionWeight>k__BackingField: 1
   <CollisionWeight>k__BackingField: 12.5
   <TargetWeight>k__BackingField: 3
-  <MinSpeed>k__BackingField: 9
-  <MaxSpeed>k__BackingField: 8
-  <MaxSteer>k__BackingField: 4
+  <MinSpeed>k__BackingField: 2
+  <MaxSpeed>k__BackingField: 4
+  <MaxSteer>k__BackingField: 2
