@@ -28915,7 +28915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3f1aeb3ab82ca543b88747c72bf1d46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bookPrefab: {fileID: 7405876975151531906, guid: 79a2dab207aa8d041b4f90304a452ac7, type: 3}
+  bookPrefab: {fileID: 996929817360330155, guid: 01794dd1757fd074ba98cd134a382a5a, type: 3}
   spawnPos: {fileID: 1195263750}
   bookCount: 10
   dialogueBox: {fileID: 1265758607}
@@ -82001,7 +82001,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1007565185}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9f365cf844c03449bc8973eead2c3c1, type: 3}
   m_Name: 

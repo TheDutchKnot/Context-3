@@ -15,17 +15,17 @@ public class DialogueFollow : MonoBehaviour
     {
         //moves the text to where the player looks, flatforward.y = 0f & targetPosition.y = yPos makes it so doesnt move up and down
         Vector3 flatForward = playerHead.forward;
-        flatForward.y = 0f;
+        //flatForward.y = 0f;
         flatForward.Normalize();
         Vector3 targetPosition = playerHead.position + flatForward * distanceFromPlayer;
-        targetPosition.y = yPos;
+      //  targetPosition.y = yPos;
 
         //making moving text smoooooth
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
 
         //rotates the text to face the player & makes it so text doesnt rotate up or down
         Vector3 directionToCamera = playerHead.position - transform.position;
-        directionToCamera.y = 0; 
+        //directionToCamera.y = 0; 
         
         transform.rotation = Quaternion.LookRotation(-directionToCamera, Vector3.up);
     }

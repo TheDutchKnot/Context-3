@@ -17,6 +17,7 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
     [SerializeField] SwitchBookTexture nextBook;
 
     [SerializeField] GameObject dialogueBox;
+    [SerializeField] GameObject previousDialogueBox;
 
     Animator anim;
 
@@ -86,5 +87,6 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
         nextLight.SetActive(true);
 
         dialogueBox.SetActive(true);
+        previousDialogueBox.SetActive(false);
     }
 }

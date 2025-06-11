@@ -19950,6 +19950,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4938057237858766683, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 192900151}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -69994,11 +69998,15 @@ PrefabInstance:
     - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: dialogueBox
       value: 
-      objectReference: {fileID: 753128344}
+      objectReference: {fileID: 2140184288}
     - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: targetRenderer
       value: 
       objectReference: {fileID: 799092117}
+    - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      propertyPath: previousDialogueBox
+      value: 
+      objectReference: {fileID: 1299445060}
     - target: {fileID: 3839506994354552579, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.7706738
@@ -117725,6 +117733,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Renderer: {fileID: 1925796547}
   m_MaterialIndex: 0
+--- !u!1 &1299445060 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 370710125137553818, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
+  m_PrefabInstance: {fileID: 807023200}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1299902974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -154663,6 +154676,10 @@ PrefabInstance:
       propertyPath: targetRenderer
       value: 
       objectReference: {fileID: 1655215747}
+    - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      propertyPath: previousDialogueBox
+      value: 
+      objectReference: {fileID: 753128344}
     - target: {fileID: 3839506994354552579, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.908
@@ -162657,6 +162674,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6975822447578427780, guid: 3f020f8baea2f4b4aac01adbf3764f10, type: 3}
   m_PrefabInstance: {fileID: 1746961094}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1747384555 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7754246973052476299, guid: f36b6b09c21cb14419a21dc817e61375, type: 3}
+  m_PrefabInstance: {fileID: 1939712294043777503}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1747451696
 GameObject:
@@ -197810,7 +197832,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 267664881139523532, guid: f36b6b09c21cb14419a21dc817e61375, type: 3}
   m_PrefabInstance: {fileID: 1939712294043777503}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1939712294043777504}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 945794dc5462f87439b9fd9cef0de4f0, type: 3}
@@ -197922,6 +197944,10 @@ PrefabInstance:
       propertyPath: dialogueBox
       value: 
       objectReference: {fileID: 313739052}
+    - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: previousDialogueBox
+      value: 
+      objectReference: {fileID: 1241623919}
     - target: {fileID: 8611887621070238760, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
       propertyPath: m_Name
       value: FinalBook
@@ -198229,7 +198255,11 @@ PrefabInstance:
     - target: {fileID: 5251496800848456797, guid: 6521024ce5a0f18479c59d26ba3a56f4, type: 3}
       propertyPath: dialogueBox
       value: 
-      objectReference: {fileID: 2140184288}
+      objectReference: {fileID: 1299445060}
+    - target: {fileID: 5251496800848456797, guid: 6521024ce5a0f18479c59d26ba3a56f4, type: 3}
+      propertyPath: previousDialogueBox
+      value: 
+      objectReference: {fileID: 1747384555}
     - target: {fileID: 6164973313225475137, guid: 6521024ce5a0f18479c59d26ba3a56f4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.1373043
