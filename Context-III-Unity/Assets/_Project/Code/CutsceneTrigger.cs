@@ -22,7 +22,6 @@ public class CutsceneTrigger : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
           //  StartCoroutine(SpawnBooks());
-           // dialogueBox.SetActive(true);
 
         }
     }
@@ -41,6 +40,7 @@ public class CutsceneTrigger : MonoBehaviour
             Instantiate(bookPrefab, finalSpawnPos, Quaternion.identity);
             yield return new WaitForSeconds(waitTime);
         }
+        dialogueBox.SetActive(true);
     }
 
     
