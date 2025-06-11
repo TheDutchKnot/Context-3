@@ -7,8 +7,6 @@ public class FInalBook : SwitchBookTexture
     [Header("collider")]
     [SerializeField] Collider col;
 
-    bool wasSelected;
-
     void Awake()
     {
         col = GetComponent<Collider>();
@@ -18,7 +16,6 @@ public class FInalBook : SwitchBookTexture
     {
         if (isSelected && !wasSelected)
         {
-            wasSelected = true;
             col.isTrigger = true;
         }
     }

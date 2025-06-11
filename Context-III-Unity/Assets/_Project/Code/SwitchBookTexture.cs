@@ -22,7 +22,7 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
     [SerializeField] SkinnedMeshRenderer targetRenderer;
 
-    bool wasSelected;
+    public bool wasSelected;
 
     new void Awake()
     {
