@@ -96,7 +96,7 @@ public class ZerogMonster : MonoBehaviour, ISlicedCallBack
     private IEnumerator GravityPullRoutine()
     {
         var cc = player.GetComponent<CharacterController>();
-        float offsetDistance = 1.1f; // how far in front of the boss
+        float offsetDistance = 0.8f; // how far in front of the boss
         float stopThreshold = 0.3f; // when to consider “close enough”
         while (true)
         {
@@ -107,7 +107,7 @@ public class ZerogMonster : MonoBehaviour, ISlicedCallBack
             Vector3 dir = pullTarget - player.position;
 
             // if has Y pull
-            //float dist = dir.magnitude;
+            // float dist = dir.magnitude;
             float dist = new Vector3(dir.x, 0, dir.z).magnitude;
             if (dist > stopThreshold)
             {
@@ -115,12 +115,12 @@ public class ZerogMonster : MonoBehaviour, ISlicedCallBack
                 float speed = pullStrength * Mathf.Clamp01(dist / attackRange);
 
                 // only pull horizontally (optional) — preserves player's current height:
-                Vector3 horizontalDir = new Vector3(dir.x, 0, dir.z).normalized;
+                Vector3 horizontalDir = new Vector3(dir.x, 0f, dir.z).normalized;
                 Vector3 move = horizontalDir * speed * Time.deltaTime;
 
                 // a slight vertical lift/hover:
-                // float verticalPull = Mathf.Clamp(dir.y, -1f, 1f) * (pullStrength * 0.2f) * Time.deltaTime;
-                // move.y = verticalPull;
+                float verticalPull = Mathf.Clamp(dir.y, -1f, 0.25f) * (pullStrength * 0.2f) * Time.deltaTime;
+                move.y = verticalPull;
                 
                 cc.Move(move);
             }

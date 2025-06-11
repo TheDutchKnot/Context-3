@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour
     public Transform leftHand;
 
     public Transform rightHand;
-    public float knockbackSpeed = 9f;
-    public float knockbackDuration = 0.3f;
+    public float knockbackSpeed = 8f;
+    public float knockbackDuration = 0.4f;
     private float knockbackTimer = 0f;
     private Vector3 knockbackDirection = Vector3.zero;
     [Header("left-right Interactor")] public NearFarInteractor leftInteractor;
@@ -207,7 +207,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("被击中！");
             // 计算击退方向（忽略垂直分量）
-            Vector3 dir = (transform.position - other.transform.position).normalized;
+            Vector3 dir = -transform.position.normalized;
             dir.y = 0f;
             knockbackDirection = dir * knockbackSpeed;
             // 设置击退计时器

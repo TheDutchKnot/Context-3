@@ -10,6 +10,7 @@ public enum StateType
 {
     Idle,
     Chase,
+    React,
     AttackCon,
     Attack1,
     Attack2,
@@ -64,7 +65,7 @@ public class FSM : MonoBehaviour
 
     //states
     public float sightRange, attackRange, meleeAttackRange;
-    public bool playerInSightRange, playerInAttackRange;
+    public bool playerInSightRange, playerInAttackRange, playerInMeleeRange;
 
     //attack 2
     public ParticleSystem gravityEffect;
@@ -84,6 +85,7 @@ public class FSM : MonoBehaviour
     {
         states.Add(StateType.Idle, new IdleState(this));
         states.Add(StateType.Chase, new ChaseState(this));
+        states.Add(StateType.React, new ReactState(this));
         states.Add(StateType.AttackCon, new AttackConState(this));
         states.Add(StateType.Attack1, new Attack1State(this));
         states.Add(StateType.Attack2, new Attack2State(this)); 
