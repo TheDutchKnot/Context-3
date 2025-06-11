@@ -24,12 +24,14 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
     [SerializeField] SkinnedMeshRenderer targetRenderer;
 
     public bool wasSelected;
+    public AudioSource audioSource;
 
     new void Awake()
     {
 
 
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     protected override void Update()
@@ -52,6 +54,7 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
         }
     }
 
+    [ContextMenu("bitch")]
     public void OpenBookAnimation()
     {
         if (wasSelected) return;
@@ -68,6 +71,9 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
         anim.SetTrigger("TrOpenBook");
         anim.SetTrigger("TrOpenPages");
+
+        audioSource.Play();
+
     }
 
     public void CloseBookAnimation()
