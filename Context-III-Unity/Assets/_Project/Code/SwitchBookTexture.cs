@@ -20,13 +20,14 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
     Animator anim;
 
-    MeshRenderer rend;
+    [SerializeField] SkinnedMeshRenderer targetRenderer;
 
     bool wasSelected;
 
     new void Awake()
     {
-        rend = GetComponent<MeshRenderer>();
+
+
         anim = GetComponent<Animator>();
     }
 
@@ -38,7 +39,7 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
         {
             wasSelected = true;
 
-            rend.material = normalMaterial;
+            targetRenderer.material = normalMaterial;
 
             OpenBookAnimation();
 
@@ -54,15 +55,15 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
     {
         if (wasSelected) return;
 
-        //wasSelected = true;
+        wasSelected = true;
 
-        //rend.material = normalMaterial;
+        targetRenderer.material = normalMaterial;
 
         boids.Add(transform);
 
-        //nextBook.SwitchTexture();
+        nextBook.SwitchTexture();
 
-        //ActivateNextLight();
+        ActivateNextLight();
 
         anim.SetTrigger("TrOpenBook");
         anim.SetTrigger("TrOpenPages");
@@ -76,7 +77,7 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
     public void SwitchTexture()
     {
-        rend.material = highlitedMaterial;
+        targetRenderer.material = highlitedMaterial;
     }
 
     void ActivateNextLight()

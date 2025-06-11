@@ -40344,7 +40344,13 @@ MonoBehaviour:
   nextLight: {fileID: 111372834}
   nextBook: {fileID: 111372835}
   dialogueBox: {fileID: 880070084}
+  targetRenderer: {fileID: 346017830}
   col: {fileID: 239665908}
+--- !u!137 &346017830 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7465877357091833915, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+  m_PrefabInstance: {fileID: 346017825}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &346466671
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79923,6 +79929,10 @@ PrefabInstance:
       propertyPath: dialogueBox
       value: 
       objectReference: {fileID: 1600513481}
+    - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      propertyPath: targetRenderer
+      value: 
+      objectReference: {fileID: 676408291}
     - target: {fileID: 3839506994354552579, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.9694052
@@ -79991,6 +80001,11 @@ PrefabInstance:
 --- !u!4 &676408290 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3839506994354552579, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+  m_PrefabInstance: {fileID: 676408289}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &676408291 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7465877357091833915, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
   m_PrefabInstance: {fileID: 676408289}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &676478842
@@ -100323,7 +100338,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 605012604568754911, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -52.5255
+      value: -52.499
       objectReference: {fileID: 0}
     - target: {fileID: 605012604568754911, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -159428,6 +159443,10 @@ PrefabInstance:
       propertyPath: dialogueBox
       value: 
       objectReference: {fileID: 967674239}
+    - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      propertyPath: targetRenderer
+      value: 
+      objectReference: {fileID: 1369181081}
     - target: {fileID: 3839506994354552579, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: -17.087597
@@ -159506,6 +159525,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945794dc5462f87439b9fd9cef0de4f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!137 &1369181081 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7465877357091833915, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+  m_PrefabInstance: {fileID: 1369181077}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1369547397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -220134,6 +220158,10 @@ PrefabInstance:
       propertyPath: dialogueBox
       value: 
       objectReference: {fileID: 37596200}
+    - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      propertyPath: targetRenderer
+      value: 
+      objectReference: {fileID: 1897239071}
     - target: {fileID: 3839506994354552579, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6385716
@@ -220224,6 +220252,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945794dc5462f87439b9fd9cef0de4f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!137 &1897239071 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7465877357091833915, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+  m_PrefabInstance: {fileID: 1897239067}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1901607067
 PrefabInstance:
   m_ObjectHideFlags: 0
