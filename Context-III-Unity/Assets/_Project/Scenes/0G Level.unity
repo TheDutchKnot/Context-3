@@ -5,11 +5,11 @@ OcclusionCullingSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_OcclusionBakeSettings:
-    smallestOccluder: 5
+    smallestOccluder: 2
     smallestHole: 0.25
     backfaceThreshold: 100
-  m_SceneGUID: 00000000000000000000000000000000
-  m_OcclusionCullingData: {fileID: 0}
+  m_SceneGUID: aaba9802b1cd267469716204e6553e29
+  m_OcclusionCullingData: {fileID: 36300000, guid: c46c102fe985ca546ad374a8e6777bac, type: 2}
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
@@ -14497,18 +14497,6 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 993913935}
-    - target: {fileID: 8877177980677234388, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: m_FarAttachMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8877177980677234388, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: m_EnableFarCasting
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8877177980677234388, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      propertyPath: m_EnableNearCasting
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -172973,29 +172961,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 40595484}
     m_Modifications:
-    - target: {fileID: 394207934067001581, guid: b575f1c0bf237bc42a912cc9ba3ee0db, type: 3}
-      propertyPath: m_Shadows.m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 511002550374001270, guid: b575f1c0bf237bc42a912cc9ba3ee0db, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
-    - target: {fileID: 3254629786890568395, guid: b575f1c0bf237bc42a912cc9ba3ee0db, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
-    - target: {fileID: 4527079128296984275, guid: b575f1c0bf237bc42a912cc9ba3ee0db, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
     - target: {fileID: 5520846944908341960, guid: b575f1c0bf237bc42a912cc9ba3ee0db, type: 3}
       propertyPath: m_Name
       value: CandleLight_Flame (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5520846944908341960, guid: b575f1c0bf237bc42a912cc9ba3ee0db, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8899318452313302105, guid: b575f1c0bf237bc42a912cc9ba3ee0db, type: 3}
       propertyPath: m_LocalPosition.x

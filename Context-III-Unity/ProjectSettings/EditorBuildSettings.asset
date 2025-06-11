@@ -8,16 +8,19 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Project/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/_Project/Scenes/VR-Slicing.unity
+    guid: 1c1670d1630943a4195f8983d017594f
   - enabled: 1
     path: Assets/_Project/Scenes/Climbing Level 2.0.unity
     guid: e442aa82022114d42a9e3c533031f141
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Slicing Level.unity
     guid: a9232ef130dbdac4eb694b3626537d90
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/0G Level.unity
     guid: aaba9802b1cd267469716204e6553e29
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Boss Level.unity
     guid: 46217627ceb90764e9ee36e0641427f7
   m_configObjects:

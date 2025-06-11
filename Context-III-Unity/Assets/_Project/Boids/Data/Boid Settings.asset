@@ -33,4 +33,4 @@ MonoBehaviour:
   <TargetWeight>k__BackingField: 3
   <MinSpeed>k__BackingField: 2
   <MaxSpeed>k__BackingField: 4
-  <MaxSteer>k__BackingField: 2
+  <MaxSteer>k__BackingField: 0.5
