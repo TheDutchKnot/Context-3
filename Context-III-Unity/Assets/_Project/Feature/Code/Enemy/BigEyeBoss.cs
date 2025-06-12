@@ -302,6 +302,11 @@ public class Attack1State : IState
 
     public void OnUpdate()
     {
+        if (parameter.getHit)
+        {
+            manager.TransitionState(StateType.Hit);
+            return;
+        }
         // —— Retreat ——
         if (isRetreating)
         { 
@@ -328,11 +333,7 @@ public class Attack1State : IState
             manager.SmoothLookAt(manager.transform, manager.player.position, manager.agent.angularSpeed);
 
             // 2) get hit
-            if (parameter.getHit)
-            {
-                manager.TransitionState(StateType.Hit);
-                return;
-            }
+  
 
             // 3) timer
             timer += Time.deltaTime;
@@ -489,6 +490,11 @@ public class Attack2State : IState
 
     public void OnUpdate()
     {
+        if (parameter.getHit)
+        {
+            manager.StopGravityField();
+            manager.TransitionState(StateType.Hit);
+        }
         // —— Retreat —— 
         if (isRetreating)
         {
@@ -537,12 +543,7 @@ public class Attack2State : IState
                 pullTrigger = false;
                 manager.StartGravityField();
             }
-
-            if (parameter.getHit)
-            {
-                manager.StopGravityField();
-                manager.TransitionState(StateType.Hit);
-            }
+            
             if (info.normalizedTime >= .95f)
             {
                 manager.StopGravityField();
@@ -607,6 +608,12 @@ public class Attack3State : IState
 
     public void OnUpdate()
     {
+        if (parameter.getHit)
+        {
+            manager.StopTentacleFlail();
+            manager.TransitionState(StateType.Hit);
+        }
+        
         info = parameter.animator.GetCurrentAnimatorStateInfo(0);
         manager.playerInSightRange =
             Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
@@ -657,11 +664,7 @@ public class Attack3State : IState
             }  
         }
 
-        if (parameter.getHit)
-        {
-            manager.StopTentacleFlail();
-            manager.TransitionState(StateType.Hit);
-        }
+
 
 
     }
@@ -695,16 +698,17 @@ public class HitState : IState
     }
     public void OnEnter()
     {
-        parameter.animator.Play("Hit");
         parameter.health--;
         
         switch (parameter.lastHitPart)
         {
             case HitPart.Eye:
+                parameter.animator.Play("Inb_EyeCloseMSingle_74");
                 parameter.availableAttack2 = false;
-                Debug.Log("[HitState] Eye，Attack2 X");
+                Debug.Log("[HitState] Eye, Attack2 X");
                 break;
-            case HitPart.Tentacle:
+            case HitPart.Tentacle: 
+                parameter.animator.Play("Inb_TentacleCloseESingle_74");
                 parameter.availableAttack3 = false;
                 Debug.Log("[HitState] Tentacle, Attack3 X ");
                 break;
@@ -723,7 +727,7 @@ public class HitState : IState
         
         if (info.normalizedTime >= 0.95f)
         {
-            manager.TransitionState(StateType.Chase);
+            manager.TransitionState(StateType.React);
         }
     }
 
@@ -745,7 +749,7 @@ public class DeathState : IState
     }
     public void OnEnter()
     {
-        parameter.animator.Play("Dead");
+        parameter.animator.Play("Death_17");
     }
 
     public void OnUpdate()

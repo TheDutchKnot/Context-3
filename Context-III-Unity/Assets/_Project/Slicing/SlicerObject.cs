@@ -9,20 +9,17 @@ public interface ISlicedCallBack
 
 public class SlicerObject : MonoBehaviour
 {
-    [SerializeField] 
-    Transform startSlicePoint, endSlicePoint;
+    [SerializeField] Transform startSlicePoint, endSlicePoint;
+    
+    public FSM fsm;
 
-    [SerializeField] 
-    Material crossSliceMaterial;
+    [SerializeField] Material crossSliceMaterial;
 
-    [SerializeField]
-    VelocityEstimator velEst;
+    [SerializeField] VelocityEstimator velEst;
 
-    [SerializeField]
-    LayerMask cuttableMask;
+    [SerializeField] LayerMask cuttableMask;
 
-    [SerializeField]
-    float sliceForce = 10;
+    [SerializeField] float sliceForce = 10;
 
     void FixedUpdate()
     {
@@ -39,7 +36,7 @@ public class SlicerObject : MonoBehaviour
 
     void Slice(GameObject obj)
     {
-        Debug.Log("Slice："+obj.name);
+        Debug.Log("Slice：" + obj.name);
         var velocity = velEst.GetVelocityEstimate();
 
         var planeNormal = Vector3.Cross(
@@ -52,12 +49,45 @@ public class SlicerObject : MonoBehaviour
         if (hull != null)
         {
             GameObject upperHull = hull.CreateUpperHull(obj, crossSliceMaterial);
+            if (obj.CompareTag("Boss"))
+            {
+                upperHull.transform.SetParent(null); 
+                upperHull.transform.position = obj.transform.position;
+                upperHull.transform.rotation = obj.transform.rotation;
+                upperHull.transform.localScale = obj.transform.lossyScale; 
+            }
+
             SetupSlicedObject(upperHull);
 
             GameObject lowerHull = hull.CreateLowerHull(obj, crossSliceMaterial);
+            if (obj.CompareTag("Boss"))
+            {
+                lowerHull.transform.SetParent(null);
+                lowerHull.transform.position = obj.transform.position;
+                lowerHull.transform.rotation = obj.transform.rotation;
+                lowerHull.transform.localScale = obj.transform.lossyScale;
+            }
+            
             SetupSlicedObject(lowerHull);
 
-            Destroy(obj);
+            if (!obj.CompareTag("Boss"))
+            {
+                Destroy(obj);
+            }
+            else
+            {
+                string hitName = obj.name;
+                if (Enum.TryParse<HitPart>(hitName, true, out HitPart part))
+                {
+                    fsm.parameter.lastHitPart = part;
+                    fsm.parameter.getHit = true;
+                }
+                else
+                {
+                    part = HitPart.None;
+                    Debug.LogWarning($"Unknown hit part \"{hitName}\", defaulting to None.");
+                }
+            }
         }
     }
 
@@ -67,7 +97,7 @@ public class SlicerObject : MonoBehaviour
         col.convex = true;
 
         var rb = obj.AddComponent<Rigidbody>();
-        rb.AddExplosionForce(sliceForce, 
+        rb.AddExplosionForce(sliceForce,
             obj.transform.position, 1);
     }
 }

@@ -3340,7 +3340,7 @@ GameObject:
   - component: {fileID: 802951560}
   m_Layer: 22
   m_Name: tentacle
-  m_TagString: BossAtk
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5259,6 +5259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startSlicePoint: {fileID: 1487274667}
   endSlicePoint: {fileID: 1924544759}
+  fsm: {fileID: 814659794}
   crossSliceMaterial: {fileID: 2100000, guid: 130d01f0d0e07714dbe00066c29bea46, type: 2}
   velEst: {fileID: 1924544760}
   cuttableMask:
@@ -6738,7 +6739,7 @@ GameObject:
   - component: {fileID: 1551198334}
   m_Layer: 22
   m_Name: eye
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
