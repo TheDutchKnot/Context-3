@@ -21,17 +21,17 @@ public class IdleState : IState
 
     public void OnUpdate()
     {
+        if (parameter.getHit)
+        {
+            manager.TransitionState(StateType.Hit);
+            return;
+        }
         manager.playerInSightRange =
             Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
         manager.playerInAttackRange =
             Physics.CheckSphere(manager.transform.position, manager.attackRange, manager.whatIsPlayer);
         timer += Time.deltaTime;
-
-        if (parameter.getHit)
-        {
-            manager.TransitionState(StateType.Hit);
-        }
-
+        
         if (manager.playerInSightRange)
         {
             //TODO boss fight start!!
@@ -64,6 +64,11 @@ public class ReactState : IState
 
     public void OnUpdate()
     {
+        if (parameter.getHit)
+        {
+            manager.TransitionState(StateType.Hit);
+            return;
+        }
         info = parameter.animator.GetCurrentAnimatorStateInfo(0);
         if (info.normalizedTime >= .95f)
         { 
@@ -94,6 +99,11 @@ public class ChaseState : IState
 
     public void OnUpdate()
     {
+        if (parameter.getHit)
+        {
+            manager.TransitionState(StateType.Hit);
+            return;
+        }
         info = parameter.animator.GetCurrentAnimatorStateInfo(0);
         manager.agent.SetDestination(manager.player.position);
         
@@ -101,10 +111,7 @@ public class ChaseState : IState
             Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
         manager.playerInAttackRange =
             Physics.CheckSphere(manager.transform.position, manager.attackRange, manager.whatIsPlayer);
-        if (parameter.getHit)
-        {
-            manager.TransitionState(StateType.Hit);
-        }
+
         float turnSpeed = manager.agent.angularSpeed;  
         manager.SmoothLookAt(manager.transform, manager.player.position, turnSpeed);
         
@@ -216,6 +223,7 @@ public class AttackConState : IState
         if (parameter.getHit)
         {
             manager.TransitionState(StateType.Hit);
+            return;
         }
 
     }
@@ -265,41 +273,69 @@ public class Attack1State : IState
         StartRetreat();
     }
 
-    private void StartRetreat()
+      private void StartRetreat()
     {
-        parameter.animator.Play("IdleOpenEMLoop_74");
-        // 1) Save the original stoppingDistance and set it to 0 to be accurate to the point
+        // 1) 保存当前 stoppingDistance 并设为 0
         savedStoppingDistance = manager.agent.stoppingDistance;
         manager.agent.stoppingDistance = 0f;
 
-        // 2) Calculate the horizontal direction of player→boss (XYZ ignore Y)
+        // 2) 计算 boss → player 的反向水平向量
         Vector3 dir = manager.transform.position - manager.player.position;
         dir.y = 0f;
         dir.Normalize();
 
-        // 3) Take the boss's current point as the starting point and retreat in this direction by retreatDistance
-        Vector3 rawTarget = manager.transform.position + dir * retreatDistance;
-        Debug.Log($"[Attack1State] RawTarget = {rawTarget}");
-
-        // 4) Sampling NavMesh to ensure navigation
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(rawTarget, out hit, 1f, NavMesh.AllAreas))
+        // 3) 先把起点吸附到 NavMesh 上，确保起点有效
+        NavMeshHit groundHit;
+        Vector3 startPos;
+        if (NavMesh.SamplePosition(manager.transform.position, out groundHit, 1f, NavMesh.AllAreas))
         {
-            retreatTarget = hit.position;
+            startPos = groundHit.position;
         }
         else
         {
-            Debug.LogWarning("[Boss Info] retreatTarget not on NavMesh");
+            // 如果连起点都不在 NavMesh 上，就放弃 retreat
+            Debug.LogWarning("[Boss Info] 起点不在 NavMesh 上，无法退避");
             isRetreating = false;
-            PlayAttack();
             return;
         }
-        
+
+        // 4) 目标点 rawTarget（仍可能脱离 NavMesh）
+        Vector3 rawTarget = startPos + dir * retreatDistance;
+        Debug.Log($"[Attack2State] RawTarget = {rawTarget:F2}");
+
+        // 5) 用 NavMesh.Raycast 判断能否直线到达 rawTarget
+        NavMeshHit rayHit;
+        bool blocked = NavMesh.Raycast(startPos, rawTarget, out rayHit, NavMesh.AllAreas);
+
+        if (blocked)
+        {
+            // 如果被阻挡（超出边界或者中间有不可行走区），则退到 rayHit.position
+            retreatTarget = rayHit.position;
+            Debug.Log($"[Attack1State] RawTarget 超出 NavMesh，退到最远点 {retreatTarget:F2}");
+        }
+        else
+        {
+            // 如果没有阻挡，且 rawTarget 本身可能在 NavMesh 之外，用 SamplePosition 再吸附一次
+            NavMeshHit sampleHit;
+            if (NavMesh.SamplePosition(rawTarget, out sampleHit, 1f, NavMesh.AllAreas))
+            {
+                retreatTarget = sampleHit.position;
+            }
+            else
+            {
+                // 极端情况：虽然射线没被阻挡，但 rawTarget 离 NavMesh 太远
+                retreatTarget = startPos; // 退回原点
+                Debug.LogWarning("[Attack1State] rawTarget 未采样到 NavMesh，退回起点");
+            }
+            Debug.Log($"[Attack1State] RawTarget 可达，退到 {retreatTarget:F2}");
+        }
+
+        // 6) 执行退避
         isRetreating = true;
         manager.agent.SetDestination(retreatTarget);
-        Debug.Log($"[Attack1State] StartRetreat: from {enterPosition:F2} → {retreatTarget:F2}");
+        parameter.animator.Play("IdleOpenEMLoop_74");
+        Debug.Log($"[Attack1State] StartRetreat: 从 {enterPosition:F2} → {retreatTarget:F2}");
     }
-
     public void OnUpdate()
     {
         if (parameter.getHit)
@@ -310,6 +346,11 @@ public class Attack1State : IState
         // —— Retreat ——
         if (isRetreating)
         { 
+            if (parameter.getHit)
+            {
+                manager.TransitionState(StateType.Hit);
+                return;
+            }
             parameter.animator.Play("IdleOpenEMLoop_74");
             if (!manager.agent.pathPending
                 && manager.agent.remainingDistance <= arriveTolerance)
@@ -494,11 +535,19 @@ public class Attack2State : IState
         {
             manager.StopGravityField();
             manager.TransitionState(StateType.Hit);
+            return;
         }
         // —— Retreat —— 
         if (isRetreating)
         {
-            parameter.animator.Play("IdleOpenEMLoop_74");
+            if (parameter.getHit)
+            {
+                manager.StopGravityField();
+                manager.TransitionState(StateType.Hit);
+                return;
+            }
+            
+            // parameter.animator.Play("IdleOpenEMLoop_74");
             if (!manager.agent.pathPending
                 && manager.agent.remainingDistance <= arriveTolerance)
             {
@@ -521,6 +570,7 @@ public class Attack2State : IState
         }
         else
         {
+            
             // —— 攻击阶段逻辑（不变） —— 
             manager.playerInSightRange =
                 Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
@@ -612,6 +662,7 @@ public class Attack3State : IState
         {
             manager.StopTentacleFlail();
             manager.TransitionState(StateType.Hit);
+            return;
         }
         
         info = parameter.animator.GetCurrentAnimatorStateInfo(0);
@@ -627,7 +678,14 @@ public class Attack3State : IState
         // If still approaching, wait until the path ends
         if (isApproaching)
         {
-            parameter.animator.Play("IdleOpenEMLoop_74");
+            if (parameter.getHit)
+            {
+                manager.StopTentacleFlail();
+                manager.TransitionState(StateType.Hit);
+                return;
+            }
+            
+            // parameter.animator.Play("IdleOpenEMLoop_74");
             manager.agent.SetDestination(manager.player.position);
             float dist = Vector3.Distance(
                 manager.transform.position,
@@ -698,6 +756,8 @@ public class HitState : IState
     }
     public void OnEnter()
     {
+        Debug.Log("HHHHIT: "+ parameter.lastHitPart);
+        
         parameter.health--;
         
         switch (parameter.lastHitPart)
@@ -720,13 +780,24 @@ public class HitState : IState
     {
         info = parameter.animator.GetCurrentAnimatorStateInfo(0);
 
-        if (parameter.health <= 0)
-        {
-            manager.TransitionState(StateType.Death);
-        }
+        // if (parameter.health <= 0)
+        // {
+        //     manager.TransitionState(StateType.Death);
+        // }
         
         if (info.normalizedTime >= 0.95f)
         {
+            switch (parameter.lastHitPart)
+            {
+                case HitPart.Eye:
+                    Debug.Log("HHHHIT: change "+ parameter.lastHitPart);
+                    manager.parameter.eye.layer = LayerMask.NameToLayer("Cuttable");
+                    break;
+                case HitPart.Tentacle:
+                    Debug.Log("HHHHIT: change "+ parameter.lastHitPart);
+                    manager.parameter.tentacle.layer = LayerMask.NameToLayer("Cuttable");
+                    break;
+            }
             manager.TransitionState(StateType.React);
         }
     }

@@ -76,6 +76,7 @@ public class SlicerObject : MonoBehaviour
             }
             else
             {
+                obj.layer = LayerMask.NameToLayer("Default");
                 string hitName = obj.name;
                 if (Enum.TryParse<HitPart>(hitName, true, out HitPart part))
                 {

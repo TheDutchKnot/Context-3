@@ -3339,7 +3339,7 @@ GameObject:
   - component: {fileID: 802951558}
   - component: {fileID: 802951560}
   m_Layer: 22
-  m_Name: tentacle
+  m_Name: Tentacle
   m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3663,6 +3663,8 @@ MonoBehaviour:
     animator: {fileID: 814659795}
     getHit: 0
     tentacleCollider: {fileID: 410755713}
+    tentacle: {fileID: 802951551}
+    eye: {fileID: 1551198328}
     availableAttack2: 1
     availableAttack3: 1
     attack1HealForAttack2: 0
@@ -3961,7 +3963,7 @@ GameObject:
   m_Component:
   - component: {fileID: 875481958}
   - component: {fileID: 875481961}
-  m_Layer: 22
+  m_Layer: 0
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6738,7 +6740,7 @@ GameObject:
   - component: {fileID: 1551198335}
   - component: {fileID: 1551198334}
   m_Layer: 22
-  m_Name: eye
+  m_Name: Eye
   m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7245,7 +7247,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6072391574331347817, guid: b44ec52175d5be440923443b4253436c, type: 3}
       propertyPath: m_Layer
-      value: 22
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6072391574331347817, guid: b44ec52175d5be440923443b4253436c, type: 3}
       propertyPath: m_IsActive

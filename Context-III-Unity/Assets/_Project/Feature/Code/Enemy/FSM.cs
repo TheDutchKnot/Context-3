@@ -36,6 +36,9 @@ public class Parameter
     public bool getHit;
 
     public GameObject tentacleCollider;
+    
+    public GameObject tentacle;
+    public GameObject eye;
 
     // attack recovery
     public bool availableAttack2 = true;
@@ -100,6 +103,11 @@ public class FSM : MonoBehaviour
 
     void Update()
     {
+        if (parameter.getHit)
+        {
+            TransitionState(StateType.Hit);
+            return;
+        }
         currentState.OnUpdate();
     }
 
