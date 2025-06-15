@@ -18,7 +18,7 @@ public class DialogueFollow : MonoBehaviour
         //flatForward.y = 0f;
         flatForward.Normalize();
         Vector3 targetPosition = playerHead.position + flatForward * distanceFromPlayer;
-      //  targetPosition.y = yPos;
+        //targetPosition.y = yPos;
 
         //making moving text smoooooth
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);

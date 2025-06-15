@@ -19336,7 +19336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4e41a55ce1d0845aa65f15b39fa34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeOut: {fileID: 0}
+  fadeOut: {fileID: 1714003494}
 --- !u!1 &213424273
 GameObject:
   m_ObjectHideFlags: 0
@@ -26003,8 +26003,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 313739052}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.59986}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 537510113}
@@ -26012,7 +26012,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -35.4, y: -299.7}
+  m_AnchoredPosition: {x: -35.392002, y: -51}
   m_SizeDelta: {x: -311.9, y: -734.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &313739054
@@ -47511,7 +47511,7 @@ MonoBehaviour:
   m_text: if you see this something went wrong ig
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b0820361f0467fb4a9923b27d5bd01a6, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 7695386596809494342, guid: b0820361f0467fb4a9923b27d5bd01a6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -55090,7 +55090,7 @@ MonoBehaviour:
   m_text: if you see this something went wrong ig
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b0820361f0467fb4a9923b27d5bd01a6, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 7695386596809494342, guid: b0820361f0467fb4a9923b27d5bd01a6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -66804,8 +66804,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 753128344}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.59986}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 618752528}
@@ -66813,7 +66813,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -35.4, y: -299.7}
+  m_AnchoredPosition: {x: -35.392002, y: -51}
   m_SizeDelta: {x: -311.9, y: -734.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &753128346
@@ -69546,7 +69546,7 @@ PrefabInstance:
     - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: dialogueBox
       value: 
-      objectReference: {fileID: 2140184288}
+      objectReference: {fileID: 753128344}
     - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: targetRenderer
       value: 
@@ -69554,7 +69554,7 @@ PrefabInstance:
     - target: {fileID: 3301850145792677747, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: previousDialogueBox
       value: 
-      objectReference: {fileID: 1299445060}
+      objectReference: {fileID: 2140184288}
     - target: {fileID: 3839506994354552579, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.7706738
@@ -70852,6 +70852,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Text (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1045019851937539748, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -51
+      objectReference: {fileID: 0}
     - target: {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: textLines.Array.size
       value: 4
@@ -70958,9 +70962,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5235904349968060295, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
+      propertyPath: yPos
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5235904349968060295, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: playerHead
       value: 
       objectReference: {fileID: 216133473}
+    - target: {fileID: 5235904349968060295, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
+      propertyPath: distanceFromPlayer
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5413732394623952443, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: m_Name
       value: DialogueSystem
@@ -87271,7 +87283,7 @@ MonoBehaviour:
   m_text: if you see this something went wrong ig
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b0820361f0467fb4a9923b27d5bd01a6, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 7695386596809494342, guid: b0820361f0467fb4a9923b27d5bd01a6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -112218,8 +112230,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241623919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.59986}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2103255796}
@@ -112227,7 +112239,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -35.4, y: -299.7}
+  m_AnchoredPosition: {x: -35.392002, y: -51}
   m_SizeDelta: {x: -311.9, y: -734.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1241623921
@@ -160755,6 +160767,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6975822447578427780, guid: 3f020f8baea2f4b4aac01adbf3764f10, type: 3}
   m_PrefabInstance: {fileID: 1713413250}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1714003494 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4548193097519307625, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 216133472}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1714187930
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -163559,11 +163576,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6975822447578427780, guid: 3f020f8baea2f4b4aac01adbf3764f10, type: 3}
   m_PrefabInstance: {fileID: 1746961094}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1747384555 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7754246973052476299, guid: f36b6b09c21cb14419a21dc817e61375, type: 3}
-  m_PrefabInstance: {fileID: 1939712294043777503}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1747451696
 GameObject:
@@ -195157,7 +195169,7 @@ MonoBehaviour:
   m_text: if you see this something went wrong ig
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b0820361f0467fb4a9923b27d5bd01a6, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 7695386596809494342, guid: b0820361f0467fb4a9923b27d5bd01a6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -197299,8 +197311,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2140184288}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.59986}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 951920206}
@@ -197308,7 +197320,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -35.4, y: -299.7}
+  m_AnchoredPosition: {x: -35.392002, y: -51}
   m_SizeDelta: {x: -311.9, y: -734.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2140184290
@@ -198630,11 +198642,11 @@ PrefabInstance:
     - target: {fileID: 5251496800848456797, guid: 6521024ce5a0f18479c59d26ba3a56f4, type: 3}
       propertyPath: dialogueBox
       value: 
-      objectReference: {fileID: 1299445060}
+      objectReference: {fileID: 2140184288}
     - target: {fileID: 5251496800848456797, guid: 6521024ce5a0f18479c59d26ba3a56f4, type: 3}
       propertyPath: previousDialogueBox
       value: 
-      objectReference: {fileID: 1747384555}
+      objectReference: {fileID: 1299445060}
     - target: {fileID: 6164973313225475137, guid: 6521024ce5a0f18479c59d26ba3a56f4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.1373043
