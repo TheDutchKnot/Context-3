@@ -34,26 +34,6 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
         audioSource = GetComponent<AudioSource>();
     }
 
-    protected override void Update()
-    {
-        base.Update();
-
-        if (isSelected && !wasSelected)
-        {
-            wasSelected = true;
-
-            targetRenderer.material = normalMaterial;
-
-            OpenBookAnimation();
-
-            boids.Add(transform);
-
-            nextBook.SwitchTexture();
-
-            ActivateNextLight();
-        }
-    }
-
     [ContextMenu("bitch")]
     public void OpenBookAnimation()
     {
@@ -63,7 +43,8 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
         targetRenderer.material = normalMaterial;
 
-        boids.Add(transform);
+        if (boids != null)
+            boids.Add(transform);
 
         nextBook.SwitchTexture();
 

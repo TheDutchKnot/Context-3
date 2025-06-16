@@ -35,8 +35,8 @@ namespace tdk.Boids
         {
             boids.AddNoResize(new Boid
             {
-                position = origin.position + UnityEngine.Random.insideUnitSphere * 0.001f,
-                direction = origin.forward
+                position = origin.position + Vector3.up + UnityEngine.Random.insideUnitSphere * 0.001f,
+                direction = Vector3.up
             });
         }
 

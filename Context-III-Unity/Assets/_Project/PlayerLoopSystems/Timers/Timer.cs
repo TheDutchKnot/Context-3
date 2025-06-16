@@ -22,7 +22,6 @@ namespace Tdk.PlayerLoopSystems.Timers
 
         public void Start()
         {
-            CurrentTime = initialTime;
             if (!IsRunning)
             {
                 IsRunning = true;
