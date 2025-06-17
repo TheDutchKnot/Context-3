@@ -6,25 +6,25 @@ using UnityEngine.SceneManagement;
 public class ScreenFadeManager : MonoBehaviour
 {
     public FadeScreen fadeScreen;
-    public string nextSceneName;
+    public int sceneIndex;
 
     private void Start()
     {
-        GoToScene(nextSceneName);
+        GoToScene(sceneIndex);
     }
 
-    public void GoToScene(string sceneName)
+    public void GoToScene(int sceneIndex)
     {
-        StartCoroutine(GoToSceneRoutine(sceneName));
+        StartCoroutine(GoToSceneRoutine(sceneIndex));
     }
 
-    IEnumerator GoToSceneRoutine(string sceneName)
+    IEnumerator GoToSceneRoutine(int sceneIndex)
     {
         fadeScreen.FadeOut();
         yield return new WaitForSeconds(fadeScreen.fadeDuration);
 
 
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(sceneIndex);
         
     }
 

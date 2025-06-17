@@ -104131,12 +104131,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5235904349968060295, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
+      propertyPath: yPos
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5235904349968060295, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: playerHead
       value: 
       objectReference: {fileID: 1007565186}
     - target: {fileID: 5235904349968060295, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
+      propertyPath: smoothTime
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 5235904349968060295, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: distanceFromPlayer
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5413732394623952443, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: m_Name
@@ -104150,6 +104158,10 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6594851975017894396, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 2c207dbc1ab99b146b6db9769784a608, type: 2}
     m_RemovedComponents:
     - {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
     m_RemovedGameObjects: []

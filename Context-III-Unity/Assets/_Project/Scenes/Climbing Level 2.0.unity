@@ -13281,6 +13281,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3971084916403274438, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: sceneIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4938057237858766683, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: gameManager
       value: 
@@ -18130,7 +18134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 2c207dbc1ab99b146b6db9769784a608, type: 2}
   m_Color: {r: 0.13207549, g: 0.08344148, b: 0.056692783, a: 0.6627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -42437,7 +42441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 2c207dbc1ab99b146b6db9769784a608, type: 2}
   m_Color: {r: 0.13207549, g: 0.08344148, b: 0.056692783, a: 0.6627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -45422,8 +45426,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 216133473}
     - target: {fileID: 5235904349968060295, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
+      propertyPath: smoothTime
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 5235904349968060295, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: distanceFromPlayer
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5413732394623952443, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: m_Name
@@ -45449,6 +45457,10 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6594851975017894396, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 2c207dbc1ab99b146b6db9769784a608, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -68136,7 +68148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 2c207dbc1ab99b146b6db9769784a608, type: 2}
   m_Color: {r: 0.13207549, g: 0.08344148, b: 0.056692783, a: 0.6627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -116990,7 +117002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 2c207dbc1ab99b146b6db9769784a608, type: 2}
   m_Color: {r: 0.13207549, g: 0.08344148, b: 0.056692783, a: 0.6627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
