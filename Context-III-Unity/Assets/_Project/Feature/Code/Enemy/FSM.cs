@@ -10,6 +10,7 @@ public enum StateType
 {
     Idle,
     Chase,
+    React,
     AttackCon,
     Attack1,
     Attack2,
@@ -34,11 +35,16 @@ public class Parameter
     public Animator animator;
     public bool getHit;
 
+    public GameObject tentacleCollider;
+    
+    public GameObject tentacle;
+    public GameObject eye;
+
     // attack recovery
-    public bool availableAttack2 = true; // Attack2 是否可用（使用后将置为 false）
-    public bool availableAttack3 = true; // Attack3 是否可用（使用后将置为 false）
-    public int attack1HealForAttack2 = 0; // 累计 Attack1 次数，用于恢复 Attack2
-    public int attack1HealForAttack3 = 0; // 累计 Attack1 次数，用于恢复 Attack3
+    public bool availableAttack2 = true;
+    public bool availableAttack3 = true; 
+    public int attack1HealForAttack2 = 0; 
+    public int attack1HealForAttack3 = 0; 
     
     // record hit part
     public HitPart lastHitPart = HitPart.None;
@@ -55,13 +61,14 @@ public class FSM : MonoBehaviour
     public Transform player;
     public LayerMask whatIsGround, whatIsPlayer;
 
+    public bool reactAnim;
     //attacking
     public float timeBetweenAttacks;
     public bool alreadyAttacked;
 
     //states
     public float sightRange, attackRange, meleeAttackRange;
-    public bool playerInSightRange, playerInAttackRange;
+    public bool playerInSightRange, playerInAttackRange, playerInMeleeRange;
 
     //attack 2
     public ParticleSystem gravityEffect;
@@ -74,12 +81,14 @@ public class FSM : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         parameter.animator.applyRootMotion = false;
         agent.stoppingDistance = attackRange;
+        reactAnim = true;
     }
 
     void Start()
     {
         states.Add(StateType.Idle, new IdleState(this));
         states.Add(StateType.Chase, new ChaseState(this));
+        states.Add(StateType.React, new ReactState(this));
         states.Add(StateType.AttackCon, new AttackConState(this));
         states.Add(StateType.Attack1, new Attack1State(this));
         states.Add(StateType.Attack2, new Attack2State(this)); 
@@ -94,6 +103,11 @@ public class FSM : MonoBehaviour
 
     void Update()
     {
+        if (parameter.getHit)
+        {
+            TransitionState(StateType.Hit);
+            return;
+        }
         currentState.OnUpdate();
     }
 
@@ -116,9 +130,7 @@ public class FSM : MonoBehaviour
         Debug.Log("pull player to Boss");
 
         // 1) Disable the player's own movement script, not the CC
-        var playerCtrl = player.GetComponent<PlayerController>();
-        if (playerCtrl != null)
-            playerCtrl.enabled = false;
+        SetMovement(false);
 
         // 2) Play gravity‐field VFX...
         if (gravityEffect != null)
@@ -180,13 +192,31 @@ public class FSM : MonoBehaviour
         }
 
         // 2) Re‑enable the player's movement script
-        var playerCtrl = player.GetComponent<PlayerController>();
-        if (playerCtrl != null)
-            playerCtrl.enabled = true;
+        SetMovement(true);
 
         // 3) Stop the gravity‐field VFX
         if (gravityEffect != null)
             gravityEffect.Stop();
+    }
+    
+    public void SetMovement(bool _switch)
+    {
+        // get Locomotion System
+        var locoSys = player.Find("Locomotion");
+        if (locoSys == null)
+        {
+            Debug.LogWarning("cannot find Locomotion System");
+            return;
+        }
+        
+        var moveGO = locoSys.Find("Move");
+        if (moveGO == null)
+        {
+            Debug.LogWarning("cant find Move");
+            return;
+        }
+        
+        moveGO.gameObject.SetActive(_switch);
     }
 
     public void SmoothLookAt(Transform self, Vector3 targetPos, float maxDegreesPerSecond)
@@ -212,11 +242,11 @@ public class FSM : MonoBehaviour
         
     }
     
-    public void StartTentacleFlail()
-    {
-        Debug.Log("[Boss Info] Tentacle waving...");
-        // TODO: enable tentacle collider
-    }
+    // public void StartTentacleFlail()
+    // {
+    //     Debug.Log("[Boss Info] Tentacle waving...");
+    //     // TODO: enable tentacle collider
+    // }
     
     public void StopTentacleFlail()
     {

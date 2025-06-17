@@ -23,7 +23,10 @@ public class PlayerController : MonoBehaviour
     public Transform leftHand;
 
     public Transform rightHand;
-
+    public float knockbackSpeed = 8f;
+    public float knockbackDuration = 0.4f;
+    private float knockbackTimer = 0f;
+    private Vector3 knockbackDirection = Vector3.zero;
     [Header("left-right Interactor")] public NearFarInteractor leftInteractor;
     public NearFarInteractor rightInteractor;
 
@@ -119,6 +122,14 @@ public class PlayerController : MonoBehaviour
         
         // save cur state,for next switch
         _previousState = currentState;
+        
+        
+        if (knockbackTimer > 0f)
+        {
+            // 持续向 knockbackDirection 的方向移动
+            characterController.Move(knockbackDirection * Time.deltaTime);
+            knockbackTimer -= Time.deltaTime;
+        }
     }
     
 
@@ -180,14 +191,31 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // HandelTrigger(other.gameObject.name);
-        string[] parts = other.gameObject.name.Split('-');
-        string prefix = parts[0];
-        string triggerInfo = parts[1];
-        if (prefix.Equals("GameState") && System.Enum.TryParse<GameState>(triggerInfo, out GameState newState))
+        if (other.gameObject.name.Contains("GameState"))
         {
-            gameManager.SetGameState(newState);
+            // HandelTrigger(other.gameObject.name);
+            string[] parts = other.gameObject.name.Split('-');
+            string prefix = parts[0];
+            string triggerInfo = parts[1];
+            if (prefix.Equals("GameState") && System.Enum.TryParse<GameState>(triggerInfo, out GameState newState))
+            {
+                gameManager.SetGameState(newState);
+            } 
         }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("EnemyAttack"))
+        {
+            // Debug.Log("get hit");
+            // First check the selected GameObject
+            Vector3 dir = -transform.position.normalized;
+            dir.y = 0f;
+            knockbackDirection = dir * knockbackSpeed;
+            // Set knockback timer
+            knockbackTimer = knockbackDuration;
+        }
+        
+        
+        
     }
 
     private void OnTriggerExit(Collider other)
