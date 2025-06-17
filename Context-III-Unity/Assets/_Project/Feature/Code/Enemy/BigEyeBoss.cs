@@ -34,7 +34,7 @@ public class IdleState : IState
         
         if (manager.playerInSightRange)
         {
-            //TODO boss fight start!!
+            //boss fight start!!
             manager.TransitionState(StateType.React);
         }
     }
@@ -58,7 +58,6 @@ public class ReactState : IState
     }
     public void OnEnter()
     {
-        // Debug.Log("TentacleOut");
         parameter.animator.Play("Inb_TentacleOutSingle_74");
     }
 
@@ -239,7 +238,7 @@ public class AttackConState : IState
 
 
 
-
+// eyeball attack
 public class Attack1State : IState
 {
     private FSM manager;
@@ -267,75 +266,89 @@ public class Attack1State : IState
     public void OnEnter()
     {
         parameter.animator.Play("IdleOpenEMLoop_74");
-        Debug.Log("[Boss Info] Attack1: Enter Start retreating");
+        Debug.Log("[Boss Info] Eyeball Attack");
         enterPosition = manager.transform.position;
         timer = 0f;
         StartRetreat();
     }
 
-      private void StartRetreat()
+private void StartRetreat()
+{
+    savedStoppingDistance = manager.agent.stoppingDistance;
+    manager.agent.stoppingDistance = 0f;
+
+    Vector3 backDir = manager.transform.position - manager.player.position;
+    backDir.y = 0f;
+    backDir.Normalize();
+
+    NavMeshHit groundHit;
+    Vector3 startPos;
+    if (!NavMesh.SamplePosition(manager.transform.position, out groundHit, 1f, NavMesh.AllAreas))
     {
-        // 1) 保存当前 stoppingDistance 并设为 0
-        savedStoppingDistance = manager.agent.stoppingDistance;
-        manager.agent.stoppingDistance = 0f;
+        Debug.LogWarning("[Boss Info] The starting point is not on the NavMesh and cannot retreat.");
+        isRetreating = false;
+        return;
+    }
 
-        // 2) 计算 boss → player 的反向水平向量
-        Vector3 dir = manager.transform.position - manager.player.position;
-        dir.y = 0f;
-        dir.Normalize();
+    startPos = groundHit.position;
 
-        // 3) 先把起点吸附到 NavMesh 上，确保起点有效
-        NavMeshHit groundHit;
-        Vector3 startPos;
-        if (NavMesh.SamplePosition(manager.transform.position, out groundHit, 1f, NavMesh.AllAreas))
-        {
-            startPos = groundHit.position;
-        }
-        else
-        {
-            // 如果连起点都不在 NavMesh 上，就放弃 retreat
-            Debug.LogWarning("[Boss Info] 起点不在 NavMesh 上，无法退避");
-            isRetreating = false;
-            return;
-        }
+    float maxValidDistance = 0f;
+    Vector3 bestTarget = startPos;
+    bool foundValid = false;
 
-        // 4) 目标点 rawTarget（仍可能脱离 NavMesh）
+    int sampleCount = 7; // Take direction every about 30 degrees
+    float angleStep = 180f / (sampleCount - 1); // Sector angle spacing
+
+    for (int i = 0; i < sampleCount; i++)
+    {
+        float angle = -90f + i * angleStep; // [-90, 90] degree
+        Vector3 dir = Quaternion.Euler(0f, angle, 0f) * backDir;
         Vector3 rawTarget = startPos + dir * retreatDistance;
-        Debug.Log($"[Attack2State] RawTarget = {rawTarget:F2}");
 
-        // 5) 用 NavMesh.Raycast 判断能否直线到达 rawTarget
+        // Use Raycast to detect whether path is accessible
         NavMeshHit rayHit;
         bool blocked = NavMesh.Raycast(startPos, rawTarget, out rayHit, NavMesh.AllAreas);
 
+        Vector3 finalTarget = rawTarget;
         if (blocked)
         {
-            // 如果被阻挡（超出边界或者中间有不可行走区），则退到 rayHit.position
-            retreatTarget = rayHit.position;
-            Debug.Log($"[Attack1State] RawTarget 超出 NavMesh，退到最远点 {retreatTarget:F2}");
+            finalTarget = rayHit.position;
         }
         else
         {
-            // 如果没有阻挡，且 rawTarget 本身可能在 NavMesh 之外，用 SamplePosition 再吸附一次
+            // Further adsorption of target points
             NavMeshHit sampleHit;
             if (NavMesh.SamplePosition(rawTarget, out sampleHit, 1f, NavMesh.AllAreas))
             {
-                retreatTarget = sampleHit.position;
+                finalTarget = sampleHit.position;
             }
-            else
-            {
-                // 极端情况：虽然射线没被阻挡，但 rawTarget 离 NavMesh 太远
-                retreatTarget = startPos; // 退回原点
-                Debug.LogWarning("[Attack1State] rawTarget 未采样到 NavMesh，退回起点");
-            }
-            Debug.Log($"[Attack1State] RawTarget 可达，退到 {retreatTarget:F2}");
         }
 
-        // 6) 执行退避
-        isRetreating = true;
-        manager.agent.SetDestination(retreatTarget);
-        parameter.animator.Play("IdleOpenEMLoop_74");
-        Debug.Log($"[Attack1State] StartRetreat: 从 {enterPosition:F2} → {retreatTarget:F2}");
+        float dist = Vector3.Distance(startPos, finalTarget);
+        if (dist > maxValidDistance)
+        {
+            maxValidDistance = dist;
+            bestTarget = finalTarget;
+            foundValid = true;
+        }
     }
+
+    if (!foundValid)
+    {
+        Debug.LogWarning("[Attack1State] All directions are invalid, stay where you are");
+        retreatTarget = startPos;
+    }
+    else
+    {
+        retreatTarget = bestTarget;
+        Debug.Log($"[Attack1State] retreat to {retreatTarget:F2}, dis = {maxValidDistance:F2}");
+    }
+
+    isRetreating = true;
+    manager.agent.SetDestination(retreatTarget);
+    parameter.animator.Play("IdleOpenEMLoop_74");
+}
+
     public void OnUpdate()
     {
         if (parameter.getHit)
@@ -356,9 +369,9 @@ public class Attack1State : IState
                 && manager.agent.remainingDistance <= arriveTolerance)
             {
                 float actual = Vector3.Distance(enterPosition, manager.transform.position);
-                Debug.Log($"[Attack1State] 实际后撤距离 = {actual:F2} 米");
+                Debug.Log($"[Attack1State] Actual retreat distance = {actual:F2} m");
 
-                // 停止移动并恢复 stoppingDistance
+                // Stop moving and resume stoppingDistance
                 manager.agent.isStopped = true;
                 manager.agent.ResetPath();
                 manager.agent.stoppingDistance = savedStoppingDistance;
@@ -465,69 +478,83 @@ public class Attack2State : IState
         StartRetreat();
     }
 
-    private void StartRetreat()
+   private void StartRetreat() 
+   {
+    savedStoppingDistance = manager.agent.stoppingDistance;
+    manager.agent.stoppingDistance = 0f;
+
+    Vector3 backDir = manager.transform.position - manager.player.position;
+    backDir.y = 0f;
+    backDir.Normalize();
+
+    NavMeshHit groundHit;
+    Vector3 startPos;
+    if (!NavMesh.SamplePosition(manager.transform.position, out groundHit, 1f, NavMesh.AllAreas))
     {
-        // 1) 保存当前 stoppingDistance 并设为 0
-        savedStoppingDistance = manager.agent.stoppingDistance;
-        manager.agent.stoppingDistance = 0f;
+        Debug.LogWarning("[Boss Info] The starting point is not on the NavMesh and cannot retreat.");
+        isRetreating = false;
+        return;
+    }
 
-        // 2) 计算 boss → player 的反向水平向量
-        Vector3 dir = manager.transform.position - manager.player.position;
-        dir.y = 0f;
-        dir.Normalize();
+    startPos = groundHit.position;
 
-        // 3) 先把起点吸附到 NavMesh 上，确保起点有效
-        NavMeshHit groundHit;
-        Vector3 startPos;
-        if (NavMesh.SamplePosition(manager.transform.position, out groundHit, 1f, NavMesh.AllAreas))
-        {
-            startPos = groundHit.position;
-        }
-        else
-        {
-            // 如果连起点都不在 NavMesh 上，就放弃 retreat
-            Debug.LogWarning("[Boss Info] 起点不在 NavMesh 上，无法退避");
-            isRetreating = false;
-            return;
-        }
+    float maxValidDistance = 0f;
+    Vector3 bestTarget = startPos;
+    bool foundValid = false;
 
-        // 4) 目标点 rawTarget（仍可能脱离 NavMesh）
+    int sampleCount = 7; // Take a direction every about 30 degrees
+    float angleStep = 180f / (sampleCount - 1); // Sector angle spacing
+
+    for (int i = 0; i < sampleCount; i++)
+    {
+        float angle = -90f + i * angleStep; // [-90, 90] degree
+        Vector3 dir = Quaternion.Euler(0f, angle, 0f) * backDir;
         Vector3 rawTarget = startPos + dir * retreatDistance;
-        Debug.Log($"[Attack2State] RawTarget = {rawTarget:F2}");
 
-        // 5) 用 NavMesh.Raycast 判断能否直线到达 rawTarget
+        // Use Raycast to detect whether the path is accessible
         NavMeshHit rayHit;
         bool blocked = NavMesh.Raycast(startPos, rawTarget, out rayHit, NavMesh.AllAreas);
 
+        Vector3 finalTarget = rawTarget;
         if (blocked)
         {
-            // 如果被阻挡（超出边界或者中间有不可行走区），则退到 rayHit.position
-            retreatTarget = rayHit.position;
-            Debug.Log($"[Attack2State] RawTarget 超出 NavMesh，退到最远点 {retreatTarget:F2}");
+            finalTarget = rayHit.position;
         }
         else
         {
-            // 如果没有阻挡，且 rawTarget 本身可能在 NavMesh 之外，用 SamplePosition 再吸附一次
+            // Further adsorption of target points
             NavMeshHit sampleHit;
             if (NavMesh.SamplePosition(rawTarget, out sampleHit, 1f, NavMesh.AllAreas))
             {
-                retreatTarget = sampleHit.position;
+                finalTarget = sampleHit.position;
             }
-            else
-            {
-                // 极端情况：虽然射线没被阻挡，但 rawTarget 离 NavMesh 太远
-                retreatTarget = startPos; // 退回原点
-                Debug.LogWarning("[Attack2State] rawTarget 未采样到 NavMesh，退回起点");
-            }
-            Debug.Log($"[Attack2State] RawTarget 可达，退到 {retreatTarget:F2}");
         }
 
-        // 6) 执行退避
-        isRetreating = true;
-        manager.agent.SetDestination(retreatTarget);
-        parameter.animator.Play("IdleOpenEMLoop_74");
-        Debug.Log($"[Attack2State] StartRetreat: 从 {enterPosition:F2} → {retreatTarget:F2}");
+        float dist = Vector3.Distance(startPos, finalTarget);
+        if (dist > maxValidDistance)
+        {
+            maxValidDistance = dist;
+            bestTarget = finalTarget;
+            foundValid = true;
+        }
     }
+
+    if (!foundValid)
+    {
+        Debug.LogWarning("[Attack1State] All directions are invalid, stay there");
+        retreatTarget = startPos;
+    }
+    else
+    {
+        retreatTarget = bestTarget;
+        Debug.Log($"[Attack1State] retreat to {retreatTarget:F2}, dis = {maxValidDistance:F2}");
+    }
+
+    isRetreating = true;
+    manager.agent.SetDestination(retreatTarget);
+    parameter.animator.Play("IdleOpenEMLoop_74"); 
+   }
+
 
     public void OnUpdate()
     {
@@ -554,7 +581,7 @@ public class Attack2State : IState
                 float actual = Vector3.Distance(enterPosition, manager.transform.position);
                 Debug.Log($"[Attack2State] Retreat = {actual:F2} m");
 
-                // 停止移动 & 恢复 stoppingDistance
+                // Stop Move & Resume stoppingDistance
                 manager.agent.isStopped = true;
                 manager.agent.ResetPath();
                 manager.agent.stoppingDistance = savedStoppingDistance;
@@ -570,8 +597,6 @@ public class Attack2State : IState
         }
         else
         {
-            
-            // —— 攻击阶段逻辑（不变） —— 
             manager.playerInSightRange =
                 Physics.CheckSphere(manager.transform.position, manager.sightRange, manager.whatIsPlayer);
             manager.playerInAttackRange =
@@ -604,7 +629,7 @@ public class Attack2State : IState
 
     public void OnExit()
     {
-        // 退出时恢复 stoppingDistance
+        // Resume on exit stoppingDistance
         manager.agent.stoppingDistance = savedStoppingDistance;
     }
 }
@@ -756,7 +781,7 @@ public class HitState : IState
     }
     public void OnEnter()
     {
-        Debug.Log("HHHHIT: "+ parameter.lastHitPart);
+        // Debug.Log("HHHHIT: "+ parameter.lastHitPart);
         
         parameter.health--;
         
@@ -765,12 +790,12 @@ public class HitState : IState
             case HitPart.Eye:
                 parameter.animator.Play("Inb_EyeCloseMSingle_74");
                 parameter.availableAttack2 = false;
-                Debug.Log("[HitState] Eye, Attack2 X");
+                // Debug.Log("[HitState] Eye, Attack2 X");
                 break;
             case HitPart.Tentacle: 
                 parameter.animator.Play("Inb_TentacleCloseESingle_74");
                 parameter.availableAttack3 = false;
-                Debug.Log("[HitState] Tentacle, Attack3 X ");
+                // Debug.Log("[HitState] Tentacle, Attack3 X ");
                 break;
         }
         

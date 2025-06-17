@@ -205,12 +205,12 @@ public class PlayerController : MonoBehaviour
 
         if (other.gameObject.layer == LayerMask.NameToLayer("EnemyAttack"))
         {
-            Debug.Log("被击中！");
-            // 计算击退方向（忽略垂直分量）
+            // Debug.Log("get hit");
+            // First check the selected GameObject
             Vector3 dir = -transform.position.normalized;
             dir.y = 0f;
             knockbackDirection = dir * knockbackSpeed;
-            // 设置击退计时器
+            // Set knockback timer
             knockbackTimer = knockbackDuration;
         }
         
