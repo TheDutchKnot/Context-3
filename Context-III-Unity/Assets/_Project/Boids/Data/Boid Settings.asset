@@ -25,12 +25,12 @@ MonoBehaviour:
   <HitTriggers>k__BackingField: 1
   <HitMultiFace>k__BackingField: 0
   <CollisionRadius>k__BackingField: 0.3
-  <CollisionRange>k__BackingField: 0.3
+  <CollisionRange>k__BackingField: 0.5
   <SeperationWeight>k__BackingField: 2.5
   <AlignmentWeight>k__BackingField: 2
   <CohesionWeight>k__BackingField: 1
   <CollisionWeight>k__BackingField: 12.5
-  <TargetWeight>k__BackingField: 3
+  <TargetWeight>k__BackingField: 7.5
   <MinSpeed>k__BackingField: 2
   <MaxSpeed>k__BackingField: 4
-  <MaxSteer>k__BackingField: 1
+  <MaxSteer>k__BackingField: 0.6

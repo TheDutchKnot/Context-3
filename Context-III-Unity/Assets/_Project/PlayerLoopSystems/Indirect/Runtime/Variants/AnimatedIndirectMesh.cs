@@ -84,6 +84,14 @@ namespace Tdk.PlayerLoopSystems.Indirect
             Graphics.RenderMeshInstanced(settings.Params, settings.Meshes[animIndex], 0, boidTRS);
         }
 
+        public void RenderInstancedManual(NativeArray<Matrix4x4> data)
+        {
+            if (data.Length == 0) 
+                return;
+
+            Graphics.RenderMeshInstanced(settings.Params, settings.Meshes[animIndex], 0, data);
+        }
+
         public override void Dispose()
         {
             if (disposed) return;

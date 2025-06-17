@@ -319,6 +319,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startSlicePoint: {fileID: 2515908363029996895}
   endSlicePoint: {fileID: 9043109155383672240}
+  fsm: {fileID: 0}
+  cutMask:
+    serializedVersion: 2
+    m_Bits: 67108864
   crossSliceMaterial: {fileID: 2100000, guid: 130d01f0d0e07714dbe00066c29bea46, type: 2}
   velEst: {fileID: 1626807867519574157}
   cuttableMask:

@@ -5,6 +5,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.XR.CoreUtils;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 namespace tdk.Boids
 {
@@ -22,6 +23,10 @@ namespace tdk.Boids
         NativeArray<Matrix4x4> boidTRS;
 
         AnimatedIndirectMesh renderer;
+
+        [SerializeField] Transform summingvfx;
+        [SerializeField] VfxHandler particle;
+        [SerializeField] Vector3 particleOffset;
 
         void Awake()
         {
@@ -44,9 +49,11 @@ namespace tdk.Boids
         {
             boids.AddNoResize(new Boid
             {
-                position = origin.position + (Vector3.one / 2) +UnityEngine.Random.insideUnitSphere * 0.001f,
+                position = origin.position + (Vector3.up / 2) +UnityEngine.Random.insideUnitSphere * 0.001f,
                 direction = Vector3.up
             });
+
+            particle.Play(origin);
         }
 
         public void SetTarget(Transform target) => this.target = target;
@@ -118,7 +125,7 @@ namespace tdk.Boids
                     }
                 }
 
-                renderer.SetData(boidTRS);
+                renderer.RenderInstancedManual(boidTRS);
             }
         }
 

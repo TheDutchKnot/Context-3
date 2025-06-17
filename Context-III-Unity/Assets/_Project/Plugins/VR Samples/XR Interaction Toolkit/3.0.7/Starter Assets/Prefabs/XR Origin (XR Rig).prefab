@@ -1041,6 +1041,8 @@ MonoBehaviour:
   playerCamera: {fileID: 1767192434}
   leftHand: {fileID: 202364688}
   rightHand: {fileID: 1670256625}
+  knockbackSpeed: 8
+  knockbackDuration: 0.4
   leftInteractor: {fileID: 8877177980677234388}
   rightInteractor: {fileID: 1883230248363655243}
   zeroGravity: {fileID: 5690790468787137524}
@@ -3399,6 +3401,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1670256625}
     m_Modifications:
+    - target: {fileID: 130500635472496801, guid: b200f6587d118224eba8467281481800, type: 3}
+      propertyPath: m_PhysicsLayerMask.m_Bits
+      value: 129
+      objectReference: {fileID: 0}
     - target: {fileID: 2447424620550846319, guid: b200f6587d118224eba8467281481800, type: 3}
       propertyPath: m_Name
       value: Near-Far Interactor
@@ -3523,6 +3529,10 @@ PrefabInstance:
     - target: {fileID: 5745700813747042508, guid: 3df3e1220f2164f448701a6de8084f92, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104419533170684624, guid: 3df3e1220f2164f448701a6de8084f92, type: 3}
+      propertyPath: m_PhysicsLayerMask.m_Bits
+      value: 129
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

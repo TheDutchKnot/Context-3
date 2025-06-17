@@ -5,12 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class FrustumArea : MonoBehaviour
 {
+    const float fogOffset = 2.5f;
+
+    [SerializeField] Transform backgroundSphere;
+
     [SerializeField] float RenderDistance = 15;
     [SerializeField] float AdjustmentSpeed = 6;
-    [SerializeField] float fogOffset = 2f;
-    [SerializeField] float fogStart = 5;
 
     Camera cam;
+
+    static IEnumerator fadeIntrpl;
 
     void Awake()
     {
@@ -26,28 +30,17 @@ public class FrustumArea : MonoBehaviour
     {
         if (other.transform.CompareTag("Player"))
         {
-            StopAllCoroutines();
-            
-            StartCoroutine(Interpolate(
-                RenderSettings.fogEndDistance,
-                RenderDistance - fogOffset,
-                AdjustmentSpeed,
+            if (fadeIntrpl != null)
+                StopCoroutine(fadeIntrpl);
 
-                (float value) => RenderSettings.fogEndDistance = value));
-
-            StartCoroutine(Interpolate(
-                cam.farClipPlane,
+            fadeIntrpl = Interpolate(
+                backgroundSphere.transform.localScale.x,
                 RenderDistance,
                 AdjustmentSpeed,
 
-                (float value) => cam.farClipPlane = value));
+                SetDrawDistance);
 
-            StartCoroutine(Interpolate(
-                RenderSettings.fogStartDistance,
-                fogStart,
-                AdjustmentSpeed,
-
-                (float value) => RenderSettings.fogStartDistance = value));
+            StartCoroutine(fadeIntrpl);
         }
     }
 
@@ -60,5 +53,13 @@ public class FrustumArea : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+    }
+
+    public void SetDrawDistance(float radius)
+    {
+        backgroundSphere.transform.localScale = new Vector3(radius, radius, radius);
+        RenderSettings.fogEndDistance = radius / 2 - fogOffset;
+        RenderSettings.fogStartDistance = radius / 5;
+        cam.farClipPlane = radius / 2;
     }
 }

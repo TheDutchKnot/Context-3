@@ -220,6 +220,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (gameManager == null) return;
+
         gameManager.SetGameState(GameState.PLAYING);
     }
 

@@ -43,7 +43,7 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
             nextBook.SwitchTexture();
             ActivateNextLight();
 
-            Invoke(nameof(SummonBoid), 0.5f);
+            Invoke(nameof(SummonBoid), 1.5f);
 
             anim.SetTrigger("TrOpenBook");
             anim.SetTrigger("TrOpenPages");

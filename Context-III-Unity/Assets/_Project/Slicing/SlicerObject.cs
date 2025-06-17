@@ -49,6 +49,8 @@ public class SlicerObject : MonoBehaviour
         if (hull != null)
         {
             GameObject upperHull = hull.CreateUpperHull(obj, crossSliceMaterial);
+            upperHull.AddComponent<DisableAfterSeconds>();
+            upperHull.layer = LayerMask.NameToLayer("WasCut");
             if (obj.CompareTag("Boss"))
             {
                 upperHull.transform.SetParent(null); 
@@ -60,6 +62,8 @@ public class SlicerObject : MonoBehaviour
             SetupSlicedObject(upperHull);
 
             GameObject lowerHull = hull.CreateLowerHull(obj, crossSliceMaterial);
+            lowerHull.AddComponent<DisableAfterSeconds>();
+            lowerHull.layer = LayerMask.NameToLayer("WasCut");
             if (obj.CompareTag("Boss"))
             {
                 lowerHull.transform.SetParent(null);
