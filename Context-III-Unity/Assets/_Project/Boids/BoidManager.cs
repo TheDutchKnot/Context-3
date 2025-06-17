@@ -31,14 +31,27 @@ namespace tdk.Boids
             renderer = rendererSettings.Create();
         }
 
+        [ContextMenu("Boid")]
+        public void AddEditorBoid()
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                Add(transform);
+            }
+        }
+
         public void Add(Transform origin)
         {
             boids.AddNoResize(new Boid
             {
-                position = origin.position + Vector3.up + UnityEngine.Random.insideUnitSphere * 0.001f,
+                position = origin.position + (Vector3.one / 2) +UnityEngine.Random.insideUnitSphere * 0.001f,
                 direction = Vector3.up
             });
         }
+
+        public void SetTarget(Transform target) => this.target = target;
+        public void ResetTarget() => target = transform;
+        public int GetBoidCount() => boids.Length;
 
         void Update()
         {
@@ -46,7 +59,7 @@ namespace tdk.Boids
             using (hitResults = new NativeArray<RaycastHit>(boids.Length, Allocator.TempJob))
             using (boidTRS = new NativeArray<Matrix4x4>(boids.Length, Allocator.TempJob))
             {
-                var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(commands, hitResults, boids.AsArray(), settings.CollisionMask.value);
+                var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(commands, hitResults, boids.AsArray(), settings.CollisionMask.value, settings.HitBackfaces, settings.HitTriggers, settings.HitMultiFace, settings.CollisionRange, settings.CollisionRadius);
 
                 var steerJob = new SteerBoids
                 {
