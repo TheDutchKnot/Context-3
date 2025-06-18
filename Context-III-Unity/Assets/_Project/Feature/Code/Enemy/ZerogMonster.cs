@@ -17,6 +17,7 @@ public class ZerogMonster : MonoBehaviour, ISlicedCallBack
     private bool _isDie;
     private bool _isAttack;
     private AnimatorStateInfo info;
+    public float Y_max;
     
     [Header("Vision")]
     [Tooltip("Ray thickness")]
@@ -119,7 +120,8 @@ public class ZerogMonster : MonoBehaviour, ISlicedCallBack
                 Vector3 move = horizontalDir * speed * Time.deltaTime;
 
                 // a slight vertical lift/hover:
-                float verticalPull = Mathf.Clamp(dir.y, -1f, 0.25f) * (pullStrength * 0.2f) * Time.deltaTime;
+                float verticalPull = Mathf.Clamp(dir.y, -1f, Y_max) * (pullStrength * 0.2f) * Time.deltaTime;
+                
                 move.y = verticalPull;
                 
                 cc.Move(move);

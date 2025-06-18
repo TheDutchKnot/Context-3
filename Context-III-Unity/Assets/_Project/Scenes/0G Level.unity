@@ -5102,6 +5102,7 @@ MonoBehaviour:
   - "I\u2019m starting to think the rumors were a hoax\u2026"
   textSpeed: 0.05
   TimeUntillnextLine: 3
+  TImeBeforeFirstLine: 0
 --- !u!114 &37596203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29460,6 +29461,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 870557897}
     m_Modifications:
+    - target: {fileID: 1242546992266373626, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
+      propertyPath: Y_max
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7156559421537400024, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_Name
       value: ZeroGMonster (2)
@@ -29474,7 +29479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7501559148367474274, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.957409
+      value: -14.9
       objectReference: {fileID: 0}
     - target: {fileID: 7501559148367474274, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -37012,7 +37017,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e0871c2572d9d2444adaaf9a6810af86, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: e0871c2572d9d2444adaaf9a6810af86, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -43425,6 +43430,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 870557897}
     m_Modifications:
+    - target: {fileID: 1242546992266373626, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
+      propertyPath: Y_max
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7156559421537400024, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_Name
       value: ZeroGMonster (4)
@@ -94178,6 +94187,7 @@ MonoBehaviour:
   - "Lets follow them\u2026"
   textSpeed: 0.05
   TimeUntillnextLine: 3
+  TImeBeforeFirstLine: 0
 --- !u!114 &880070087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102882,6 +102892,7 @@ MonoBehaviour:
   - "Maybe they will lead me to a cure\u2026"
   textSpeed: 0.05
   TimeUntillnextLine: 3
+  TImeBeforeFirstLine: 0
 --- !u!114 &967674242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116043,13 +116054,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 870557897}
     m_Modifications:
+    - target: {fileID: 1242546992266373626, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
+      propertyPath: Y_max
+      value: 0.9
+      objectReference: {fileID: 0}
     - target: {fileID: 7156559421537400024, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_Name
       value: ZeroGMonster (3)
       objectReference: {fileID: 0}
     - target: {fileID: 7501559148367474274, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.5829315
+      value: 14.6
       objectReference: {fileID: 0}
     - target: {fileID: 7501559148367474274, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -116057,7 +116072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7501559148367474274, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -21.791409
+      value: -21.58
       objectReference: {fileID: 0}
     - target: {fileID: 7501559148367474274, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -176403,6 +176418,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 870557897}
     m_Modifications:
+    - target: {fileID: 1242546992266373626, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
+      propertyPath: Y_max
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7156559421537400024, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_Name
       value: ZeroGMonster (1)
@@ -176417,7 +176436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7501559148367474274, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.943409
+      value: -15.3
       objectReference: {fileID: 0}
     - target: {fileID: 7501559148367474274, guid: b80bd1ac7cd8df441a221cda78a728dc, type: 3}
       propertyPath: m_LocalRotation.w
