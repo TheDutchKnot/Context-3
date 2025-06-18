@@ -8,7 +8,7 @@ public class ScreenFadeManager : MonoBehaviour
     public FadeScreen fadeScreen;
     public int sceneIndex;
 
-    private void Start()
+    private void OnEnable()
     {
         GoToScene(sceneIndex);
     }
@@ -22,7 +22,6 @@ public class ScreenFadeManager : MonoBehaviour
     {
         fadeScreen.FadeOut();
         yield return new WaitForSeconds(fadeScreen.fadeDuration);
-
 
         SceneManager.LoadScene(sceneIndex);
         

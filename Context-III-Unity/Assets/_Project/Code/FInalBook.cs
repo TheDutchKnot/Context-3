@@ -12,14 +12,10 @@ public class FInalBook : MonoBehaviour
     void Awake()
     {
         refScript = GetComponent<SwitchBookTexture>();
-
-        col = GetComponent<Collider>();
     }
 
     void Update()
     {
-        
-
         if (refScript.wasSelected)
         {
             col.isTrigger = true;

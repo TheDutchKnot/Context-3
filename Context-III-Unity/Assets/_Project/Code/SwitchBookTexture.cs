@@ -23,6 +23,8 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
     [SerializeField] SkinnedMeshRenderer targetRenderer;
 
+    [SerializeField] int boidAmount;
+
     public bool wasSelected;
     public AudioSource audioSource;
 
@@ -42,7 +44,10 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
             wasSelected = true;
 
             targetRenderer.material = normalMaterial;
-            nextBook.SwitchTexture();
+
+            if (nextBook != null)
+                nextBook.SwitchTexture();
+
             ActivateNextLight();
 
             Invoke(nameof(SummonBoid), 1.5f);
@@ -68,7 +73,7 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
     {
         if (boids != null)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < boidAmount; i++)
             {
                 boids.Add(transform);
             }
@@ -92,7 +97,9 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
     void ActivateNextLight()
     {
         currentLight.SetActive(false);
-        nextLight.SetActive(true);
+
+        if (nextLight != null)
+            nextLight.SetActive(true);
 
         dialogueBox.SetActive(true);
         previousDialogueBox.SetActive(false);
