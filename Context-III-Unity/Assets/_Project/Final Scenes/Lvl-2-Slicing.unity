@@ -56793,7 +56793,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e0871c2572d9d2444adaaf9a6810af86, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: e0871c2572d9d2444adaaf9a6810af86, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -57144,7 +57144,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 36187561368269002, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
       propertyPath: cuttableMask.m_Bits
-      value: 71303168
+      value: 4194304
       objectReference: {fileID: 0}
     - target: {fileID: 605012604568754911, guid: 099de0b5c58a3b4499be43b43d4adb2b, type: 3}
       propertyPath: m_LocalPosition.x

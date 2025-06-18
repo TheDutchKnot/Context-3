@@ -85,6 +85,11 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
         anim.SetTrigger("TrCloseBook");
         anim.SetTrigger("TrClosePages");
 
+        Invoke(nameof(BookCloseVFX), 1f);
+    }
+
+    void BookCloseVFX()
+    {
         if (boids != null)
             boids.ResetTarget();
     }

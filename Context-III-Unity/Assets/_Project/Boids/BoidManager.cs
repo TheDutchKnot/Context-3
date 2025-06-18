@@ -53,15 +53,32 @@ namespace tdk.Boids
                 direction = Vector3.up
             });
 
-            particle.Play(origin);
+            particle.Play();
         }
 
-        public void SetTarget(Transform target) => this.target = target;
-        public void ResetTarget() => target = transform;
+        public void SetTarget(Transform target)
+        {
+            this.target = target;
+            particle.Play();
+        }
+
+        public void ResetTarget()
+        {
+            target = transform;
+            particle.Stop();
+        }
+
         public int GetBoidCount() => boids.Length;
 
         void Update()
         {
+            if (target != transform)
+            {
+                particle.transform.SetPositionAndRotation(target.transform.position + 
+                    target.transform.InverseTransformDirection(particleOffset), 
+                    target.transform.rotation);
+            }
+
             using (commands = new NativeArray<SpherecastCommand>(boids.Length, Allocator.TempJob))
             using (hitResults = new NativeArray<RaycastHit>(boids.Length, Allocator.TempJob))
             using (boidTRS = new NativeArray<Matrix4x4>(boids.Length, Allocator.TempJob))

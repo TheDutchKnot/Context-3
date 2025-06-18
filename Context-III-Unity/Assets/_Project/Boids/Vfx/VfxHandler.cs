@@ -2,22 +2,15 @@ using UnityEngine;
 
 public class VfxHandler : MonoBehaviour
 {
-    [SerializeField] ParticleSystem particleVortex;
-    [SerializeField] ParticleSystem particleEye;
+    [SerializeField] GameObject vfxObject;
 
-    public void Play(Transform location)
+    public void Play()
     {
-        transform.position = location.position;
-
-        particleVortex.Play();
-        particleEye.Play();
-
-        Invoke(nameof(Stop), 3f);
+        vfxObject.SetActive(true);
     }
 
     public void Stop()
     {
-        particleVortex.Stop();
-        particleEye.Stop();
+        vfxObject.SetActive(false);
     }
 }
