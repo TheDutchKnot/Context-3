@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 
 public class DialogueSystem : MonoBehaviour
@@ -10,14 +11,19 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] string[] textLines;
     [SerializeField] float textSpeed;
     [SerializeField] float TimeUntillnextLine;
+    [SerializeField] float TImeBeforeFirstLine = 0;
 
     private int index;
 
+    Image backdrop;
+
+    bool first;
 
     void Start()
     {
         textComponent.text = string.Empty;
         startDialogue();
+        backdrop = GetComponent<Image>();
     }
 
     void startDialogue()
@@ -28,6 +34,13 @@ public class DialogueSystem : MonoBehaviour
 
     IEnumerator TypeLine()
     {
+        if (!first)
+        {
+            yield return new WaitForSeconds(TImeBeforeFirstLine);
+            backdrop.enabled = true;
+        }
+        first = true;
+
         foreach (char c in textLines[index].ToCharArray())
         {
             textComponent.text += c;

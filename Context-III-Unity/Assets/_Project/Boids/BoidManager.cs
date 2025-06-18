@@ -25,6 +25,8 @@ namespace tdk.Boids
         AnimatedIndirectMesh renderer;
 
         [SerializeField] Transform summingvfx;
+        Transform trackAnim;
+
         [SerializeField] VfxHandler particle;
         [SerializeField] Vector3 particleOffset;
 
@@ -53,18 +55,24 @@ namespace tdk.Boids
                 direction = Vector3.up
             });
 
+            PlayAnimation(origin);
+        }
+
+        public void PlayAnimation(Transform origin)
+        {
+            trackAnim = origin;
             particle.Play();
         }
 
         public void SetTarget(Transform target)
         {
             this.target = target;
-            particle.Play();
         }
 
         public void ResetTarget()
         {
             target = transform;
+            trackAnim = null;
             particle.Stop();
         }
 
@@ -72,11 +80,9 @@ namespace tdk.Boids
 
         void Update()
         {
-            if (target != transform)
+            if (trackAnim != null)
             {
-                particle.transform.SetPositionAndRotation(target.transform.position + 
-                    target.transform.InverseTransformDirection(particleOffset), 
-                    target.transform.rotation);
+                summingvfx.transform.position = trackAnim.position + particleOffset;
             }
 
             using (commands = new NativeArray<SpherecastCommand>(boids.Length, Allocator.TempJob))

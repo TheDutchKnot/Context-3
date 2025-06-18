@@ -34,8 +34,6 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
         audioSource = GetComponent<AudioSource>();
     }
 
-    protected virtual void Update() { }
-
     [ContextMenu("bitch")]
     public void OpenBookAnimation()
     {
@@ -50,12 +48,14 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
             ActivateNextLight();
 
-            Invoke(nameof(SummonBoid), 1.5f);
+            Invoke(nameof(SummonBoid), 1f);
 
             anim.SetTrigger("TrOpenBook");
             anim.SetTrigger("TrOpenPages");
 
             audioSource.Play();
+
+            Invoke(nameof(BookOpenVFX), 15.5f);
 
             return;
         }
@@ -65,8 +65,7 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
         audioSource.Play();
 
-        if (boids != null)
-            boids.SetTarget(transform);
+        Invoke(nameof(BookOpenVFX), 1f);
     }
 
     void SummonBoid()
@@ -82,10 +81,21 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
 
     public void CloseBookAnimation()
     {
+        CancelInvoke(nameof(BookOpenVFX));
+
         anim.SetTrigger("TrCloseBook");
         anim.SetTrigger("TrClosePages");
 
         Invoke(nameof(BookCloseVFX), 1f);
+    }
+
+    void BookOpenVFX()
+    {
+        if (boids != null)
+        {
+            boids.SetTarget(transform);
+            boids.PlayAnimation(transform);
+        }
     }
 
     void BookCloseVFX()

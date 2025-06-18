@@ -2675,7 +2675,7 @@ Material:
     m_Floats:
     - _ScaleRatioA: 0.8
     - _ScaleRatioB: 0.7
-    - _ScaleRatioC: 0.7
+    - _ScaleRatioC: 0.23333333
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
