@@ -102,6 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeDuration: 2
   fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  rend: {fileID: 7464942053327647196}
 --- !u!114 &7324295270857909255
 MonoBehaviour:
   m_ObjectHideFlags: 0

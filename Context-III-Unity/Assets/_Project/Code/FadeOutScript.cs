@@ -7,17 +7,13 @@ public class FadeOutScript : MonoBehaviour
 
     public float fadeDuration = 2;
     public Color fadeColor;
-    private Renderer rend;
+    public Renderer rend;
 
     void Start()
     {
         rend = GetComponent<Renderer>();
     }
 
-    public void FadeIn()
-    {
-        Fade(1, 0);
-    }
 
     public void FadeOut()
     {

@@ -80753,6 +80753,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2804755332168350020, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: rend
+      value: 
+      objectReference: {fileID: 9014170783777442268}
+    - target: {fileID: 2804755332168350020, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: fadeColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2804755332168350020, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: fadeColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2804755332168350020, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: fadeColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3971084916403274438, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: sceneIndex
       value: 1
@@ -80794,6 +80810,11 @@ Transform:
 --- !u!1 &9014170783777442265 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4548193097519307625, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 9014170783777442263}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &9014170783777442268 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3828607447083652893, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
   m_PrefabInstance: {fileID: 9014170783777442263}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807

@@ -23,10 +23,6 @@ public class FadeScreen : MonoBehaviour
         Fade(1, 0);
     }
 
-    public void FadeOut()
-    {
-        Fade(0, 1);
-    }
 
     public void Fade(float alphaIn, float alphaOut)
     {
