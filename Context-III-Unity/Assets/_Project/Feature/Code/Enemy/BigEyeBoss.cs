@@ -255,7 +255,7 @@ public class Attack1State : IState
     // Arrival tolerance
     private const float arriveTolerance = 0.01f;
     // Attack duration
-    private const float attackDuration = 3f;
+    private const float attackDuration = 10f;
 
     public Attack1State(FSM manager)
     {
@@ -351,19 +351,19 @@ private void StartRetreat()
 
     public void OnUpdate()
     {
-        if (parameter.getHit)
-        {
-            manager.TransitionState(StateType.Hit);
-            return;
-        }
+        // if (parameter.getHit)
+        // {
+        //     manager.TransitionState(StateType.Hit);
+        //     return;
+        // }
         // —— Retreat ——
         if (isRetreating)
         { 
-            if (parameter.getHit)
-            {
-                manager.TransitionState(StateType.Hit);
-                return;
-            }
+            // if (parameter.getHit)
+            // {
+            //     manager.TransitionState(StateType.Hit);
+            //     return;
+            // }
             parameter.animator.Play("IdleOpenEMLoop_74");
             if (!manager.agent.pathPending
                 && manager.agent.remainingDistance <= arriveTolerance)
@@ -386,13 +386,12 @@ private void StartRetreat()
             // 1) look at player
             manager.SmoothLookAt(manager.transform, manager.player.position, manager.agent.angularSpeed);
 
-            // 2) get hit
-  
-
+            // 2) death?
             // 3) timer
             timer += Time.deltaTime;
             if (timer >= attackDuration)
             {
+                manager.EyeballBack();
                 // refresh Attack2/3 cd
                 if (!parameter.availableAttack2)
                 {
@@ -850,7 +849,7 @@ public class DeathState : IState
 
     public void OnUpdate()
     {
-
+        
     }
 
     public void OnExit()

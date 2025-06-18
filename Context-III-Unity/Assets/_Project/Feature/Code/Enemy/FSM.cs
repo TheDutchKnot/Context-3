@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using tdk.Boids;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -56,15 +57,13 @@ public class FSM : MonoBehaviour
     private Dictionary<StateType, IState> states = new Dictionary<StateType, IState>();
 
     public Parameter parameter;
+    public BoidManager boidManager;
 
     public NavMeshAgent agent;
     public Transform player;
+    public Transform camera;
     public LayerMask whatIsGround, whatIsPlayer;
-
-    public bool reactAnim;
-    //attacking
-    public float timeBetweenAttacks;
-    public bool alreadyAttacked;
+    
 
     //states
     public float sightRange, attackRange, meleeAttackRange;
@@ -81,7 +80,6 @@ public class FSM : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         parameter.animator.applyRootMotion = false;
         agent.stoppingDistance = attackRange;
-        reactAnim = true;
     }
 
     void Start()
@@ -118,11 +116,7 @@ public class FSM : MonoBehaviour
         currentState = states[type];
         currentState.OnEnter();
     }
-
-    public void ResetAttack()
-    {
-        alreadyAttacked = false;
-    }
+    
 
 // Start pulling the player toward the boss
     public void StartGravityField()
@@ -237,16 +231,21 @@ public class FSM : MonoBehaviour
     
     public void SpawnEyeballSwarm()
     {
-        //TODO 
+        boidManager.SetTarget(camera);
         Debug.Log("SpawnEyeballSwarm");
         
     }
-    
-    // public void StartTentacleFlail()
-    // {
-    //     Debug.Log("[Boss Info] Tentacle waving...");
-    //     // TODO: enable tentacle collider
-    // }
+
+    public void EyeballBack()
+    {
+        boidManager.ResetTarget();
+        Debug.Log("eyeball back");
+    }
+
+    public bool IsDeath()
+    {
+        return boidManager.GetBoidCount() <= 0;
+    }
     
     public void StopTentacleFlail()
     {
