@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ScreenFadeManager : MonoBehaviour
 {
-    public FadeScreen fadeScreen;
+    public FadeOutScript fadeScreen;
     public int sceneIndex;
 
     private void OnEnable()

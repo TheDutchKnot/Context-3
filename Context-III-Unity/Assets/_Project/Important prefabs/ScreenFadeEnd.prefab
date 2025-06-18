@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1632337596338780794}
   - component: {fileID: 6966388029204443712}
   - component: {fileID: 7464942053327647196}
-  - component: {fileID: 1292993677915181866}
+  - component: {fileID: 8382677828753743749}
   - component: {fileID: 7324295270857909255}
   m_Layer: 0
   m_Name: ScreenFadeEnd
@@ -88,7 +88,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1292993677915181866
+--- !u!114 &8382677828753743749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,10 +97,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7901374821574622632}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df9b99e155e0dbe419dfe66d830d88c8, type: 3}
+  m_Script: {fileID: 11500000, guid: bf86edc70ec32aa47b1af998a4349d45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeOnStart: 0
   fadeDuration: 2
   fadeColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &7324295270857909255
@@ -115,5 +114,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b12e066b01c97342a6f7d41724cadc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeScreen: {fileID: 1292993677915181866}
-  nextSceneName: Climbing Level 2.0
+  fadeScreen: {fileID: 8382677828753743749}
+  sceneIndex: 0
