@@ -7,12 +7,12 @@ public class FInalBook : SwitchBookTexture
     [Header("collider")]
     [SerializeField] Collider col;
 
-    void Awake()
+    new void Awake()
     {
         col = GetComponent<Collider>();
     }
 
-    void Update()
+    new void Update()
     {
         if (isSelected && !wasSelected)
         {

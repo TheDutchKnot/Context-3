@@ -30123,7 +30123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4e41a55ce1d0845aa65f15b39fa34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeOut: {fileID: 0}
+  fadeOut: {fileID: 1694448550}
 --- !u!4 &1046848951
 Transform:
   m_ObjectHideFlags: 0
@@ -38970,7 +38970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: textLines.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: 'textLines.Array.data[0]'
@@ -38978,7 +38978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: 'textLines.Array.data[1]'
-      value: it seems every time I open a book some kind of eyeballs fly out.
+      value: Just more eyeballs.
       objectReference: {fileID: 0}
     - target: {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: 'textLines.Array.data[2]'
@@ -47364,7 +47364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1347391520790044565, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Name
@@ -47447,6 +47447,11 @@ Transform:
 --- !u!4 &1694448549 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1680501587, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 1694448547}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1694448550 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4548193097519307625, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
   m_PrefabInstance: {fileID: 1694448547}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1700103098
@@ -56650,13 +56655,33 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1740846441}
     - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 2039708519}
+    - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
       propertyPath: dialogueBox
       value: 
       objectReference: {fileID: 568419078}
     - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: m_IgnoreFocusEvents
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
       propertyPath: previousDialogueBox
       value: 
       objectReference: {fileID: 1368870018}
+    - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: m_InteractableSource
+      value: 
+      objectReference: {fileID: 2039708517}
+    - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: m_ClickAnimationDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: m_ActivateClickAnimationMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8611887621070238760, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
       propertyPath: m_Name
       value: Final book
@@ -56704,7 +56729,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8611887621070238760, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2039708519}
   m_SourcePrefab: {fileID: 100100000, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
 --- !u!4 &2039708514 stripped
 Transform:
@@ -56721,12 +56749,125 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
   m_PrefabInstance: {fileID: 2039708513}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2039708518}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 34278485fe8a5714fb39d57f9d628096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2039708517 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1171545454219776036, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+  m_PrefabInstance: {fileID: 2039708513}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039708518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2039708518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8611887621070238760, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+  m_PrefabInstance: {fileID: 2039708513}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &2039708519
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039708518}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: e0871c2572d9d2444adaaf9a6810af86, type: 3}
+  m_Resource: {fileID: 8300000, guid: e0871c2572d9d2444adaaf9a6810af86, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2040899938
 GameObject:
   m_ObjectHideFlags: 0
@@ -59988,10 +60129,10 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 3127728407676174907}
-  - {fileID: 1916924619}
   - {fileID: 134303882}
   - {fileID: 1700103099}
   - {fileID: 2027641158}
+  - {fileID: 1916924619}
   - {fileID: 1046848951}
   - {fileID: 1368870017}
   - {fileID: 1070444171}

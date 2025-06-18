@@ -25298,7 +25298,7 @@ PrefabInstance:
     - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
       propertyPath: col
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 738258165}
     - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
       propertyPath: boids
       value: 
@@ -25320,9 +25320,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1191050940}
     - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: m_IgnoreFocusEvents
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
       propertyPath: previousDialogueBox
       value: 
       objectReference: {fileID: 1785483689}
+    - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: m_InteractableSource
+      value: 
+      objectReference: {fileID: 878125828}
+    - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: m_ClickAnimationDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: m_ActivateClickAnimationMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4997154593653708622, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -30167,6 +30183,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7566270930987194516, guid: 9ac6a8cf264f73e41ab11ff65f67e992, type: 3}
   m_PrefabInstance: {fileID: 874737703}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &878125828 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1171545454219776036, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+  m_PrefabInstance: {fileID: 742165739}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742165743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &878263708
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44177,8 +44204,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textComponent: {fileID: 231453895}
   textLines:
-  - "Still no knowledge about my sickness or any cure\u2026"
-  - Maybe the books on it are even further in.
+  - "Still no knowledge about my sickness or a cure\u2026"
+  - Maybe the books on it are further in.
   textSpeed: 0.05
   TimeUntillnextLine: 3
 --- !u!114 &1191050943
@@ -54128,9 +54155,8 @@ MonoBehaviour:
   textComponent: {fileID: 1355011117}
   textLines:
   - Seems there is nothing of interest in this book.
-  - That candle could be usefull though.
-  - Might even attach it to my belt.
-  - Alright, lets get going.
+  - That candle could be useful though.
+  - I can attach it to my belt for later use.
   textSpeed: 0.05
   TimeUntillnextLine: 3
 --- !u!114 &1479161478
@@ -64937,9 +64963,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textComponent: {fileID: 1092635148}
   textLines:
-  - '"Consumers of knowledge, self imprisoned by pages"'
-  - '"Do not disturb these creatures, they are ruthless"'
-  - '"They can be contained by presenting an open book"'
+  - "\u201CCreatures or knowledge, bound by the pages.\u201D"
+  - "\u201CDangerous, do not disturb.\u201D"
+  - "\u201CHold your knowledge high, and they will vanish\u201D"
   textSpeed: 0.05
   TimeUntillnextLine: 3
 --- !u!114 &1785483692
@@ -72319,7 +72345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: textLines.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: 'textLines.Array.data[0]'
@@ -72327,7 +72353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: 'textLines.Array.data[1]'
-      value: Looks like any old library to me.
+      value: Let's hope there is knowledge on a cure here.
       objectReference: {fileID: 0}
     - target: {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: 'textLines.Array.data[2]'

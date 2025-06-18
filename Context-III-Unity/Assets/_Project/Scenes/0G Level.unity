@@ -5099,7 +5099,6 @@ MonoBehaviour:
   textComponent: {fileID: 533872531}
   textLines:
   - "Still nothing\u2026 and more eyeballs\u2026"
-  - "I\u2019ve been going further and further."
   - "I\u2019m starting to think the rumors were a hoax\u2026"
   textSpeed: 0.05
   TimeUntillnextLine: 3
@@ -27705,6 +27704,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6975822447578427780, guid: 3f020f8baea2f4b4aac01adbf3764f10, type: 3}
   m_PrefabInstance: {fileID: 252920678}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &253123354 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4897835117620473012, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+  m_PrefabInstance: {fileID: 346017825}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346017828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &253450983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36963,6 +36973,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4468551493079868857, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 346017829}
+    - targetCorrespondingSourceObject: {fileID: 4468551493079868857, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 346017831}
   m_SourcePrefab: {fileID: 100100000, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
 --- !u!4 &346017826 stripped
 Transform:
@@ -36992,15 +37005,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransitionDuration: 0.125
-  m_InteractableSource: {fileID: 0}
+  m_InteractableSource: {fileID: 253123354}
   m_IgnoreHoverEvents: 0
   m_IgnoreHoverPriorityEvents: 1
-  m_IgnoreFocusEvents: 1
+  m_IgnoreFocusEvents: 0
   m_IgnoreSelectEvents: 0
   m_IgnoreActivateEvents: 0
   m_SelectClickAnimationMode: 1
-  m_ActivateClickAnimationMode: 0
-  m_ClickAnimationDuration: 0.25
+  m_ActivateClickAnimationMode: 1
+  m_ClickAnimationDuration: 0.1
   m_ClickAnimationCurve:
     m_UseConstant: 1
     m_ConstantValue:
@@ -37038,13 +37051,110 @@ MonoBehaviour:
   previousDialogueBox: {fileID: 967674239}
   targetRenderer: {fileID: 346017830}
   wasSelected: 0
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 346017831}
   col: {fileID: 239665908}
 --- !u!137 &346017830 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 7465877357091833915, guid: ab4a6fd962c78444a92c667710a9b3f2, type: 3}
   m_PrefabInstance: {fileID: 346017825}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &346017831
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346017828}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: e0871c2572d9d2444adaaf9a6810af86, type: 3}
+  m_Resource: {fileID: 8300000, guid: e0871c2572d9d2444adaaf9a6810af86, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &346466671
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102825,8 +102935,7 @@ MonoBehaviour:
   textComponent: {fileID: 2134196978}
   textLines:
   - The eyeballs! They gathered here?
-  - That must mean something important is nearby!
-  - "Maybe I can get more information if I follow them\u2026"
+  - "Maybe they will lead me to a cure\u2026"
   textSpeed: 0.05
   TimeUntillnextLine: 3
 --- !u!114 &967674242
@@ -167102,7 +167211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1101417359152921926, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: 'textLines.Array.data[2]'
-      value: I could try using them to  my advantage.
+      value: I could try using them to my advantage.
       objectReference: {fileID: 0}
     - target: {fileID: 1699212016889569648, guid: 92e13bd9ce73ac44ab3008451b1e4d5a, type: 3}
       propertyPath: m_PresetInfoIsWorld
@@ -211225,6 +211334,9 @@ MonoBehaviour:
   rendererSettings: {fileID: 11400000, guid: ff461dde95dad2543aa78965cfaeb97a, type: 2}
   settings: {fileID: 11400000, guid: 9b579b54b2c095648aa9ad91e7bd3435, type: 2}
   target: {fileID: 826782834}
+  summingvfx: {fileID: 0}
+  particle: {fileID: 0}
+  particleOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &1979099927
 Transform:
   m_ObjectHideFlags: 0
