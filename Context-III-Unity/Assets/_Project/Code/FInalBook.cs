@@ -2,23 +2,25 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.State;
 
 
-public class FInalBook : SwitchBookTexture
+public class FInalBook : MonoBehaviour
 {
     [Header("collider")]
     [SerializeField] Collider col;
 
-    protected override void Awake()
+    SwitchBookTexture refScript;
+
+    void Awake()
     {
-        base.Awake();
+        refScript = GetComponent<SwitchBookTexture>();
 
         col = GetComponent<Collider>();
     }
 
-    protected override void Update()
+    void Update()
     {
-        base.Update();
+        
 
-        if (isSelected && !wasSelected)
+        if (refScript.wasSelected)
         {
             col.isTrigger = true;
         }

@@ -25295,6 +25295,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3705201353574120580, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: boids
+      value: 
+      objectReference: {fileID: 569111231}
+    - target: {fileID: 3705201353574120580, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: dialogueBox
+      value: 
+      objectReference: {fileID: 1191050940}
+    - target: {fileID: 3705201353574120580, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
+      propertyPath: previousDialogueBox
+      value: 
+      objectReference: {fileID: 1785483689}
     - target: {fileID: 4023686796092484928, guid: e36b9dfb2cebd6c4c9443670d22bf5bc, type: 3}
       propertyPath: col
       value: 
