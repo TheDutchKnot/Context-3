@@ -14,17 +14,12 @@ public class CutsceneTrigger : MonoBehaviour
 
     //how big the circle is the books spawn in
     [SerializeField] float spawnRadius;
-
-
-    private void Update()
+    
+    public void StartSpawn()
     {
-        //put here if the boss has died, then remove the // infront of the other 2 lines
-        if (Input.GetMouseButtonDown(0))
-        {
-          //  StartCoroutine(SpawnBooks());
-
-        }
+        StartCoroutine(SpawnBooks());
     }
+    
 
     IEnumerator SpawnBooks()
     {

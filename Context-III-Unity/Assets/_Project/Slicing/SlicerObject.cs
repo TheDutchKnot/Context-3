@@ -13,6 +13,8 @@ public class SlicerObject : MonoBehaviour
     
     public FSM fsm;
 
+    public CutsceneTrigger cst;
+
     [SerializeField] Material crossSliceMaterial;
 
     [SerializeField] VelocityEstimator velEst;
@@ -51,7 +53,7 @@ public class SlicerObject : MonoBehaviour
             GameObject upperHull = hull.CreateUpperHull(obj, crossSliceMaterial);
             upperHull.AddComponent<DisableAfterSeconds>();
             upperHull.layer = LayerMask.NameToLayer("WasCut");
-            if (obj.CompareTag("Boss"))
+            if (obj.CompareTag("Boss") || obj.CompareTag("BossBody"))
             {
                 upperHull.transform.SetParent(null); 
                 upperHull.transform.position = obj.transform.position;
@@ -64,7 +66,7 @@ public class SlicerObject : MonoBehaviour
             GameObject lowerHull = hull.CreateLowerHull(obj, crossSliceMaterial);
             lowerHull.AddComponent<DisableAfterSeconds>();
             lowerHull.layer = LayerMask.NameToLayer("WasCut");
-            if (obj.CompareTag("Boss"))
+            if (obj.CompareTag("Boss") || obj.CompareTag("BossBody"))
             {
                 lowerHull.transform.SetParent(null);
                 lowerHull.transform.position = obj.transform.position;
@@ -76,6 +78,11 @@ public class SlicerObject : MonoBehaviour
 
             if (!obj.CompareTag("Boss"))
             {
+                if (obj.CompareTag("BossBody"))
+                {
+                    obj.layer = LayerMask.NameToLayer("Default");
+                    cst.StartSpawn();
+                }
                 Destroy(obj);
             }
             else

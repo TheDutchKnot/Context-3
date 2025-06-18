@@ -97,7 +97,12 @@ public class ChaseState : IState
     }
 
     public void OnUpdate()
-    {
+    {   
+        if (manager.IsDeath())
+        {
+            manager.parameter.body.layer = LayerMask.NameToLayer("Cuttable");
+        }
+        
         if (parameter.getHit)
         {
             manager.TransitionState(StateType.Hit);
@@ -351,6 +356,10 @@ private void StartRetreat()
 
     public void OnUpdate()
     {
+        if (manager.IsDeath())
+        {
+            manager.parameter.body.layer = LayerMask.NameToLayer("Cuttable");
+        }
         // if (parameter.getHit)
         // {
         //     manager.TransitionState(StateType.Hit);
@@ -422,13 +431,17 @@ private void StartRetreat()
     {
         // reset stoppingDistance
         manager.agent.stoppingDistance = savedStoppingDistance;
+        if (manager.IsDeath())
+        {
+            manager.parameter.body.layer = LayerMask.NameToLayer("Cuttable");
+        }
     }
 
     private void PlayAttack()
     {
         parameter.animator.Play("IdleClosedEMLoop_74");
         manager.SpawnEyeballSwarm();
-        Debug.Log("[Attack1State] PlayAttack -> attack22 & SpawnEyeballSwarm");
+        Debug.Log("[Attack1State] PlayAttack -> attack2 & SpawnEyeballSwarm");
     }
 }
 
@@ -803,11 +816,6 @@ public class HitState : IState
     public void OnUpdate()
     {
         info = parameter.animator.GetCurrentAnimatorStateInfo(0);
-
-        // if (parameter.health <= 0)
-        // {
-        //     manager.TransitionState(StateType.Death);
-        // }
         
         if (info.normalizedTime >= 0.95f)
         {

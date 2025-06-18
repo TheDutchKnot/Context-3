@@ -40,6 +40,7 @@ public class Parameter
     
     public GameObject tentacle;
     public GameObject eye;
+    public GameObject body;
 
     // attack recovery
     public bool availableAttack2 = true;
@@ -232,14 +233,14 @@ public class FSM : MonoBehaviour
     public void SpawnEyeballSwarm()
     {
         boidManager.SetTarget(camera);
-        Debug.Log("SpawnEyeballSwarm");
+        // Debug.Log("SpawnEyeballSwarm");
         
     }
 
     public void EyeballBack()
     {
         boidManager.ResetTarget();
-        Debug.Log("eyeball back");
+        // Debug.Log("eyeball back");
     }
 
     public bool IsDeath()
