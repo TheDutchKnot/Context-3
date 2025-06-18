@@ -7,13 +7,17 @@ public class FInalBook : SwitchBookTexture
     [Header("collider")]
     [SerializeField] Collider col;
 
-    new void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         col = GetComponent<Collider>();
     }
 
-    new void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (isSelected && !wasSelected)
         {
             col.isTrigger = true;

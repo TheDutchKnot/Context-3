@@ -26,11 +26,13 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
     public bool wasSelected;
     public AudioSource audioSource;
 
-    new void Awake()
+    protected virtual void Awake()
     {
         anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
     }
+
+    protected virtual void Update() { }
 
     [ContextMenu("bitch")]
     public void OpenBookAnimation()
