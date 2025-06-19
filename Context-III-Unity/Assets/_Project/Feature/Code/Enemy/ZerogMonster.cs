@@ -4,59 +4,59 @@ using UnityEngine;
 
 public class ZerogMonster : MonoBehaviour, ISlicedCallBack
 {
-    // public Animator animator;
     public Transform player;
-    public LayerMask whatIsGround, whatIsPlayer;
-    public bool playerInSightRange;
-    public float  attackRange;
-    private Coroutine gravityCoroutine;
+    public LayerMask whatIsPlayer;
+
+    [Header("Pull Settings")]
+    public float attackRange;         
     public float pullStrength;
-    public ParticleSystem gravityEffect;
-    public Animator animator;
-    private bool _isEyeOpen;
-    private bool _isDie;
-    private bool _isAttack;
-    private AnimatorStateInfo info;
-    public float Y_max;
+
+    public float stopThresholdZ;
+    // public ParticleSystem gravityEffect;
+
+    [Header("Box Attack Range (Half-extents)")]
+    public float boxWidth = 2f;       // total width on X axis 
+    public float boxHeight = 1.5f;    // total height on Y axis
     
+
     [Header("Vision")]
-    [Tooltip("Ray thickness")]
     public float sphereCastRadius = 0.5f;
-
-    [Tooltip("obs layer")]
     public LayerMask obstacleMask;
-
-    // monster eye height
     public float eyeHeight = 1.5f;
 
+    private Coroutine gravityCoroutine;
+    private Animator animator;
+    private bool _isEyeOpen, _isDie, _isAttack;
+    private AnimatorStateInfo info;
     public Action OnSlice { get; set; }
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         animator.applyRootMotion = false;
         player = GameObject.Find("XR Origin (XR Rig)").transform;
-
         OnSlice += OnDeath;
-    }
-
-    private void Start()
-    {
-        _isEyeOpen = false;
-        _isDie = false;
-        _isAttack = false;
-        animator = transform.GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (!_isDie)
+        if (_isDie) return;
+
+        //  box-check 
+        Vector3 halfExtents = new Vector3(boxWidth / 2f, boxHeight / 2f, attackRange / 2f);          
+        Vector3 boxCenter = transform.position
+                            + transform.forward * (attackRange / 2f)  // forward half-depth
+                            + Vector3.down   * (boxHeight   / 2f);  // downward half-height
+
+        bool playerInBox = Physics.CheckBox(
+            boxCenter,
+            halfExtents,
+            transform.rotation,
+            whatIsPlayer
+        );                                                                                          
+        if (playerInBox && !_isAttack )                                          
         {
-            if (Physics.CheckSphere(transform.position, attackRange, whatIsPlayer)
-                && !_isAttack
-                && HasLineOfSight())
-            {
-                StartGravityField();
-            }
+            StartGravityField();
         }
     }
 
@@ -65,30 +65,21 @@ public class ZerogMonster : MonoBehaviour, ISlicedCallBack
         StopGravityField();
         _isDie = true;
     }
-    
-    // Start pulling the player toward the boss
+
     public void StartGravityField()
     {
         info = animator.GetCurrentAnimatorStateInfo(0);
         if (!_isEyeOpen)
         {
             animator.Play("Start_Open");
-            
+
             if (info.normalizedTime >= .95f)
-            {
                 _isEyeOpen = true;
-            }
-            
+
             if (info.normalizedTime >= .35f)
             {
-                // 1) Disable the player's own movement script, not the CC
                 SetMovement(false);
-
-                // 2) Play gravity‐field VFX
-                if (gravityEffect != null)
-                    gravityEffect.Play();
-
-                // 3) Begin the pull coroutine
+                // gravityEffect?.Play();
                 gravityCoroutine = StartCoroutine(GravityPullRoutine());
             }
         }
@@ -97,129 +88,92 @@ public class ZerogMonster : MonoBehaviour, ISlicedCallBack
     private IEnumerator GravityPullRoutine()
     {
         var cc = player.GetComponent<CharacterController>();
-        float offsetDistance = 0.8f; // how far in front of the boss
-        float stopThreshold = 0.3f; // when to consider “close enough”
+        float offsetDistance = 0.6f;
+        
+
         while (true)
         {
-            // compute the point in front of the boss
             Vector3 pullTarget = transform.position + transform.forward * offsetDistance;
-
-            // direction from player to that point
             Vector3 dir = pullTarget - player.position;
 
-            // if has Y pull
-            // float dist = dir.magnitude;
-            float dist = new Vector3(dir.x, 0, dir.z).magnitude;
-            if (dist > stopThreshold)
+            float distZ = Mathf.Abs(pullTarget.z - player.position.z);
+            if (distZ > stopThresholdZ)
             {
-                // speed scales with distance (farther = faster)
-                float speed = pullStrength * Mathf.Clamp01(dist / attackRange);
+                float speedZ = pullStrength * Mathf.Clamp01(distZ / attackRange);
 
-                // only pull horizontally (optional) — preserves player's current height:
-                Vector3 horizontalDir = new Vector3(dir.x, 0f, dir.z).normalized;
-                Vector3 move = horizontalDir * speed * Time.deltaTime;
+                Vector3 move = Vector3.zero;
+                move.z = Mathf.Sign(pullTarget.z - player.position.z) * speedZ * Time.deltaTime;
+                move.x = (pullTarget.x - player.position.x) * 0.1f * pullStrength * Time.deltaTime;
+                move.y = (pullTarget.y - player.position.y) * 0.1f * pullStrength  * Time.deltaTime;
 
-                // a slight vertical lift/hover:
-                float verticalPull = Mathf.Clamp(dir.y, -1f, Y_max) * (pullStrength * 0.2f) * Time.deltaTime;
-                
-                move.y = verticalPull;
-                
                 cc.Move(move);
             }
             else
             {
-               _isAttack = true;
+                _isAttack = true;
                 yield break;
             }
-
             yield return null;
         }
     }
 
-// Stop pulling and restore control
     public void StopGravityField()
     {
-        Debug.Log("stop G attack");
-
-        // 1) Stop the pull coroutine
         if (gravityCoroutine != null)
         {
             StopCoroutine(gravityCoroutine);
             gravityCoroutine = null;
         }
-
-        // 2) Re‑enable the player's movement script
         SetMovement(true);
+        // gravityEffect?.Stop();
+    }
 
-        // 3) Stop the gravity‐field VFX
-        if (gravityEffect != null)
-            gravityEffect.Stop();
-    }
-    
-    public void SetMovement(bool _switch)
+    public void SetMovement(bool enable)
     {
-        // get Locomotion System
         var locoSys = player.Find("Locomotion");
-        if (locoSys == null)
-        {
-            Debug.LogWarning("cannot find Locomotion System");
-            return;
-        }
-        
+        if (locoSys == null) { Debug.LogWarning("cannot find Locomotion System"); return; }
         var moveGO = locoSys.Find("Move");
-        if (moveGO == null)
-        {
-            Debug.LogWarning("cant find Move");
-            return;
-        }
-        
-        moveGO.gameObject.SetActive(_switch);
+        if (moveGO == null) { Debug.LogWarning("cant find Move"); return; }
+        moveGO.gameObject.SetActive(enable);
     }
-    
+
     private bool HasLineOfSight()
     {
-        // 1) start at monster eye
         Vector3 origin = transform.position + Vector3.up * eyeHeight;
-        // target: player transforme
-        Vector3 target  = player.position + Vector3.up * eyeHeight;
-        Vector3 dir     = (target - origin).normalized;
-        float   dist    = Vector3.Distance(origin, target); 
+        Vector3 target = player.position + Vector3.up * eyeHeight;
+        Vector3 dir = (target - origin).normalized;
+        float dist = Vector3.Distance(origin, target);
         Debug.DrawLine(origin, origin + dir * dist, Color.red);
-        // create ray
-        if (Physics.SphereCast(origin,
-                sphereCastRadius,
-                dir,
-                out RaycastHit hit,
-                dist,
-                obstacleMask))
-        {
-            // collider -> obs, not player
+
+        if (Physics.SphereCast(origin, sphereCastRadius, dir, out RaycastHit hit, dist, obstacleMask))
             if (!hit.collider.transform.IsChildOf(player))
                 return false;
-        }
-        // no obs
+
         return true;
     }
-    
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("PlayerAttack")) return;
         StopGravityField();
         _isDie = true;
     }
-    
-    
+
     private void OnDrawGizmos()
     {
+        // draw the attack box in yellow for debugging ← Modified
+        Vector3 halfExtents = new Vector3(boxWidth / 2f, boxHeight / 2f, attackRange / 2f);
+        Vector3 boxCenter = transform.position
+                            + transform.forward * (attackRange / 2f)
+                            + Vector3.down   * (boxHeight   / 2f);
+
         Gizmos.color = Color.yellow;
-        
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, halfExtents * 2f);
     }
 
     private void OnDestroy()
     {
         OnSlice -= OnDeath;
     }
-
 }
