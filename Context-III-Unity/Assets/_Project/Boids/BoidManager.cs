@@ -15,6 +15,9 @@ namespace tdk.Boids
         [SerializeField] BoidSettings settings;
         [SerializeField] Transform target;
 
+        [SerializeField]
+        BoidSettings[] options;
+
         NativeList<Boid> boids;
         NativeArray<float3> vel;
 
@@ -29,6 +32,8 @@ namespace tdk.Boids
 
         [SerializeField] VfxHandler particle;
         [SerializeField] Vector3 particleOffset;
+
+        [SerializeField] bool bossSummon = false;
 
         void Awake()
         {
@@ -47,6 +52,11 @@ namespace tdk.Boids
             }
         }
 
+        public void SetOption(int value)
+        {
+            settings = options[value];
+        }
+
         public void Add(Transform origin)
         {
             boids.AddNoResize(new Boid
@@ -55,7 +65,8 @@ namespace tdk.Boids
                 direction = Vector3.up
             });
 
-            PlayAnimation(origin);
+            if (!bossSummon)
+                PlayAnimation(origin);
         }
 
         public void PlayAnimation(Transform origin)

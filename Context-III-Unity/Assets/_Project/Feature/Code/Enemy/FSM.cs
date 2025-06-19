@@ -245,7 +245,7 @@ public class FSM : MonoBehaviour
 
     public bool IsDeath()
     {
-        return boidManager.GetBoidCount() <= 0;
+        return boidManager.GetBoidCount() <= 2;
     }
     
     public void StopTentacleFlail()

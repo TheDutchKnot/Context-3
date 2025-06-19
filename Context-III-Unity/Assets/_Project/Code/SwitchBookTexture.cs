@@ -116,7 +116,10 @@ public class SwitchBookTexture : XRInteractableAffordanceStateProvider
         if (nextLight != null)
             nextLight.SetActive(true);
 
-        dialogueBox.SetActive(true);
-        previousDialogueBox.SetActive(false);
+        if (dialogueBox != null)
+            dialogueBox.SetActive(true);
+
+        if (previousDialogueBox != null)
+            previousDialogueBox.SetActive(false);
     }
 }

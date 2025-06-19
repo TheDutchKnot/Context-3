@@ -20,7 +20,6 @@ public class CutsceneTrigger : MonoBehaviour
         StartCoroutine(SpawnBooks());
     }
     
-
     IEnumerator SpawnBooks()
     {
         for (int i = 0; i < bookCount; i++)
@@ -36,7 +35,5 @@ public class CutsceneTrigger : MonoBehaviour
             yield return new WaitForSeconds(waitTime);
         }
         dialogueBox.SetActive(true);
-    }
-
-    
+    }    
 }
