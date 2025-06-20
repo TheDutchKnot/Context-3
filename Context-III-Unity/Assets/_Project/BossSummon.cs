@@ -15,6 +15,9 @@ public class BossSummon : XRInteractableAffordanceStateProvider
 
     Animator anim;
 
+    [SerializeField]
+    AudioSource source;
+
     static bool wasOpened;
     bool flag;
     bool done;
@@ -34,6 +37,8 @@ public class BossSummon : XRInteractableAffordanceStateProvider
         Invoke(nameof(PlayPortalAnim), 1f);
 
         gameObject.layer = LayerMask.NameToLayer("CaptureBoid");
+
+        source.Play();
     }
 
     public void CloseBook()
@@ -46,6 +51,8 @@ public class BossSummon : XRInteractableAffordanceStateProvider
             Invoke(nameof(StopPortalAnim), 1f);
 
             gameObject.layer = LayerMask.NameToLayer("Default");
+
+            source.Play();
         }
     }
 

@@ -23,6 +23,11 @@ public class ScreenFadeManager : MonoBehaviour
         fadeScreen.FadeOut();
         yield return new WaitForSeconds(fadeScreen.fadeDuration);
 
+        if (sceneIndex == -1)
+        {
+            Application.Quit();
+        }
+
         SceneManager.LoadScene(sceneIndex);
         
     }

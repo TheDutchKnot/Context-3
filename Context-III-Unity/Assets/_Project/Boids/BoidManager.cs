@@ -35,6 +35,9 @@ namespace tdk.Boids
 
         [SerializeField] bool bossSummon = false;
 
+        [SerializeField] AudioSource source;
+        bool sounding;
+
         void Awake()
         {
             vel = new NativeArray<float3>(settings.MaxCapacity, Allocator.Persistent);
@@ -96,71 +99,82 @@ namespace tdk.Boids
                 summingvfx.transform.position = trackAnim.position + particleOffset;
             }
 
-            using (commands = new NativeArray<SpherecastCommand>(boids.Length, Allocator.TempJob))
-            using (hitResults = new NativeArray<RaycastHit>(boids.Length, Allocator.TempJob))
-            using (boidTRS = new NativeArray<Matrix4x4>(boids.Length, Allocator.TempJob))
+            if (boids.Length >= 2 && !sounding)
             {
-                var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(commands, hitResults, boids.AsArray(), settings.CollisionMask.value, settings.HitBackfaces, settings.HitTriggers, settings.HitMultiFace, settings.CollisionRange, settings.CollisionRadius);
+                source.Play();
+                sounding = true;
+            }
+            else if (sounding)
+            {
+                source.Stop();
+                sounding = false;
+            }
 
-                var steerJob = new SteerBoids
+                using (commands = new NativeArray<SpherecastCommand>(boids.Length, Allocator.TempJob))
+                using (hitResults = new NativeArray<RaycastHit>(boids.Length, Allocator.TempJob))
+                using (boidTRS = new NativeArray<Matrix4x4>(boids.Length, Allocator.TempJob))
                 {
-                    boidVelocities = vel,
-                    boids = boids.AsArray(),
-                    hits = hitResults,
+                    var queryJobHandle = PhysXcastBatchProcessor.PerformSpherecasts(commands, hitResults, boids.AsArray(), settings.CollisionMask.value, settings.HitBackfaces, settings.HitTriggers, settings.HitMultiFace, settings.CollisionRange, settings.CollisionRadius);
 
-                    perceptionRadius = settings.PerceptionRadius,
-                    avoidanceRadius = settings.AvoidanceRadius,
-
-                    seperationWeight = settings.SeperationWeight,
-                    alignmentWeight = settings.AlignmentWeight,
-                    cohesionWeight = settings.CohesionWeight,
-
-                    collisionWeight = settings.CollisionWeight,
-                    targetWeight = settings.TargetWeight,
-
-                    minSpeed = settings.MinSpeed,
-                    maxSpeed = settings.MaxSpeed,
-                    maxSteer = settings.MaxSteer,
-
-                    targetPosition = target.position,
-                    deltaTime = Time.deltaTime
-                };
-
-                var steerJobHandle = steerJob.Schedule(boids.Length, 1, queryJobHandle);
-
-                var syncJob = new SyncBoids
-                {
-                    Boids = boids.AsArray(),
-                    Vel = vel,
-                    deltaTime = Time.deltaTime,
-                    scale = rendererSettings.Scale,
-                    TRS = boidTRS
-                };
-
-                var syncJobHandle = syncJob.Schedule(boids.Length, 1, steerJobHandle);
-
-                syncJobHandle.Complete();
-
-                for (int i = 0; i < boids.Length; i++)
-                {
-                    if (hitResults[i].collider != null)
+                    var steerJob = new SteerBoids
                     {
-                        try
+                        boidVelocities = vel,
+                        boids = boids.AsArray(),
+                        hits = hitResults,
+
+                        perceptionRadius = settings.PerceptionRadius,
+                        avoidanceRadius = settings.AvoidanceRadius,
+
+                        seperationWeight = settings.SeperationWeight,
+                        alignmentWeight = settings.AlignmentWeight,
+                        cohesionWeight = settings.CohesionWeight,
+
+                        collisionWeight = settings.CollisionWeight,
+                        targetWeight = settings.TargetWeight,
+
+                        minSpeed = settings.MinSpeed,
+                        maxSpeed = settings.MaxSpeed,
+                        maxSteer = settings.MaxSteer,
+
+                        targetPosition = target.position,
+                        deltaTime = Time.deltaTime
+                    };
+
+                    var steerJobHandle = steerJob.Schedule(boids.Length, 1, queryJobHandle);
+
+                    var syncJob = new SyncBoids
+                    {
+                        Boids = boids.AsArray(),
+                        Vel = vel,
+                        deltaTime = Time.deltaTime,
+                        scale = rendererSettings.Scale,
+                        TRS = boidTRS
+                    };
+
+                    var syncJobHandle = syncJob.Schedule(boids.Length, 1, steerJobHandle);
+
+                    syncJobHandle.Complete();
+
+                    for (int i = 0; i < boids.Length; i++)
+                    {
+                        if (hitResults[i].collider != null)
                         {
-                            if (settings.DeathLayer.Contains(hitResults[i].transform.gameObject.layer))
+                            try
                             {
-                                boids.RemoveAtSwapBack(i);
+                                if (settings.DeathLayer.Contains(hitResults[i].transform.gameObject.layer))
+                                {
+                                    boids.RemoveAtSwapBack(i);
+                                }
+                            }
+                            catch (System.Exception e)
+                            {
+                                Debug.Log(e);
                             }
                         }
-                        catch(System.Exception e)
-                        {
-                            Debug.Log(e);
-                        }
                     }
-                }
 
-                renderer.RenderInstancedManual(boidTRS);
-            }
+                    renderer.RenderInstancedManual(boidTRS);
+                }
         }
 
         void OnDestroy()

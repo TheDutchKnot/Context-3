@@ -23,6 +23,10 @@ public class SlicerObject : MonoBehaviour
 
     [SerializeField] float sliceForce = 10;
 
+    [SerializeField] AudioSource[] source;
+
+    [SerializeField] AudioSource bossDeath;
+
     void FixedUpdate()
     {
         if (Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, cuttableMask))
@@ -33,6 +37,7 @@ public class SlicerObject : MonoBehaviour
             }
 
             Slice(hit.transform.gameObject);
+            source[UnityEngine.Random.Range(0, source.Length)].Play();
         }
     }
 
@@ -82,6 +87,8 @@ public class SlicerObject : MonoBehaviour
                 {
                     obj.layer = LayerMask.NameToLayer("Default");
                     cst.StartSpawn();
+                    bossDeath.Play();
+
                 }
                 Destroy(obj);
             }
