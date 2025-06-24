@@ -30,6 +30,8 @@ public class ZerogMonster : MonoBehaviour, ISlicedCallBack
     private AnimatorStateInfo info;
     public Action OnSlice { get; set; }
 
+    public bool MaySlice => true;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
