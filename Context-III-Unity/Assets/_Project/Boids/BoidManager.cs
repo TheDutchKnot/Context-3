@@ -90,6 +90,10 @@ namespace tdk.Boids
             particle.Stop();
         }
 
+        public void ResetTargetBook() {
+            target = transform;
+        }
+
         public int GetBoidCount() => boids.Length;
 
         void Update()

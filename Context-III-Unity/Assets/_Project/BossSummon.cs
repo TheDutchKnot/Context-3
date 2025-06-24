@@ -21,6 +21,7 @@ public class BossSummon : XRInteractableAffordanceStateProvider
     static bool wasOpened;
     bool flag;
     bool done;
+    bool open;
 
     new void Awake()
     {
@@ -39,6 +40,8 @@ public class BossSummon : XRInteractableAffordanceStateProvider
         gameObject.layer = LayerMask.NameToLayer("CaptureBoid");
 
         source.Play();
+
+        open = true;
     }
 
     public void CloseBook()
@@ -53,6 +56,10 @@ public class BossSummon : XRInteractableAffordanceStateProvider
             gameObject.layer = LayerMask.NameToLayer("Default");
 
             source.Play();
+
+            open = false;
+
+            boidManager.ResetTargetBook();
         }
     }
 
@@ -70,6 +77,11 @@ public class BossSummon : XRInteractableAffordanceStateProvider
             anim.SetTrigger("TrOpenPages");
 
             Invoke(nameof(PlayPortalAnim), 1f);
+        }
+
+        if (done && open)
+        {
+            boidManager.SetTarget(transform);
         }
     }
 

@@ -8,7 +8,7 @@ public class SpawnBoss : MonoBehaviour
     [SerializeField] GameObject TimelineCutscene;
     [SerializeField] BoidManager boidsManager;
 
-    [SerializeField] GameObject Portal;
+    [SerializeField] GameObject vfx;
 
     bool playing;
 
@@ -28,11 +28,11 @@ public class SpawnBoss : MonoBehaviour
         yield return new WaitForSeconds(3.5f);
 
         TimelineCutscene.SetActive(true);
-        Portal.SetActive(true);
+        vfx.SetActive(true);
 
         yield return new WaitForSeconds((float)TimelineCutscene.GetComponent<PlayableDirector>().duration);
-        Portal.SetActive(false);
 
         boidsManager.SetOption(1);
+        vfx.SetActive(false);
     }
 }

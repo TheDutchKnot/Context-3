@@ -12,6 +12,8 @@ public class FrustumArea : MonoBehaviour
     [SerializeField] float RenderDistance = 15;
     [SerializeField] float AdjustmentSpeed = 6;
 
+    [SerializeField] float fogOffsetExtra = 0f;
+
     Camera cam;
 
     static IEnumerator fadeIntrpl;
@@ -58,7 +60,7 @@ public class FrustumArea : MonoBehaviour
     public void SetDrawDistance(float radius)
     {
         backgroundSphere.transform.localScale = new Vector3(radius, radius, radius);
-        RenderSettings.fogEndDistance = radius / 2 - fogOffset;
+        RenderSettings.fogEndDistance = radius / 2 - fogOffset - fogOffsetExtra;
         RenderSettings.fogStartDistance = radius / 5;
         cam.farClipPlane = radius / 2;
     }
