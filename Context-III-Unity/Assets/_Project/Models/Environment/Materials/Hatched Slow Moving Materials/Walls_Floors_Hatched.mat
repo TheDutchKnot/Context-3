@@ -212,7 +212,7 @@ Material:
     - _Brightness: 1.16
     - _BumpScale: 1
     - _ColorGrading: 1
-    - _Contrast: 1.4
+    - _Contrast: 1.16
     - _Cutoff: 0.486
     - _DetailBlend: 0
     - _DetailMix: 0.5
@@ -278,7 +278,7 @@ Material:
     - _RimSmoothness: 0.5
     - _RimThresholdOffset: 0.25
     - _Roughness: 0.5
-    - _Saturation: 1.25
+    - _Saturation: 1.12
     - _SketchMapScale: 1
     - _Smoothness: 0.14
     - _SmoothnessTextureChannel: 0

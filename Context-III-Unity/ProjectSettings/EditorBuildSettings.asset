@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/_Project/Final Scenes/Lvl-2-Slicing.unity
     guid: b85da350c90f806459688efeed570ba3
   - enabled: 1
-    path: Assets/_Project/Final Scenes/Lvl-4-Boss_Modified.unity
+    path: Assets/_Project/Final Scenes/Lvl-4-Boss_Modified_PP.unity
     guid: 33b8b7cfb58a89b4bb2007ea7b2861ac
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: dcd4cb832bd7d3247b78a388d5335883, type: 2}

@@ -214,7 +214,7 @@ Material:
     - _Brightness: 1
     - _BumpScale: 1
     - _ColorGrading: 1
-    - _Contrast: 1
+    - _Contrast: 0.81
     - _Cutoff: 0.486
     - _DetailBlend: 0
     - _DetailMix: 0.5
@@ -239,7 +239,7 @@ Material:
     - _GlossyReflections: 1
     - _GoochRampIntensity: 0.5
     - _HatchingMapScale: 1
-    - _Hue: 0
+    - _Hue: 1
     - _IndirectFade: 1
     - _Initialized: 1
     - _InputTab: 1
